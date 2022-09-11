@@ -1,0 +1,23 @@
+query getCurrentUser {
+  getCurrentUser {
+    id
+    civility
+    firstName
+    lastName
+    email
+    phoneNumber1
+    phoneNumber2
+    dateOfBirth
+    country
+    town
+    address
+    postalCode
+    avatar
+    accountVerified
+    isActived
+    isDeleted
+    roleId
+    createdAt
+    updatedAt
+  }
+}

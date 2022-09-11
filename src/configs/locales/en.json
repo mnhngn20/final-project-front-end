@@ -1,0 +1,208 @@
+{
+  "appInfo": {
+    "footer": "",
+    "name": "TelObseques"
+  },
+  "empty": "404 Not Found",
+  "header": {
+    "profile": "Profile",
+    "myPlan": "My Plan",
+    "insuranceCompanies": "Insurance Companies",
+    "more": "More",
+    "professionals": "Professionals",
+    "individuals": "Individuals",
+    "blogs": "Blogs"
+  },
+  "userMenu": {
+    "myProfile": "My Profile",
+    "planPackage": "Plan Package",
+    "payment": "Payment",
+    "logout": "Log Out"
+  },
+  "signIn": {
+    "title": "Sign In",
+    "funeralPlan": "Funeral Plan",
+    "description": "We give our users the tools to celebrate and plan their legacy, how they want to be remembered and support loved ones through their grief.",
+    "rememberMe": "Remember Me",
+    "forgotPassword": "Forgot Password?",
+    "noAccount": "Didn’t have an account?"
+  },
+  "signUp": {
+    "title": "Sign Up",
+    "description": "By signing up, you agree to TelObseques's",
+    "term": "Terms of Use",
+    "policy": "Privacy Policy",
+    "haveAccount": "You have an account already?"
+  },
+  "signUpConfirm": {
+    "weHaveSent": "We have sent the verification code to the email",
+    "pleaseEnter": "please enter it correctly to complete the registration.",
+    "resend": "Resend the email",
+    "submit": "Submit"
+  },
+  "commonFields": {
+    "email": "Email",
+    "phone": "Phone Number",
+    "password": "Password",
+    "oldPassword": "Old password",
+    "newPassword": "New password",
+    "confirmNewPassword": "Confirm new pasword",
+    "firstName": "First name",
+    "lastName": "Last name",
+    "comfirmPassword": "Confirm Password",
+    "ID": "ID"
+  },
+  "statuses": {
+    "Draft": "Draft"
+  },
+  "button": {
+    "signIn": "Sign In",
+    "logout": "Logout",
+    "backHome": "Back Home",
+    "signUp": "Sign Up",
+    "loginWithGoogle": "Continue with google",
+    "loginWithFacebook": "Continue with facebook",
+    "submit": "Submit",
+    "forgotPassword": "Forgot Password?",
+    "suggest": "Suggest",
+    "createPlan": "Create Plan",
+    "registered": "Registered",
+    "registerNow": "Register Now",
+    "save": "Save"
+  },
+  "placeholder": {
+    "enterEmail": "Enter email",
+    "enterPassword": "Enter password",
+    "enterFirstName": "Enter first name",
+    "enterLastName": "Enter last name",
+    "comfirmPassword": "Confirm password",
+    "enterOldPassword": "Enter old password",
+    "enterNewPassword": "Enter new password",
+    "enterConfirmPassword": "Confirm new password"
+  },
+  "confirmEmail": {
+    "title": "Confirmation Email"
+  },
+  "confirm": {
+    "password": "Please confirm your password!",
+    "passwordNotMatch": "The two passwords that you entered do not match!",
+    "changePasswordSuccess": "Change password successfully!"
+  },
+  "forgotPassword": {
+    "title": "Forgot password",
+    "description": "Please enter your email address so we can send you an email to reset your password."
+  },
+  "changePassword": {
+    "title": "Change Password"
+  },
+  "validateMessage": {
+    "email": "Email is invalid"
+  },
+  "error": {
+    "pleaseTryAgain": "Please try again later!"
+  },
+  "dashboard": {
+    "myFuneralPlans": "My Funeral Plan",
+    "myFuneralPlansDescription": "Create funeral plans for your loved ones",
+    "myFamilyMembers": "My family members",
+    "recommendToYourFamily": "Recommend to your family",
+    "recommendToYourFamilyDescription": "Your loved ones can share information with each other"
+  },
+  "profiles": {
+    "title": "Personal information",
+    "fullName": "Full name",
+    "phoneAdd": "Phone Number Add",
+    "location": "Location",
+    "calendar": "Calendar",
+    "tag": "Individual",
+    "calendarAdd": "Calender Add",
+    "vector": "Vector",
+    "edit": "Edit Profile"
+  },
+  "values": {
+    "monthly": "Monthly",
+    "yearly": "Yearly"
+  },
+  "planPackages": {
+    "title": "Choose Your Plan Package",
+    "description": "Let’s find out the right plan for your and beloved person"
+  },
+  "funeralPackage": {
+    "personalInformation": {
+      "title": "Personal Information",
+      "description": "Here are the steps you can take to create a funeral plan"
+    },
+    "trustedContract": {
+      "title": "Trusted Contract",
+      "description": "Here are the steps you can take to create a funeral plan"
+    },
+    "yourFuneralPlan": {
+      "title": "Your Funeral Plan",
+      "description": "Here are the steps you can take to create a funeral plan"
+    },
+    "documents": {
+      "title": "Documents",
+      "description": "Here are the steps you can take to create a funeral plan"
+    },
+    "personalAccounts": {
+      "title": "Personal Accounts",
+      "description": "Here are the steps you can take to create a funeral plan"
+    },
+    "personalMemories": {
+      "title": "Personal Information",
+      "description": "Here are the steps you can take to create a funeral plan"
+    },
+    "organDonation": {
+      "title": "Organ Donation",
+      "description": "Here are the steps you can take to create a funeral plan"
+    },
+    "presentation": {
+      "title": "Presentation",
+      "description": "Here are the steps you can take to create a funeral plan"
+    },
+    "announcement": {
+      "title": "Announcement",
+      "description": "Here are the steps you can take to create a funeral plan"
+    },
+    "funeralPlanType": {
+      "title": "Funeral Plan Type",
+      "description": "Here are the steps you can take to create a funeral plan"
+    },
+    "casketMaterial": {
+      "title": "Casket Material",
+      "description": "Here are the steps you can take to create a funeral plan"
+    },
+    "funeralType": {
+      "title": "Funeral Type",
+      "description": "Here are the steps you can take to create a funeral plan"
+    },
+    "specificItems": {
+      "title": "Specific Items",
+      "description": "Here are the steps you can take to create a funeral plan"
+    },
+    "music": {
+      "title": "Music",
+      "description": "Here are the steps you can take to create a funeral plan"
+    },
+    "textsPhotosForTribute": {
+      "title": "Texts/ Photos for tribute",
+      "description": "Here are the steps you can take to create a funeral plan"
+    },
+    "travelingAboard": {
+      "title": "Traveling Aboard",
+      "description": "Here are the steps you can take to create a funeral plan"
+    },
+    "funeralHome": {
+      "title": "Funeral Home",
+      "description": "Here are the steps you can take to create a funeral plan"
+    },
+    "specialWills": {
+      "title": "Special Wills",
+      "description": "Here are the steps you can take to create a funeral plan"
+    },
+    "conservationCare": {
+      "title": "Conservation Care",
+      "description": "Here are the steps you can take to create a funeral plan"
+    }
+  }
+}
