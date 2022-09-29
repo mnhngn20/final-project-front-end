@@ -7,5 +7,7 @@ interface ImportMeta {
     VITE_CODE_GEN_TOKEN: string;
     VITE_APP_BUSINESS_CONFIG_URL: string;
     VITE_APP_PUBLIC_GOOGLE_API_KEY: string;
+    VITE_CLOUDINARY_UPLOAD_PRESET: string;
+    VITE_CLOUDINARY_UPLOAD_URL: string;
   };
 }

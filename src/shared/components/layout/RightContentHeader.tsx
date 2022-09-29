@@ -1,18 +1,16 @@
-import { MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons';
 import { Avatar, Dropdown, Menu } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import useTypeSafeTranslation from '#/shared/hooks/useTypeSafeTranslation';
 import DefaultImage from '#/assets/images/logo.png';
 import { DeepPartial } from '#/shared/utils/type';
+import { User } from '#/generated/schemas';
 
 interface Props {
   logout: () => void;
-  user: DeepPartial<Record<string, string>>;
-  setCollapse: React.Dispatch<React.SetStateAction<boolean>>;
-  isCollapsed: boolean;
+  user: DeepPartial<User>;
 }
 
-function RightContentHeader({ logout, user, setCollapse, isCollapsed }: Props) {
+function RightContentHeader({ logout, user }: Props) {
   const { t } = useTypeSafeTranslation();
   const navigate = useNavigate();
 
@@ -28,19 +26,12 @@ function RightContentHeader({ logout, user, setCollapse, isCollapsed }: Props) {
   );
 
   return (
-    <div className="flex w-full justify-between">
-      <div className="relative items-center">
-        {isCollapsed ? (
-          <MenuUnfoldOutlined onClick={() => setCollapse(!isCollapsed)} />
-        ) : (
-          <MenuFoldOutlined onClick={() => setCollapse(!isCollapsed)} />
-        )}
-      </div>
+    <div className="flex items-center justify-between gap-4">
       <div className="flex">
         <Dropdown overlay={menu}>
           <div className="flex items-center">
             <div className="mr-2 flex flex-col items-end leading-tight">
-              {user?.fullName ?? ''}
+              {user?.name ?? ''}
             </div>
             <Avatar size="large" src={user?.avatar ?? DefaultImage} />
           </div>

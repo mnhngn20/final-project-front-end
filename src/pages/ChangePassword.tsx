@@ -1,11 +1,6 @@
 import { Form, Input, Modal } from 'antd';
 import { Dispatch, SetStateAction } from 'react';
 import useTypeSafeTranslation from '#/shared/hooks/useTypeSafeTranslation';
-import {
-  ChangePasswordInputDto,
-  useChangePasswordMutation,
-} from '#/generated/schemas';
-import { showError, showSuccess } from '#/shared/utils/notification';
 
 interface ChangePasswordProps {
   setVisible: Dispatch<SetStateAction<boolean>>;
@@ -16,20 +11,20 @@ function ChangePassword({ setVisible, visible }: ChangePasswordProps) {
   const [form] = Form.useForm();
   const { t } = useTypeSafeTranslation();
 
-  const [changePassword] = useChangePasswordMutation({
-    onCompleted() {
-      showSuccess(t('confirm.changePasswordSuccess'));
-      setVisible(false);
-      form.resetFields();
-    },
-    onError: showError,
-  });
+  // const [changePassword] = useChangePasswordMutation({
+  //   onCompleted() {
+  //     showSuccess(t('confirm.changePasswordSuccess'));
+  //     setVisible(false);
+  //     form.resetFields();
+  //   },
+  //   onError: showError,
+  // });
 
-  const handleSubmit = (values: ChangePasswordInputDto) => {
-    changePassword({
-      variables: { input: values },
-    });
-  };
+  // const handleSubmit = (values: ChangePasswordInputDto) => {
+  //   changePassword({
+  //     variables: { input: values },
+  //   });
+  // };
 
   const handleCancel = () => {
     setVisible(false);
@@ -50,7 +45,7 @@ function ChangePassword({ setVisible, visible }: ChangePasswordProps) {
           className="flex flex-col gap-8 px-[1rem]"
           layout="vertical"
           scrollToFirstError
-          onFinish={handleSubmit}
+          // onFinish={handleSubmit}
         >
           <div className="flex w-full flex-col">
             <Form.Item

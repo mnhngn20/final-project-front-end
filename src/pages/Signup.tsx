@@ -1,11 +1,11 @@
-import { Button, Form, Input, Typography } from 'antd';
+import { Button, Col, Form, Input, Row, Typography } from 'antd';
 import { Link, useNavigate } from 'react-router-dom';
-import { FacebookFilled, GoogleOutlined } from '@ant-design/icons';
 import AuthLayout from '#/shared/components/layout/AuthLayout';
 import useTypeSafeTranslation from '#/shared/hooks/useTypeSafeTranslation';
-import { RegisterInputDto, useRegisterMutation } from '#/generated/schemas';
-import SocialButton from '#/shared/components/styled/SocialButton';
-import { showError } from '#/shared/utils/notification';
+import { RegisterLoginInput, useRegisterMutation } from '#/generated/schemas';
+import { showError, showSuccess } from '#/shared/utils/notification';
+import { DatePicker } from '#/shared/components/commons/DatePicker';
+import dayjs from 'dayjs';
 
 function Signup() {
   const { t } = useTypeSafeTranslation();
@@ -13,19 +13,31 @@ function Signup() {
 
   const [register, loading] = useRegisterMutation({
     onCompleted() {
-      navigate('/signup-confirm');
+      showSuccess('Registered account successfully!');
+      navigate('/login');
     },
     onError: showError,
   });
 
-  const onSubmit = (value: RegisterInputDto) => {
+  const onSubmit = ({
+    email,
+    address,
+    dateOfBirth,
+    identityNumber,
+    name,
+    password,
+    phoneNumber,
+  }: RegisterLoginInput) => {
     register({
       variables: {
         input: {
-          email: value?.email,
-          firstName: value?.firstName,
-          lastName: value?.lastName,
-          password: value?.password,
+          email,
+          address,
+          identityNumber,
+          name,
+          password,
+          phoneNumber,
+          dateOfBirth: dayjs.utc(dateOfBirth)?.startOf('date').toISOString(),
         },
       },
     });
@@ -39,87 +51,134 @@ function Signup() {
         layout="vertical"
         scrollToFirstError
       >
-        <Typography className="text-4xl font-semibold">
+        <Typography className="text-center font-dm-serif-display text-4xl font-semibold">
           {t('signUp.title')}
         </Typography>
-        <div className="flex w-full flex-col">
-          <Form.Item
-            name="firstName"
-            label={t('commonFields.firstName')}
-            rules={[
-              {
-                required: true,
-              },
-            ]}
-          >
-            <Input
-              placeholder={t('placeholder.enterFirstName')}
-              autoComplete="off"
-            />
-          </Form.Item>
-          <Form.Item
-            name="lastName"
-            label={t('commonFields.lastName')}
-            rules={[
-              {
-                required: true,
-              },
-            ]}
-          >
-            <Input
-              placeholder={t('placeholder.enterLastName')}
-              autoComplete="off"
-            />
-          </Form.Item>
-          <Form.Item
-            name="email"
-            label={t('commonFields.email')}
-            rules={[
-              {
-                required: true,
-              },
-            ]}
-          >
-            <Input
-              placeholder={t('placeholder.enterEmail')}
-              autoComplete="off"
-            />
-          </Form.Item>
-          <Form.Item
-            name="password"
-            label={t('commonFields.password')}
-            rules={[
-              {
-                required: true,
-              },
-            ]}
-          >
-            <Input.Password placeholder={t('placeholder.enterPassword')} />
-          </Form.Item>
-          <Form.Item
-            name="comfirmPassword"
-            label={t('commonFields.comfirmPassword')}
-            dependencies={['password']}
-            hasFeedback
-            rules={[
-              {
-                message: t('confirm.password'),
-                required: true,
-              },
-              ({ getFieldValue }) => ({
-                validator(_, value) {
-                  if (!value || getFieldValue('password') === value) {
-                    return Promise.resolve();
-                  }
-                  return Promise.reject(
-                    new Error(t('confirm.passwordNotMatch')),
-                  );
+        <Row gutter={16}>
+          <Col span={12}>
+            <Form.Item
+              name="email"
+              label="Email"
+              rules={[
+                {
+                  required: true,
+                  type: 'email',
                 },
-              }),
-            ]}
-          >
-            <Input.Password placeholder={t('placeholder.comfirmPassword')} />
-          </Form.Item>
+              ]}
+            >
+              <Input placeholder="Enter your email" autoComplete="off" />
+            </Form.Item>
+          </Col>
+          <Col span={12}>
+            <Form.Item
+              name="name"
+              label="Full Name"
+              rules={[
+                {
+                  required: true,
+                },
+              ]}
+            >
+              <Input placeholder="Enter your name" autoComplete="off" />
+            </Form.Item>
+          </Col>
+          <Col span={12}>
+            <Form.Item
+              name="identityNumber"
+              label="Identity Number"
+              rules={[
+                {
+                  required: true,
+                },
+              ]}
+            >
+              <Input
+                placeholder="Enter your identity number"
+                autoComplete="off"
+              />
+            </Form.Item>
+          </Col>
+          <Col span={12}>
+            <Form.Item
+              name="address"
+              label="Address"
+              rules={[
+                {
+                  required: true,
+                },
+              ]}
+            >
+              <Input placeholder="Enter your address" autoComplete="off" />
+            </Form.Item>
+          </Col>
+          <Col span={12}>
+            <Form.Item
+              name="phoneNumber"
+              label="Address"
+              rules={[
+                {
+                  required: true,
+                },
+              ]}
+            >
+              <Input placeholder="Enter your phone number" autoComplete="off" />
+            </Form.Item>
+          </Col>
+          <Col span={12}>
+            <Form.Item
+              name="dateOfBirth"
+              label="Date of birth"
+              rules={[
+                {
+                  required: true,
+                },
+              ]}
+            >
+              <DatePicker
+                className="w-full"
+                placeholder="Select your birthday"
+              />
+            </Form.Item>
+          </Col>
+          <Col span={12}>
+            <Form.Item
+              name="password"
+              label={t('commonFields.password')}
+              rules={[
+                {
+                  required: true,
+                },
+              ]}
+            >
+              <Input.Password placeholder={t('placeholder.enterPassword')} />
+            </Form.Item>
+          </Col>
+          <Col span={12}>
+            <Form.Item
+              name="confirmPassword"
+              label="Confirm Password"
+              dependencies={['password']}
+              hasFeedback
+              rules={[
+                {
+                  message: t('confirm.password'),
+                  required: true,
+                },
+                ({ getFieldValue }) => ({
+                  validator(_, value) {
+                    if (!value || getFieldValue('password') === value) {
+                      return Promise.resolve();
+                    }
+                    return Promise.reject(
+                      new Error(t('confirm.passwordNotMatch')),
+                    );
+                  },
+                }),
+              ]}
+            >
+              <Input.Password placeholder="Confirm your password" />
+            </Form.Item>
+          </Col>
           <p className="text-base text-grey-secondary-300">
             {t('signUp.description')}{' '}
             <Link to="/" className="text-grey-text underline">
@@ -133,7 +192,7 @@ function Signup() {
           <Button block type="primary" htmlType="submit" loading={!loading}>
             {t('button.signUp')}
           </Button>
-        </div>
+        </Row>
         <p className="text-center text-base text-woodsmoke">
           {t('signUp.haveAccount')}{' '}
           <Link to="/signin" className="font-semibold text-primary-color">
@@ -141,24 +200,6 @@ function Signup() {
           </Link>
         </p>
       </Form>
-      <div className="flex w-full flex-col px-20 pb-10">
-        <SocialButton
-          icon={<GoogleOutlined />}
-          className="mt-2 h-[3rem]"
-          htmlType="submit"
-          data-testid="google-btn"
-        >
-          {t('button.loginWithGoogle')}
-        </SocialButton>
-        <SocialButton
-          icon={<FacebookFilled className="grey-secondary-300" />}
-          className="mt-3.5 h-[3rem]"
-          htmlType="submit"
-          data-testid="facebook-btn"
-        >
-          {t('button.loginWithFacebook')}
-        </SocialButton>
-      </div>
     </AuthLayout>
   );
 }

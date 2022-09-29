@@ -1,53 +1,51 @@
-import { AvatarProps, Upload } from 'antd';
+import { AvatarProps, Slider, Upload } from 'antd';
 import ImgCrop from 'antd-img-crop';
 import { useEffect, useState } from 'react';
 import { RcFile } from 'antd/es/upload';
-// import { uploadFile } from '@base-projects/web-uikit';
+import Avatar from './Avatar';
 import 'antd/es/modal/style';
 import 'antd/es/slider/style';
-import Avatar from '#/shared/components/commons/Avatar';
-import { S3UploadType } from '#/generated/schemas';
-import useAsyncQuery from '#/shared/hooks/useAsyncQuery';
+import uploadCloudinary from '#/shared/utils/uploadCloudinary';
+import { showError } from '#/shared/utils/notification';
 
 interface Props {
   onChange?: (url: string) => void;
   disabled?: boolean;
-  src?: string;
+  isPersonAvatar?: boolean;
+  src?: string | null;
 }
 
 function UploadAvatar({
   onChange,
   disabled,
+  isPersonAvatar,
   src,
-  size,
+  size = 100,
   ...rest
 }: Props & AvatarProps) {
-  const { getPresignedUrl } = useAsyncQuery();
-  const [imageURL, setImageURL] = useState<string | undefined>(src);
+  const [imageURL, setImageURL] = useState(src);
+  const [progress, setProgress] = useState(0);
   useEffect(() => {
-    setImageURL(src);
+    setImageURL(src as string);
   }, [src]);
+
   const handleUpload = async ({
     file,
   }: {
     file: string | Blob | RcFile | File;
   }) => {
-    const { data } = await getPresignedUrl({
-      fileName: (file as File).name,
-      fileType: (file as File).type,
-      pathType: S3UploadType.Profile,
-    });
-    const uploadUrl = data?.presignedUrlS3?.uploadUrl;
-    const url = `${import.meta.env.VITE_IMAGE_URL}/${
-      data?.presignedUrlS3?.pathFile
-    }`;
-    if (uploadUrl) {
-      // await uploadFile({
-      //   file: file as Blob,
-      //   signedRequest: uploadUrl,
-      // });
+    try {
+      setProgress(0);
+      const res = await uploadCloudinary({
+        file: file as Blob,
+        onUploadProgress: (percent: number) => setProgress(percent),
+      });
+      const url = res.data.url;
       onChange?.(url);
       setImageURL(url);
+      setProgress(100);
+    } catch (error) {
+      showError(error);
     }
   };
 
@@ -60,18 +58,25 @@ function UploadAvatar({
         disabled={disabled}
         maxCount={1}
         progress={{
-          showInfo: false,
           strokeWidth: 4,
+          showInfo: false,
         }}
-        className="flex justify-center"
       >
-        <div className="flex rounded-full">
-          {imageURL ? (
-            <Avatar src={imageURL} size={size} alt="image" {...rest} />
-          ) : (
-            <Avatar size={size} className="center2 hover:shadow-xl flex" />
-          )}
-        </div>
+        {progress !== 0 && progress !== 100 ? (
+          <>
+            <Avatar size={size} className="flex items-center justify-center">
+              <Slider value={progress} className="w-20" />
+            </Avatar>
+          </>
+        ) : (
+          <Avatar
+            isPersonAvatar={isPersonAvatar}
+            src={imageURL}
+            size={size}
+            alt="image"
+            {...rest}
+          />
+        )}
       </Upload>
     </ImgCrop>
   );

@@ -22,345 +22,528 @@ export type Scalars = {
   DateTime: any;
 };
 
-export type ChangePasswordInputDto = {
-  confirmNewPassword: Scalars['String'];
-  newPassword: Scalars['String'];
+export type ChangePasswordInput = {
   oldPassword: Scalars['String'];
-};
-
-export type DeleteFileDto = {
-  url: Scalars['String'];
-};
-
-export type IPreSignUrl = {
-  fileType: Scalars['String'];
-  pathFile: Scalars['String'];
-  uploadUrl: Scalars['String'];
-};
-
-export type IUser = {
-  accountVerified?: Maybe<Scalars['Boolean']>;
-  address?: Maybe<Scalars['String']>;
-  avatar?: Maybe<Scalars['String']>;
-  civility?: Maybe<Scalars['String']>;
-  country?: Maybe<Scalars['String']>;
-  createdAt?: Maybe<Scalars['DateTime']>;
-  dateOfBirth?: Maybe<Scalars['DateTime']>;
-  email?: Maybe<Scalars['String']>;
-  firstName?: Maybe<Scalars['String']>;
-  id: Scalars['ID'];
-  isActived?: Maybe<Scalars['Boolean']>;
-  isDeleted?: Maybe<Scalars['Boolean']>;
-  lastName?: Maybe<Scalars['String']>;
-  package?: Maybe<Package>;
-  phoneNumber1?: Maybe<Scalars['String']>;
-  phoneNumber2?: Maybe<Scalars['String']>;
-  postalCode?: Maybe<Scalars['String']>;
-  role?: Maybe<Role>;
-  roleId?: Maybe<Scalars['ID']>;
-  town?: Maybe<Scalars['String']>;
-  updatedAt?: Maybe<Scalars['DateTime']>;
-  userType?: Maybe<UserType>;
-};
-
-export type LoginInputDto = {
-  email: Scalars['String'];
   password: Scalars['String'];
 };
 
-export type LoginResponseDto = {
-  accountVerified?: Maybe<Scalars['Boolean']>;
-  address?: Maybe<Scalars['String']>;
-  avatar?: Maybe<Scalars['String']>;
-  civility?: Maybe<Scalars['String']>;
-  country?: Maybe<Scalars['String']>;
-  createdAt?: Maybe<Scalars['DateTime']>;
-  dateOfBirth?: Maybe<Scalars['DateTime']>;
-  email: Scalars['String'];
-  facebookId?: Maybe<Scalars['String']>;
-  firstName?: Maybe<Scalars['String']>;
-  googleId?: Maybe<Scalars['String']>;
-  id: Scalars['ID'];
-  isActived?: Maybe<Scalars['Boolean']>;
-  isDeleted?: Maybe<Scalars['Boolean']>;
-  lastName?: Maybe<Scalars['String']>;
-  phoneNumber1?: Maybe<Scalars['String']>;
-  phoneNumber2?: Maybe<Scalars['String']>;
-  postalCode?: Maybe<Scalars['String']>;
-  refreshToken: Scalars['String'];
-  role?: Maybe<Role>;
-  roleId?: Maybe<Scalars['String']>;
-  token: Scalars['String'];
-  town?: Maybe<Scalars['String']>;
-  updatedAt?: Maybe<Scalars['DateTime']>;
+export type ChangeUserStatusInput = {
+  id: Scalars['Float'];
+  isActive: Scalars['Boolean'];
 };
 
-export type LogoutInputDto = {
+export type ContactInformation = {
+  address: Scalars['String'];
+  createdAt: Scalars['DateTime'];
+  email: Scalars['String'];
+  id: Scalars['ID'];
+  location: Location;
+  locationId: Scalars['Float'];
+  name: Scalars['String'];
+  phoneNumber: Scalars['String'];
+  updatedAt: Scalars['DateTime'];
+};
+
+export type CreateUserInput = {
+  address?: InputMaybe<Scalars['String']>;
+  avatar?: InputMaybe<Scalars['String']>;
+  dateOfBirth?: InputMaybe<Scalars['DateTime']>;
+  email: Scalars['String'];
+  identityNumber?: InputMaybe<Scalars['String']>;
+  locationId?: InputMaybe<Scalars['Float']>;
+  name?: InputMaybe<Scalars['String']>;
+  password: Scalars['String'];
+  phoneNumber?: InputMaybe<Scalars['String']>;
+  roomId?: InputMaybe<Scalars['Float']>;
+};
+
+export type Equipment = {
+  createdAt: Scalars['DateTime'];
+  description?: Maybe<Scalars['String']>;
+  id: Scalars['ID'];
+  image?: Maybe<Scalars['String']>;
+  isActive: Scalars['Boolean'];
+  location: Location;
+  locationId: Scalars['Float'];
+  name: Scalars['String'];
+  room: Room;
+  roomId: Scalars['Float'];
+  updatedAt: Scalars['DateTime'];
+};
+
+export type EquipmentListResponse = ListResponse & {
+  items: Array<Equipment>;
+  message?: Maybe<Scalars['String']>;
+  page?: Maybe<Scalars['Float']>;
+  total?: Maybe<Scalars['Float']>;
+  totalPages?: Maybe<Scalars['Float']>;
+};
+
+export type EquipmentResponse = IResponse & {
+  equipment?: Maybe<Equipment>;
+  message?: Maybe<Scalars['String']>;
+};
+
+export type GetAccessTokenInput = {
   refreshToken: Scalars['String'];
+};
+
+export type GetEquipmentsInput = {
+  isActive?: InputMaybe<Scalars['Boolean']>;
+  limit?: InputMaybe<Scalars['Float']>;
+  locationId?: InputMaybe<Scalars['Float']>;
+  name?: InputMaybe<Scalars['String']>;
+  orderBy?: InputMaybe<OrderBy>;
+  page?: InputMaybe<Scalars['Float']>;
+  roomId?: InputMaybe<Scalars['Float']>;
+};
+
+export type GetLocationsInput = {
+  address?: InputMaybe<Scalars['String']>;
+  keyword?: InputMaybe<Scalars['String']>;
+  limit?: InputMaybe<Scalars['Float']>;
+  name?: InputMaybe<Scalars['String']>;
+  orderBy?: InputMaybe<OrderBy>;
+  page?: InputMaybe<Scalars['Float']>;
+  status?: InputMaybe<Scalars['Boolean']>;
+};
+
+export type GetRoomsInput = {
+  limit?: InputMaybe<Scalars['Float']>;
+  locationId?: InputMaybe<Scalars['Float']>;
+  maxBasePrice?: InputMaybe<Scalars['Float']>;
+  minBasePrice?: InputMaybe<Scalars['Float']>;
+  name?: InputMaybe<Scalars['String']>;
+  orderBy?: InputMaybe<OrderBy>;
+  page?: InputMaybe<Scalars['Float']>;
+  status?: InputMaybe<RoomStatus>;
+};
+
+export type GetUsersInput = {
+  email?: InputMaybe<Scalars['String']>;
+  isActive?: InputMaybe<Scalars['Boolean']>;
+  limit?: InputMaybe<Scalars['Float']>;
+  locationId?: InputMaybe<Scalars['Float']>;
+  name?: InputMaybe<Scalars['String']>;
+  orderBy?: InputMaybe<OrderBy>;
+  page?: InputMaybe<Scalars['Float']>;
+  role?: InputMaybe<UserRole>;
+  roomId?: InputMaybe<Scalars['Float']>;
+};
+
+export type IResponse = {
+  message?: Maybe<Scalars['String']>;
+};
+
+export type ListResponse = {
+  message?: Maybe<Scalars['String']>;
+  page?: Maybe<Scalars['Float']>;
+  total?: Maybe<Scalars['Float']>;
+  totalPages?: Maybe<Scalars['Float']>;
+};
+
+export type ListUserResponse = ListResponse & {
+  items: Array<User>;
+  message?: Maybe<Scalars['String']>;
+  page?: Maybe<Scalars['Float']>;
+  total?: Maybe<Scalars['Float']>;
+  totalPages?: Maybe<Scalars['Float']>;
+};
+
+export type Location = {
+  address: Scalars['String'];
+  contactInformations?: Maybe<Array<ContactInformation>>;
+  createdAt: Scalars['DateTime'];
+  description?: Maybe<Scalars['String']>;
+  equipments?: Maybe<Array<Equipment>>;
+  id: Scalars['ID'];
+  images?: Maybe<Scalars['String']>;
+  income: Scalars['Float'];
+  isActive: Scalars['Boolean'];
+  lat: Scalars['Float'];
+  long: Scalars['Float'];
+  name: Scalars['String'];
+  rooms?: Maybe<Array<Room>>;
+  thumbnail?: Maybe<Scalars['String']>;
+  updatedAt: Scalars['DateTime'];
+  users?: Maybe<Array<User>>;
+};
+
+export type LocationContactInformationInput = {
+  address?: InputMaybe<Scalars['String']>;
+  email?: InputMaybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['Float']>;
+  name?: InputMaybe<Scalars['String']>;
+  phoneNumber?: InputMaybe<Scalars['String']>;
+};
+
+export type LocationListResponse = ListResponse & {
+  items: Array<Location>;
+  message?: Maybe<Scalars['String']>;
+  page?: Maybe<Scalars['Float']>;
+  total?: Maybe<Scalars['Float']>;
+  totalPages?: Maybe<Scalars['Float']>;
+};
+
+export type LocationResponse = IResponse & {
+  location?: Maybe<Location>;
+  message?: Maybe<Scalars['String']>;
+};
+
+export type LoginResponse = IResponse & {
+  accessToken?: Maybe<Scalars['String']>;
+  message?: Maybe<Scalars['String']>;
+  refreshToken?: Maybe<Scalars['String']>;
+  user?: Maybe<User>;
 };
 
 export type Mutation = {
-  changePassword: ResponseMessageBase;
-  deleteFileS3: Scalars['String'];
-  login: LoginResponseDto;
-  loginFacebook: LoginResponseDto;
-  loginGoogle: LoginResponseDto;
-  logout: ResponseMessageBase;
-  presignedUrlS3: IPreSignUrl;
-  refreshToken: RefreshTokenOutputDto;
-  register: RegisterResponseDto;
-  resendOtp: ResponseMessageBase;
-  resetPassword: ResponseMessageBase;
-  updateCurrentUser: User;
-  verifyCode: LoginResponseDto;
+  changePassword: Scalars['String'];
+  changeUserStatus: Scalars['String'];
+  createUser: UserResponse;
+  getAccessToken: LoginResponse;
+  login: LoginResponse;
+  register: UserResponse;
+  resetPassword: ResetPasswordResponse;
+  resetPasswordConfirm: ResetPasswordResponse;
+  updateEquipmentStatus: EquipmentResponse;
+  updateLocationStatus: LocationResponse;
+  updateMe: UserResponse;
+  updateUser: UserResponse;
+  upsertEquipment: EquipmentResponse;
+  upsertLocation: LocationResponse;
+  upsertRoom: RoomResponse;
 };
 
 export type MutationChangePasswordArgs = {
-  input: ChangePasswordInputDto;
+  input: ChangePasswordInput;
 };
 
-export type MutationDeleteFileS3Args = {
-  deleteFileDto: DeleteFileDto;
+export type MutationChangeUserStatusArgs = {
+  input: ChangeUserStatusInput;
+};
+
+export type MutationCreateUserArgs = {
+  input: CreateUserInput;
+};
+
+export type MutationGetAccessTokenArgs = {
+  input: GetAccessTokenInput;
 };
 
 export type MutationLoginArgs = {
-  input: LoginInputDto;
-};
-
-export type MutationLoginFacebookArgs = {
-  token: Scalars['String'];
-};
-
-export type MutationLoginGoogleArgs = {
-  token: Scalars['String'];
-};
-
-export type MutationLogoutArgs = {
-  input: LogoutInputDto;
-};
-
-export type MutationPresignedUrlS3Args = {
-  presignedUrlDto: PresignedUrlDto;
-};
-
-export type MutationRefreshTokenArgs = {
-  input: RefreshTokenInputDto;
+  input: RegisterLoginInput;
 };
 
 export type MutationRegisterArgs = {
-  input: RegisterInputDto;
-};
-
-export type MutationResendOtpArgs = {
-  email: Scalars['String'];
+  input: RegisterLoginInput;
 };
 
 export type MutationResetPasswordArgs = {
-  input: ResetPasswordInputDto;
+  email: Scalars['String'];
 };
 
-export type MutationUpdateCurrentUserArgs = {
-  input: UpdateUserInputDto;
+export type MutationResetPasswordConfirmArgs = {
+  input: ResetPasswordConfirmInput;
 };
 
-export type MutationVerifyCodeArgs = {
-  input: VerifyCodeInputDto;
+export type MutationUpdateEquipmentStatusArgs = {
+  input: UpdateEquipmentStatusInput;
 };
 
-export type Package = {
-  createdAt?: Maybe<Scalars['DateTime']>;
-  description?: Maybe<Scalars['String']>;
-  id: Scalars['ID'];
-  name: Scalars['String'];
-  updatedAt?: Maybe<Scalars['DateTime']>;
+export type MutationUpdateLocationStatusArgs = {
+  input: UpdateLocationStatusInput;
 };
 
-export type PresignedUrlDto = {
-  fileName: Scalars['String'];
-  fileType: Scalars['String'];
-  pathType: S3UploadType;
+export type MutationUpdateMeArgs = {
+  input: UpdateMeInput;
 };
+
+export type MutationUpdateUserArgs = {
+  input: UpdateUserInput;
+};
+
+export type MutationUpsertEquipmentArgs = {
+  input: UpsertEquipmentInput;
+};
+
+export type MutationUpsertLocationArgs = {
+  input: UpsertLocationInput;
+};
+
+export type MutationUpsertRoomArgs = {
+  input: UpsertRoomInput;
+};
+
+export enum OrderBy {
+  Asc = 'ASC',
+  Desc = 'DESC',
+}
 
 export type Query = {
-  getCurrentUser: IUser;
-  testQuery: Scalars['String'];
+  getEquipment: EquipmentResponse;
+  getEquipments: EquipmentListResponse;
+  getLocation: LocationResponse;
+  getLocations: LocationListResponse;
+  getRoom: RoomResponse;
+  getRooms: RoomListResponse;
+  getUser: UserResponse;
+  getUsers: ListUserResponse;
+  me: UserResponse;
 };
 
-export type RefreshTokenInputDto = {
-  refreshToken: Scalars['String'];
+export type QueryGetEquipmentArgs = {
+  id: Scalars['Float'];
 };
 
-export type RefreshTokenOutputDto = {
+export type QueryGetEquipmentsArgs = {
+  input: GetEquipmentsInput;
+};
+
+export type QueryGetLocationArgs = {
+  id: Scalars['Float'];
+};
+
+export type QueryGetLocationsArgs = {
+  input: GetLocationsInput;
+};
+
+export type QueryGetRoomArgs = {
+  id: Scalars['Float'];
+};
+
+export type QueryGetRoomsArgs = {
+  input: GetRoomsInput;
+};
+
+export type QueryGetUserArgs = {
+  id: Scalars['Float'];
+};
+
+export type QueryGetUsersArgs = {
+  input: GetUsersInput;
+};
+
+export enum RoomStatus {
+  Available = 'Available',
+  NotAvailable = 'NotAvailable',
+  Owned = 'Owned',
+}
+
+export type RegisterLoginInput = {
+  address?: InputMaybe<Scalars['String']>;
+  dateOfBirth?: InputMaybe<Scalars['DateTime']>;
+  email: Scalars['String'];
+  identityNumber?: InputMaybe<Scalars['String']>;
+  name?: InputMaybe<Scalars['String']>;
+  password?: InputMaybe<Scalars['String']>;
+  phoneNumber?: InputMaybe<Scalars['String']>;
+};
+
+export type ResetPasswordConfirmInput = {
+  password: Scalars['String'];
   token: Scalars['String'];
 };
 
-export type RegisterInputDto = {
-  accountVerified?: InputMaybe<Scalars['Boolean']>;
-  avatar?: InputMaybe<Scalars['String']>;
-  customerId?: InputMaybe<Scalars['Float']>;
-  email: Scalars['String'];
-  firstName: Scalars['String'];
-  lastName: Scalars['String'];
-  packageId?: InputMaybe<Scalars['String']>;
-  password: Scalars['String'];
-  userTypeId?: InputMaybe<Scalars['String']>;
-  verifyEmailCode?: InputMaybe<Scalars['String']>;
+export type ResetPasswordResponse = {
+  message?: Maybe<Scalars['String']>;
 };
 
-export type RegisterResponseDto = {
-  accountVerified?: Maybe<Scalars['Boolean']>;
-  avatar?: Maybe<Scalars['String']>;
-  customerId?: Maybe<Scalars['Float']>;
-  email: Scalars['String'];
-  firstName: Scalars['String'];
-  lastName: Scalars['String'];
-  packageId?: Maybe<Scalars['String']>;
-  password: Scalars['String'];
-  userTypeId?: Maybe<Scalars['String']>;
-  verifyEmailCode?: Maybe<Scalars['String']>;
-};
-
-export type ResetPasswordInputDto = {
-  confirmNewPassword: Scalars['String'];
-  newPassword: Scalars['String'];
-};
-
-export type ResponseMessageBase = {
-  message: Scalars['String'];
-  success: Scalars['Boolean'];
-};
-
-export type Role = {
-  createdAt?: Maybe<Scalars['DateTime']>;
+export type Room = {
+  basePrice: Scalars['Float'];
+  createdAt: Scalars['DateTime'];
   description?: Maybe<Scalars['String']>;
-  id: Scalars['String'];
+  equipments?: Maybe<Array<Equipment>>;
+  id: Scalars['ID'];
+  images?: Maybe<Scalars['String']>;
+  location?: Maybe<Location>;
+  locationId: Scalars['Float'];
   name?: Maybe<Scalars['String']>;
-  updatedAt?: Maybe<Scalars['DateTime']>;
+  status: RoomStatus;
+  thumbnail?: Maybe<Scalars['String']>;
+  updatedAt: Scalars['DateTime'];
+  user?: Maybe<User>;
+  userId?: Maybe<Scalars['Float']>;
 };
 
-export enum S3UploadType {
-  Profile = 'Profile',
-  Public = 'Public',
+export type RoomListResponse = ListResponse & {
+  items: Array<Room>;
+  message?: Maybe<Scalars['String']>;
+  page?: Maybe<Scalars['Float']>;
+  total?: Maybe<Scalars['Float']>;
+  totalPages?: Maybe<Scalars['Float']>;
+};
+
+export type RoomResponse = IResponse & {
+  message?: Maybe<Scalars['String']>;
+  room?: Maybe<Room>;
+};
+
+export enum UserRole {
+  Admin = 'Admin',
+  Customer = 'Customer',
+  SuperAdmin = 'SuperAdmin',
 }
 
-export type UpdateUserInputDto = {
-  address?: InputMaybe<Scalars['String']>;
-  civility?: InputMaybe<Scalars['String']>;
-  country?: InputMaybe<Scalars['String']>;
+export type UpdateEquipmentStatusInput = {
+  id: Scalars['Float'];
+  isActive?: InputMaybe<Scalars['Boolean']>;
+};
+
+export type UpdateLocationStatusInput = {
+  id: Scalars['Float'];
+  isActive: Scalars['Boolean'];
+};
+
+export type UpdateMeInput = {
+  avatar?: InputMaybe<Scalars['String']>;
   dateOfBirth?: InputMaybe<Scalars['DateTime']>;
-  email: Scalars['String'];
-  firstName: Scalars['String'];
-  lastName: Scalars['String'];
-  phoneNumber1?: InputMaybe<Scalars['String']>;
-  phoneNumber2?: InputMaybe<Scalars['String']>;
-  postalCode?: InputMaybe<Scalars['String']>;
-  town?: InputMaybe<Scalars['String']>;
+  identityNumber?: InputMaybe<Scalars['String']>;
+  name?: InputMaybe<Scalars['String']>;
+  phoneNumber?: InputMaybe<Scalars['String']>;
+};
+
+export type UpdateUserInput = {
+  avatar?: InputMaybe<Scalars['String']>;
+  dateOfBirth?: InputMaybe<Scalars['DateTime']>;
+  id: Scalars['Float'];
+  identityNumber?: InputMaybe<Scalars['String']>;
+  name?: InputMaybe<Scalars['String']>;
+  phoneNumber?: InputMaybe<Scalars['String']>;
+  roomId?: InputMaybe<Scalars['Float']>;
+};
+
+export type UpsertEquipmentInput = {
+  equipmentTypeId?: InputMaybe<Scalars['Float']>;
+  id?: InputMaybe<Scalars['Float']>;
+  image?: InputMaybe<Scalars['String']>;
+  isActive?: InputMaybe<Scalars['Boolean']>;
+  name?: InputMaybe<Scalars['String']>;
+  roomId: Scalars['Float'];
+};
+
+export type UpsertLocationInput = {
+  address?: InputMaybe<Scalars['String']>;
+  contactInformations?: InputMaybe<Array<LocationContactInformationInput>>;
+  description?: InputMaybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['Float']>;
+  images?: InputMaybe<Scalars['String']>;
+  isActive?: InputMaybe<Scalars['Boolean']>;
+  lat?: InputMaybe<Scalars['Float']>;
+  long?: InputMaybe<Scalars['Float']>;
+  name?: InputMaybe<Scalars['String']>;
+  thumbnail?: InputMaybe<Scalars['String']>;
+};
+
+export type UpsertRoomInput = {
+  basePrice?: InputMaybe<Scalars['Float']>;
+  description?: InputMaybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['Float']>;
+  images?: InputMaybe<Scalars['String']>;
+  locationId?: InputMaybe<Scalars['Float']>;
+  name?: InputMaybe<Scalars['String']>;
+  status?: InputMaybe<RoomStatus>;
 };
 
 export type User = {
-  accountVerified?: Maybe<Scalars['Boolean']>;
-  address?: Maybe<Scalars['String']>;
+  address: Scalars['String'];
   avatar?: Maybe<Scalars['String']>;
-  civility?: Maybe<Scalars['String']>;
-  country?: Maybe<Scalars['String']>;
-  createdAt?: Maybe<Scalars['DateTime']>;
-  customerId?: Maybe<Scalars['Float']>;
-  dateOfBirth?: Maybe<Scalars['DateTime']>;
+  createdAt: Scalars['DateTime'];
+  dateOfBirth: Scalars['DateTime'];
   email: Scalars['String'];
-  facebookId?: Maybe<Scalars['String']>;
-  firstName: Scalars['String'];
-  googleId?: Maybe<Scalars['String']>;
   id: Scalars['ID'];
-  isActived?: Maybe<Scalars['Boolean']>;
-  isDeleted?: Maybe<Scalars['Boolean']>;
-  lastName: Scalars['String'];
-  package?: Maybe<Package>;
-  packageId?: Maybe<Scalars['ID']>;
-  password?: Maybe<Scalars['String']>;
-  phoneNumber1?: Maybe<Scalars['String']>;
-  phoneNumber2?: Maybe<Scalars['String']>;
-  postalCode?: Maybe<Scalars['String']>;
-  resetPasswordExpire?: Maybe<Scalars['DateTime']>;
-  resetPasswordToken?: Maybe<Scalars['String']>;
-  role?: Maybe<Role>;
-  roleId?: Maybe<Scalars['ID']>;
-  town?: Maybe<Scalars['String']>;
-  updatedAt?: Maybe<Scalars['DateTime']>;
-  userType?: Maybe<UserType>;
-  userTypeId?: Maybe<Scalars['ID']>;
-  verifyEmailCode?: Maybe<Scalars['String']>;
-  verifyEmailCodeExpire?: Maybe<Scalars['DateTime']>;
-};
-
-export type UserType = {
-  createdAt?: Maybe<Scalars['DateTime']>;
-  description?: Maybe<Scalars['String']>;
-  id: Scalars['ID'];
+  identityNumber: Scalars['String'];
+  isActive?: Maybe<Scalars['Boolean']>;
+  location?: Maybe<Location>;
+  locationId?: Maybe<Scalars['Float']>;
   name: Scalars['String'];
-  updatedAt?: Maybe<Scalars['DateTime']>;
+  phoneNumber: Scalars['String'];
+  role: UserRole;
+  room?: Maybe<Room>;
+  roomId?: Maybe<Scalars['Float']>;
+  updatedAt: Scalars['DateTime'];
 };
 
-export type VerifyCodeInputDto = {
-  email: Scalars['String'];
-  verifyCode: Scalars['String'];
+export type UserResponse = IResponse & {
+  message?: Maybe<Scalars['String']>;
+  user?: Maybe<User>;
 };
 
-export const ChangePasswordDocument = gql`
-  mutation changePassword($input: ChangePasswordInputDto!) {
-    changePassword(input: $input) {
+export const CreateUserDocument = gql`
+  mutation createUser($input: CreateUserInput!) {
+    createUser(input: $input) {
       message
+      user {
+        id
+      }
     }
   }
 `;
-export type ChangePasswordMutationFn = Apollo.MutationFunction<
-  ChangePasswordMutation,
-  ChangePasswordMutationVariables
+export type CreateUserMutationFn = Apollo.MutationFunction<
+  CreateUserMutation,
+  CreateUserMutationVariables
 >;
 
 /**
- * __useChangePasswordMutation__
+ * __useCreateUserMutation__
  *
- * To run a mutation, you first call `useChangePasswordMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useChangePasswordMutation` returns a tuple that includes:
+ * To run a mutation, you first call `useCreateUserMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateUserMutation` returns a tuple that includes:
  * - A mutate function that you can call at any time to execute the mutation
  * - An object with fields that represent the current status of the mutation's execution
  *
  * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
  *
  * @example
- * const [changePasswordMutation, { data, loading, error }] = useChangePasswordMutation({
+ * const [createUserMutation, { data, loading, error }] = useCreateUserMutation({
  *   variables: {
  *      input: // value for 'input'
  *   },
  * });
  */
-export function useChangePasswordMutation(
+export function useCreateUserMutation(
   baseOptions?: Apollo.MutationHookOptions<
-    ChangePasswordMutation,
-    ChangePasswordMutationVariables
+    CreateUserMutation,
+    CreateUserMutationVariables
   >,
 ) {
   const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useMutation<
-    ChangePasswordMutation,
-    ChangePasswordMutationVariables
-  >(ChangePasswordDocument, options);
+  return Apollo.useMutation<CreateUserMutation, CreateUserMutationVariables>(
+    CreateUserDocument,
+    options,
+  );
 }
-export type ChangePasswordMutationHookResult = ReturnType<
-  typeof useChangePasswordMutation
+export type CreateUserMutationHookResult = ReturnType<
+  typeof useCreateUserMutation
 >;
-export type ChangePasswordMutationResult =
-  Apollo.MutationResult<ChangePasswordMutation>;
-export type ChangePasswordMutationOptions = Apollo.BaseMutationOptions<
-  ChangePasswordMutation,
-  ChangePasswordMutationVariables
+export type CreateUserMutationResult =
+  Apollo.MutationResult<CreateUserMutation>;
+export type CreateUserMutationOptions = Apollo.BaseMutationOptions<
+  CreateUserMutation,
+  CreateUserMutationVariables
 >;
 export const LoginDocument = gql`
-  mutation login($input: LoginInputDto!) {
+  mutation login($input: RegisterLoginInput!) {
     login(input: $input) {
-      id
-      token
+      message
+      accessToken
       refreshToken
+      user {
+        id
+        email
+        name
+        identityNumber
+        dateOfBirth
+        avatar
+        phoneNumber
+        isActive
+        role
+        locationId
+        location {
+          id
+          name
+        }
+      }
     }
   }
 `;
@@ -404,163 +587,10 @@ export type LoginMutationOptions = Apollo.BaseMutationOptions<
   LoginMutation,
   LoginMutationVariables
 >;
-export const LogoutDocument = gql`
-  mutation logout($input: LogoutInputDto!) {
-    logout(input: $input) {
-      success
-      message
-    }
-  }
-`;
-export type LogoutMutationFn = Apollo.MutationFunction<
-  LogoutMutation,
-  LogoutMutationVariables
->;
-
-/**
- * __useLogoutMutation__
- *
- * To run a mutation, you first call `useLogoutMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useLogoutMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [logoutMutation, { data, loading, error }] = useLogoutMutation({
- *   variables: {
- *      input: // value for 'input'
- *   },
- * });
- */
-export function useLogoutMutation(
-  baseOptions?: Apollo.MutationHookOptions<
-    LogoutMutation,
-    LogoutMutationVariables
-  >,
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useMutation<LogoutMutation, LogoutMutationVariables>(
-    LogoutDocument,
-    options,
-  );
-}
-export type LogoutMutationHookResult = ReturnType<typeof useLogoutMutation>;
-export type LogoutMutationResult = Apollo.MutationResult<LogoutMutation>;
-export type LogoutMutationOptions = Apollo.BaseMutationOptions<
-  LogoutMutation,
-  LogoutMutationVariables
->;
-export const PresignedUrlS3Document = gql`
-  mutation presignedUrlS3($presignedUrlDto: PresignedUrlDto!) {
-    presignedUrlS3(presignedUrlDto: $presignedUrlDto) {
-      pathFile
-      fileType
-      uploadUrl
-    }
-  }
-`;
-export type PresignedUrlS3MutationFn = Apollo.MutationFunction<
-  PresignedUrlS3Mutation,
-  PresignedUrlS3MutationVariables
->;
-
-/**
- * __usePresignedUrlS3Mutation__
- *
- * To run a mutation, you first call `usePresignedUrlS3Mutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `usePresignedUrlS3Mutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [presignedUrlS3Mutation, { data, loading, error }] = usePresignedUrlS3Mutation({
- *   variables: {
- *      presignedUrlDto: // value for 'presignedUrlDto'
- *   },
- * });
- */
-export function usePresignedUrlS3Mutation(
-  baseOptions?: Apollo.MutationHookOptions<
-    PresignedUrlS3Mutation,
-    PresignedUrlS3MutationVariables
-  >,
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useMutation<
-    PresignedUrlS3Mutation,
-    PresignedUrlS3MutationVariables
-  >(PresignedUrlS3Document, options);
-}
-export type PresignedUrlS3MutationHookResult = ReturnType<
-  typeof usePresignedUrlS3Mutation
->;
-export type PresignedUrlS3MutationResult =
-  Apollo.MutationResult<PresignedUrlS3Mutation>;
-export type PresignedUrlS3MutationOptions = Apollo.BaseMutationOptions<
-  PresignedUrlS3Mutation,
-  PresignedUrlS3MutationVariables
->;
-export const RefreshTokenDocument = gql`
-  mutation refreshToken($input: RefreshTokenInputDto!) {
-    refreshToken(input: $input) {
-      token
-    }
-  }
-`;
-export type RefreshTokenMutationFn = Apollo.MutationFunction<
-  RefreshTokenMutation,
-  RefreshTokenMutationVariables
->;
-
-/**
- * __useRefreshTokenMutation__
- *
- * To run a mutation, you first call `useRefreshTokenMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useRefreshTokenMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [refreshTokenMutation, { data, loading, error }] = useRefreshTokenMutation({
- *   variables: {
- *      input: // value for 'input'
- *   },
- * });
- */
-export function useRefreshTokenMutation(
-  baseOptions?: Apollo.MutationHookOptions<
-    RefreshTokenMutation,
-    RefreshTokenMutationVariables
-  >,
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useMutation<
-    RefreshTokenMutation,
-    RefreshTokenMutationVariables
-  >(RefreshTokenDocument, options);
-}
-export type RefreshTokenMutationHookResult = ReturnType<
-  typeof useRefreshTokenMutation
->;
-export type RefreshTokenMutationResult =
-  Apollo.MutationResult<RefreshTokenMutation>;
-export type RefreshTokenMutationOptions = Apollo.BaseMutationOptions<
-  RefreshTokenMutation,
-  RefreshTokenMutationVariables
->;
 export const RegisterDocument = gql`
-  mutation register($input: RegisterInputDto!) {
+  mutation register($input: RegisterLoginInput!) {
     register(input: $input) {
-      email
-      password
-      firstName
-      lastName
+      message
     }
   }
 `;
@@ -604,215 +634,343 @@ export type RegisterMutationOptions = Apollo.BaseMutationOptions<
   RegisterMutation,
   RegisterMutationVariables
 >;
-export const GetCurrentUserDocument = gql`
-  query getCurrentUser {
-    getCurrentUser {
-      id
-      civility
-      firstName
-      lastName
-      email
-      phoneNumber1
-      phoneNumber2
-      dateOfBirth
-      country
-      town
-      address
-      postalCode
-      avatar
-      accountVerified
-      isActived
-      isDeleted
-      roleId
-      createdAt
-      updatedAt
+export const UpdateUserDocument = gql`
+  mutation updateUser($input: UpdateUserInput!) {
+    updateUser(input: $input) {
+      message
+      user {
+        id
+      }
+    }
+  }
+`;
+export type UpdateUserMutationFn = Apollo.MutationFunction<
+  UpdateUserMutation,
+  UpdateUserMutationVariables
+>;
+
+/**
+ * __useUpdateUserMutation__
+ *
+ * To run a mutation, you first call `useUpdateUserMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateUserMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateUserMutation, { data, loading, error }] = useUpdateUserMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useUpdateUserMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    UpdateUserMutation,
+    UpdateUserMutationVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<UpdateUserMutation, UpdateUserMutationVariables>(
+    UpdateUserDocument,
+    options,
+  );
+}
+export type UpdateUserMutationHookResult = ReturnType<
+  typeof useUpdateUserMutation
+>;
+export type UpdateUserMutationResult =
+  Apollo.MutationResult<UpdateUserMutation>;
+export type UpdateUserMutationOptions = Apollo.BaseMutationOptions<
+  UpdateUserMutation,
+  UpdateUserMutationVariables
+>;
+export const ChangeUserStatusDocument = gql`
+  mutation changeUserStatus($input: ChangeUserStatusInput!) {
+    changeUserStatus(input: $input)
+  }
+`;
+export type ChangeUserStatusMutationFn = Apollo.MutationFunction<
+  ChangeUserStatusMutation,
+  ChangeUserStatusMutationVariables
+>;
+
+/**
+ * __useChangeUserStatusMutation__
+ *
+ * To run a mutation, you first call `useChangeUserStatusMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useChangeUserStatusMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [changeUserStatusMutation, { data, loading, error }] = useChangeUserStatusMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useChangeUserStatusMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    ChangeUserStatusMutation,
+    ChangeUserStatusMutationVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<
+    ChangeUserStatusMutation,
+    ChangeUserStatusMutationVariables
+  >(ChangeUserStatusDocument, options);
+}
+export type ChangeUserStatusMutationHookResult = ReturnType<
+  typeof useChangeUserStatusMutation
+>;
+export type ChangeUserStatusMutationResult =
+  Apollo.MutationResult<ChangeUserStatusMutation>;
+export type ChangeUserStatusMutationOptions = Apollo.BaseMutationOptions<
+  ChangeUserStatusMutation,
+  ChangeUserStatusMutationVariables
+>;
+export const GetUsersDocument = gql`
+  query getUsers($input: GetUsersInput!) {
+    getUsers(input: $input) {
+      page
+      total
+      totalPages
+      message
+      items {
+        id
+        name
+        email
+        address
+        phoneNumber
+        dateOfBirth
+        identityNumber
+        avatar
+        isActive
+        room {
+          name
+        }
+        roomId
+        createdAt
+      }
     }
   }
 `;
 
 /**
- * __useGetCurrentUserQuery__
+ * __useGetUsersQuery__
  *
- * To run a query within a React component, call `useGetCurrentUserQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetCurrentUserQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useGetUsersQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetUsersQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useGetCurrentUserQuery({
+ * const { data, loading, error } = useGetUsersQuery({
  *   variables: {
+ *      input: // value for 'input'
  *   },
  * });
  */
-export function useGetCurrentUserQuery(
-  baseOptions?: Apollo.QueryHookOptions<
-    GetCurrentUserQuery,
-    GetCurrentUserQueryVariables
-  >,
+export function useGetUsersQuery(
+  baseOptions: Apollo.QueryHookOptions<GetUsersQuery, GetUsersQueryVariables>,
 ) {
   const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useQuery<GetCurrentUserQuery, GetCurrentUserQueryVariables>(
-    GetCurrentUserDocument,
+  return Apollo.useQuery<GetUsersQuery, GetUsersQueryVariables>(
+    GetUsersDocument,
     options,
   );
 }
-export function useGetCurrentUserLazyQuery(
+export function useGetUsersLazyQuery(
   baseOptions?: Apollo.LazyQueryHookOptions<
-    GetCurrentUserQuery,
-    GetCurrentUserQueryVariables
+    GetUsersQuery,
+    GetUsersQueryVariables
   >,
 ) {
   const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useLazyQuery<GetCurrentUserQuery, GetCurrentUserQueryVariables>(
-    GetCurrentUserDocument,
+  return Apollo.useLazyQuery<GetUsersQuery, GetUsersQueryVariables>(
+    GetUsersDocument,
     options,
   );
 }
-export type GetCurrentUserQueryHookResult = ReturnType<
-  typeof useGetCurrentUserQuery
+export type GetUsersQueryHookResult = ReturnType<typeof useGetUsersQuery>;
+export type GetUsersLazyQueryHookResult = ReturnType<
+  typeof useGetUsersLazyQuery
 >;
-export type GetCurrentUserLazyQueryHookResult = ReturnType<
-  typeof useGetCurrentUserLazyQuery
+export type GetUsersQueryResult = Apollo.QueryResult<
+  GetUsersQuery,
+  GetUsersQueryVariables
 >;
-export type GetCurrentUserQueryResult = Apollo.QueryResult<
-  GetCurrentUserQuery,
-  GetCurrentUserQueryVariables
->;
-export function refetchGetCurrentUserQuery(
-  variables?: GetCurrentUserQueryVariables,
-) {
-  return { query: GetCurrentUserDocument, variables: variables };
+export function refetchGetUsersQuery(variables: GetUsersQueryVariables) {
+  return { query: GetUsersDocument, variables: variables };
 }
-export const TestQueryDocument = gql`
-  query testQuery {
-    testQuery
+export const MeDocument = gql`
+  query me {
+    me {
+      message
+      user {
+        id
+        name
+        email
+        address
+        phoneNumber
+        dateOfBirth
+        role
+        identityNumber
+        avatar
+        isActive
+        locationId
+        location {
+          name
+        }
+        roomId
+        room {
+          name
+        }
+      }
+    }
   }
 `;
 
 /**
- * __useTestQueryQuery__
+ * __useMeQuery__
  *
- * To run a query within a React component, call `useTestQueryQuery` and pass it any options that fit your needs.
- * When your component renders, `useTestQueryQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useMeQuery` and pass it any options that fit your needs.
+ * When your component renders, `useMeQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useTestQueryQuery({
+ * const { data, loading, error } = useMeQuery({
  *   variables: {
  *   },
  * });
  */
-export function useTestQueryQuery(
-  baseOptions?: Apollo.QueryHookOptions<
-    TestQueryQuery,
-    TestQueryQueryVariables
-  >,
+export function useMeQuery(
+  baseOptions?: Apollo.QueryHookOptions<MeQuery, MeQueryVariables>,
 ) {
   const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useQuery<TestQueryQuery, TestQueryQueryVariables>(
-    TestQueryDocument,
-    options,
-  );
+  return Apollo.useQuery<MeQuery, MeQueryVariables>(MeDocument, options);
 }
-export function useTestQueryLazyQuery(
-  baseOptions?: Apollo.LazyQueryHookOptions<
-    TestQueryQuery,
-    TestQueryQueryVariables
-  >,
+export function useMeLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<MeQuery, MeQueryVariables>,
 ) {
   const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useLazyQuery<TestQueryQuery, TestQueryQueryVariables>(
-    TestQueryDocument,
-    options,
-  );
+  return Apollo.useLazyQuery<MeQuery, MeQueryVariables>(MeDocument, options);
 }
-export type TestQueryQueryHookResult = ReturnType<typeof useTestQueryQuery>;
-export type TestQueryLazyQueryHookResult = ReturnType<
-  typeof useTestQueryLazyQuery
->;
-export type TestQueryQueryResult = Apollo.QueryResult<
-  TestQueryQuery,
-  TestQueryQueryVariables
->;
-export function refetchTestQueryQuery(variables?: TestQueryQueryVariables) {
-  return { query: TestQueryDocument, variables: variables };
+export type MeQueryHookResult = ReturnType<typeof useMeQuery>;
+export type MeLazyQueryHookResult = ReturnType<typeof useMeLazyQuery>;
+export type MeQueryResult = Apollo.QueryResult<MeQuery, MeQueryVariables>;
+export function refetchMeQuery(variables?: MeQueryVariables) {
+  return { query: MeDocument, variables: variables };
 }
-export type ChangePasswordMutationVariables = Exact<{
-  input: ChangePasswordInputDto;
+export type CreateUserMutationVariables = Exact<{
+  input: CreateUserInput;
 }>;
 
-export type ChangePasswordMutation = { changePassword: { message: string } };
+export type CreateUserMutation = {
+  createUser: { message?: string | null; user?: { id: string } | null };
+};
 
 export type LoginMutationVariables = Exact<{
-  input: LoginInputDto;
+  input: RegisterLoginInput;
 }>;
 
 export type LoginMutation = {
-  login: { id: string; token: string; refreshToken: string };
+  login: {
+    message?: string | null;
+    accessToken?: string | null;
+    refreshToken?: string | null;
+    user?: {
+      id: string;
+      email: string;
+      name: string;
+      identityNumber: string;
+      dateOfBirth: any;
+      avatar?: string | null;
+      phoneNumber: string;
+      isActive?: boolean | null;
+      role: UserRole;
+      locationId?: number | null;
+      location?: { id: string; name: string } | null;
+    } | null;
+  };
 };
-
-export type LogoutMutationVariables = Exact<{
-  input: LogoutInputDto;
-}>;
-
-export type LogoutMutation = { logout: { success: boolean; message: string } };
-
-export type PresignedUrlS3MutationVariables = Exact<{
-  presignedUrlDto: PresignedUrlDto;
-}>;
-
-export type PresignedUrlS3Mutation = {
-  presignedUrlS3: { pathFile: string; fileType: string; uploadUrl: string };
-};
-
-export type RefreshTokenMutationVariables = Exact<{
-  input: RefreshTokenInputDto;
-}>;
-
-export type RefreshTokenMutation = { refreshToken: { token: string } };
 
 export type RegisterMutationVariables = Exact<{
-  input: RegisterInputDto;
+  input: RegisterLoginInput;
 }>;
 
-export type RegisterMutation = {
-  register: {
-    email: string;
-    password: string;
-    firstName: string;
-    lastName: string;
+export type RegisterMutation = { register: { message?: string | null } };
+
+export type UpdateUserMutationVariables = Exact<{
+  input: UpdateUserInput;
+}>;
+
+export type UpdateUserMutation = {
+  updateUser: { message?: string | null; user?: { id: string } | null };
+};
+
+export type ChangeUserStatusMutationVariables = Exact<{
+  input: ChangeUserStatusInput;
+}>;
+
+export type ChangeUserStatusMutation = { changeUserStatus: string };
+
+export type GetUsersQueryVariables = Exact<{
+  input: GetUsersInput;
+}>;
+
+export type GetUsersQuery = {
+  getUsers: {
+    page?: number | null;
+    total?: number | null;
+    totalPages?: number | null;
+    message?: string | null;
+    items: Array<{
+      id: string;
+      name: string;
+      email: string;
+      address: string;
+      phoneNumber: string;
+      dateOfBirth: any;
+      identityNumber: string;
+      avatar?: string | null;
+      isActive?: boolean | null;
+      roomId?: number | null;
+      createdAt: any;
+      room?: { name?: string | null } | null;
+    }>;
   };
 };
 
-export type GetCurrentUserQueryVariables = Exact<{ [key: string]: never }>;
+export type MeQueryVariables = Exact<{ [key: string]: never }>;
 
-export type GetCurrentUserQuery = {
-  getCurrentUser: {
-    id: string;
-    civility?: string | null;
-    firstName?: string | null;
-    lastName?: string | null;
-    email?: string | null;
-    phoneNumber1?: string | null;
-    phoneNumber2?: string | null;
-    dateOfBirth?: any | null;
-    country?: string | null;
-    town?: string | null;
-    address?: string | null;
-    postalCode?: string | null;
-    avatar?: string | null;
-    accountVerified?: boolean | null;
-    isActived?: boolean | null;
-    isDeleted?: boolean | null;
-    roleId?: string | null;
-    createdAt?: any | null;
-    updatedAt?: any | null;
+export type MeQuery = {
+  me: {
+    message?: string | null;
+    user?: {
+      id: string;
+      name: string;
+      email: string;
+      address: string;
+      phoneNumber: string;
+      dateOfBirth: any;
+      role: UserRole;
+      identityNumber: string;
+      avatar?: string | null;
+      isActive?: boolean | null;
+      locationId?: number | null;
+      roomId?: number | null;
+      location?: { name: string } | null;
+      room?: { name?: string | null } | null;
+    } | null;
   };
 };
-
-export type TestQueryQueryVariables = Exact<{ [key: string]: never }>;
-
-export type TestQueryQuery = { testQuery: string };

@@ -1,19 +1,37 @@
-import { FacebookFilled, GoogleOutlined } from '@ant-design/icons';
 import { Button, Checkbox, Form, Input, Typography } from 'antd';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import useTypeSafeTranslation from '#/shared/hooks/useTypeSafeTranslation';
-import useAuthentication from '#/shared/hooks/useAuthentication';
 import AuthLayout from '#/shared/components/layout/AuthLayout';
-import SocialButton from '#/shared/components/styled/SocialButton';
+import { RegisterLoginInput, useLoginMutation } from '#/generated/schemas';
+import { setToken } from '#/shared/utils/token';
 
 function Login() {
   const { t } = useTypeSafeTranslation();
-  const { handleLogin, loginLoading } = useAuthentication();
+  const navigate = useNavigate();
+  const [login, { loading }] = useLoginMutation({
+    onCompleted(data) {
+      if (data?.login?.accessToken) {
+        setToken(data?.login?.accessToken);
+        navigate('/');
+      }
+    },
+  });
+
+  const onLogin = ({ email, password }: RegisterLoginInput) => {
+    login({
+      variables: {
+        input: {
+          email,
+          password,
+        },
+      },
+    });
+  };
 
   return (
     <AuthLayout>
       <Form
-        onFinish={handleLogin}
+        onFinish={onLogin}
         className="flex flex-col justify-center gap-8 px-20"
         layout="vertical"
         scrollToFirstError
@@ -63,7 +81,7 @@ function Login() {
             <Button
               block
               type="primary"
-              loading={loginLoading}
+              loading={loading}
               className="h-[3rem]"
               htmlType="submit"
             >
@@ -77,22 +95,6 @@ function Login() {
           <p className="mr-4">{t('signIn.noAccount')}</p>
           <Link to="/signup">{t('button.signUp')}</Link>
         </div>
-        <SocialButton
-          icon={<GoogleOutlined />}
-          className="social-btn mt-2 h-[3rem]"
-          htmlType="submit"
-          data-testid="google-btn"
-        >
-          {t('button.loginWithGoogle')}
-        </SocialButton>
-        <SocialButton
-          icon={<FacebookFilled className="grey-secondary-300" />}
-          className="social-btn mt-3.5 h-[3rem]"
-          htmlType="submit"
-          data-testid="facebook-btn"
-        >
-          {t('button.loginWithFacebook')}
-        </SocialButton>
       </div>
     </AuthLayout>
   );

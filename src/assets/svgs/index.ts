@@ -20,3 +20,4 @@ export { ReactComponent as LocationSVG } from './location.svg';
 export { ReactComponent as TagSVG } from './tag.svg';
 export { ReactComponent as TickCircleSVG } from './tick-circle.svg';
 export { ReactComponent as StarFilledSVG } from './star-filled.svg';
+export { ReactComponent as DashboardSVG } from './dashboard.svg';

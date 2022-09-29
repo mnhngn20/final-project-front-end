@@ -1,0 +1,25 @@
+query me {
+  me {
+    message
+    user {
+      id
+      name
+      email
+      address
+      phoneNumber
+      dateOfBirth
+      role
+      identityNumber
+      avatar
+      isActive
+      locationId
+      location {
+        name
+      }
+      roomId
+      room {
+        name
+      }
+    }
+  }
+}

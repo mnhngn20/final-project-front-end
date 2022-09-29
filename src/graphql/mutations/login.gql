@@ -1,7 +1,23 @@
-mutation login($input: LoginInputDto!) {
+mutation login($input: RegisterLoginInput!) {
   login(input: $input) {
-    id
-    token
+    message
+    accessToken
     refreshToken
+    user {
+      id
+      email
+      name
+      identityNumber
+      dateOfBirth
+      avatar
+      phoneNumber
+      isActive
+      role
+      locationId
+      location {
+        id
+        name
+      }
+    }
   }
 }

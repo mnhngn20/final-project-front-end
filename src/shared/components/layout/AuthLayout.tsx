@@ -31,7 +31,7 @@ function AuthLayout({ children }: Props) {
           </Typography>
         </div>
       </div>
-      <div className="col-span-1 flex h-screen flex-col items-center justify-center px-10 py-8 leading-normal lg:col-span-2">
+      <div className="col-span-1 flex h-screen flex-col items-center justify-center overflow-y-auto py-8 leading-normal lg:col-span-2">
         <div className="h-auto w-full">{children}</div>
       </div>
     </div>

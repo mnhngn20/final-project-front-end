@@ -2,6 +2,10 @@ import { loadable } from '#/shared/utils/loadable';
 import { useRoutes } from 'react-router-dom';
 import GuardRoute from './GuardRoute';
 import PrivateRoute from './PrivateRoute';
+import utc from 'dayjs/plugin/utc';
+import dayjs from 'dayjs';
+
+dayjs.extend(utc);
 
 const Login = loadable(import('../pages/Login'));
 const Signup = loadable(import('../pages/Signup'));
