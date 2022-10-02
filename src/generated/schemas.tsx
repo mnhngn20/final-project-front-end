@@ -33,14 +33,14 @@ export type ChangeUserStatusInput = {
 };
 
 export type ContactInformation = {
-  address: Scalars['String'];
+  address?: Maybe<Scalars['String']>;
   createdAt: Scalars['DateTime'];
-  email: Scalars['String'];
+  email?: Maybe<Scalars['String']>;
   id: Scalars['ID'];
   location: Location;
   locationId: Scalars['Float'];
-  name: Scalars['String'];
-  phoneNumber: Scalars['String'];
+  name?: Maybe<Scalars['String']>;
+  phoneNumber?: Maybe<Scalars['String']>;
   updatedAt: Scalars['DateTime'];
 };
 
@@ -100,12 +100,11 @@ export type GetEquipmentsInput = {
 
 export type GetLocationsInput = {
   address?: InputMaybe<Scalars['String']>;
-  keyword?: InputMaybe<Scalars['String']>;
+  isActive?: InputMaybe<Scalars['Boolean']>;
   limit?: InputMaybe<Scalars['Float']>;
   name?: InputMaybe<Scalars['String']>;
   orderBy?: InputMaybe<OrderBy>;
   page?: InputMaybe<Scalars['Float']>;
-  status?: InputMaybe<Scalars['Boolean']>;
 };
 
 export type GetRoomsInput = {
@@ -160,9 +159,10 @@ export type Location = {
   images?: Maybe<Scalars['String']>;
   income: Scalars['Float'];
   isActive: Scalars['Boolean'];
-  lat: Scalars['Float'];
-  long: Scalars['Float'];
+  lat?: Maybe<Scalars['Float']>;
+  long?: Maybe<Scalars['Float']>;
   name: Scalars['String'];
+  numOfFloor?: Maybe<Scalars['Float']>;
   rooms?: Maybe<Array<Room>>;
   thumbnail?: Maybe<Scalars['String']>;
   updatedAt: Scalars['DateTime'];
@@ -363,7 +363,6 @@ export type Room = {
   thumbnail?: Maybe<Scalars['String']>;
   updatedAt: Scalars['DateTime'];
   user?: Maybe<User>;
-  userId?: Maybe<Scalars['Float']>;
 };
 
 export type RoomListResponse = ListResponse & {
@@ -396,6 +395,7 @@ export type UpdateLocationStatusInput = {
 };
 
 export type UpdateMeInput = {
+  address?: InputMaybe<Scalars['String']>;
   avatar?: InputMaybe<Scalars['String']>;
   dateOfBirth?: InputMaybe<Scalars['DateTime']>;
   identityNumber?: InputMaybe<Scalars['String']>;
@@ -404,6 +404,7 @@ export type UpdateMeInput = {
 };
 
 export type UpdateUserInput = {
+  address?: InputMaybe<Scalars['String']>;
   avatar?: InputMaybe<Scalars['String']>;
   dateOfBirth?: InputMaybe<Scalars['DateTime']>;
   id: Scalars['Float'];
@@ -432,6 +433,7 @@ export type UpsertLocationInput = {
   lat?: InputMaybe<Scalars['Float']>;
   long?: InputMaybe<Scalars['Float']>;
   name?: InputMaybe<Scalars['String']>;
+  numOfFloor: Scalars['Float'];
   thumbnail?: InputMaybe<Scalars['String']>;
 };
 
@@ -634,6 +636,56 @@ export type RegisterMutationOptions = Apollo.BaseMutationOptions<
   RegisterMutation,
   RegisterMutationVariables
 >;
+export const UpdateMeDocument = gql`
+  mutation updateMe($input: UpdateMeInput!) {
+    updateMe(input: $input) {
+      message
+      user {
+        id
+      }
+    }
+  }
+`;
+export type UpdateMeMutationFn = Apollo.MutationFunction<
+  UpdateMeMutation,
+  UpdateMeMutationVariables
+>;
+
+/**
+ * __useUpdateMeMutation__
+ *
+ * To run a mutation, you first call `useUpdateMeMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateMeMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateMeMutation, { data, loading, error }] = useUpdateMeMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useUpdateMeMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    UpdateMeMutation,
+    UpdateMeMutationVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<UpdateMeMutation, UpdateMeMutationVariables>(
+    UpdateMeDocument,
+    options,
+  );
+}
+export type UpdateMeMutationHookResult = ReturnType<typeof useUpdateMeMutation>;
+export type UpdateMeMutationResult = Apollo.MutationResult<UpdateMeMutation>;
+export type UpdateMeMutationOptions = Apollo.BaseMutationOptions<
+  UpdateMeMutation,
+  UpdateMeMutationVariables
+>;
 export const UpdateUserDocument = gql`
   mutation updateUser($input: UpdateUserInput!) {
     updateUser(input: $input) {
@@ -752,6 +804,11 @@ export const GetUsersDocument = gql`
         identityNumber
         avatar
         isActive
+        role
+        locationId
+        location {
+          id
+        }
         room {
           name
         }
@@ -910,6 +967,14 @@ export type RegisterMutationVariables = Exact<{
 
 export type RegisterMutation = { register: { message?: string | null } };
 
+export type UpdateMeMutationVariables = Exact<{
+  input: UpdateMeInput;
+}>;
+
+export type UpdateMeMutation = {
+  updateMe: { message?: string | null; user?: { id: string } | null };
+};
+
 export type UpdateUserMutationVariables = Exact<{
   input: UpdateUserInput;
 }>;
@@ -944,8 +1009,11 @@ export type GetUsersQuery = {
       identityNumber: string;
       avatar?: string | null;
       isActive?: boolean | null;
+      role: UserRole;
+      locationId?: number | null;
       roomId?: number | null;
       createdAt: any;
+      location?: { id: string } | null;
       room?: { name?: string | null } | null;
     }>;
   };

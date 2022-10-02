@@ -1,15 +1,14 @@
-import { DatePicker, Form, Input } from 'antd';
+import { Form, Input } from 'antd';
 import UploadAvatar from '#/shared/components/commons/UploadAvatar';
-import { User, UserRole } from '#/generated/schemas';
-import UserRoleSelector from '#/shared/components/selectors/UserRoleSelector';
+import { User } from '#/generated/schemas';
 import { validateRegex } from '#/shared/utils/validation';
+import { DatePicker } from '#/shared/components/commons/DatePicker';
 
 interface Props {
   initialValues?: User;
-  isSuperAdmin: boolean;
 }
 
-function UserForm({ initialValues, isSuperAdmin }: Props) {
+function UserForm({ initialValues }: Props) {
   return (
     <>
       <div className="mb-8 flex justify-center">
@@ -39,20 +38,39 @@ function UserForm({ initialValues, isSuperAdmin }: Props) {
           >
             <Input type="password" placeholder="Enter user password" />
           </Form.Item>
+          <Form.Item
+            name="confirmPassword"
+            label="Confirm Password"
+            hidden={!!initialValues?.id}
+            rules={[
+              { required: true },
+              ({ getFieldValue }) => ({
+                validator(_, value) {
+                  if (!value || getFieldValue('password') === value) {
+                    return Promise.resolve();
+                  }
+                  return Promise.reject(
+                    new Error('Confirm password does not match!'),
+                  );
+                },
+              }),
+            ]}
+          >
+            <Input type="password" placeholder="Confirm your password" />
+          </Form.Item>
         </>
       )}
-      <Form.Item name="fullName" label="Full Name">
+      <Form.Item name="name" label="Full Name">
         <Input type="text" placeholder="Enter user name" />
       </Form.Item>
       <Form.Item name="identityNumber" label="Government ID">
         <Input placeholder="Enter user identity number" />
       </Form.Item>
-      <Form.Item name="dob" label="Date of Birth">
+      <Form.Item name="dateOfBirth" label="Date of Birth">
         <DatePicker
           className="w-full"
           placeholder="Choose user birthday"
           format="DD/MM/YYYY"
-          disabledDate={d => !d || d.isAfter()}
         />
       </Form.Item>
       <Form.Item
@@ -62,14 +80,8 @@ function UserForm({ initialValues, isSuperAdmin }: Props) {
       >
         <Input type="text" placeholder="Enter user phone number" />
       </Form.Item>
-      <Form.Item name="role" label="User role" hidden={!isSuperAdmin}>
-        <UserRoleSelector
-          placeholder="Select user role"
-          disabled={
-            initialValues?.role === UserRole.SuperAdmin ||
-            initialValues?.role === UserRole.Customer
-          }
-        />
+      <Form.Item name="address" label="Address">
+        <Input type="text" placeholder="Enter user address" />
       </Form.Item>
     </>
   );

@@ -1,56 +1,55 @@
-import { Button, Card, Col, Row, Typography } from 'antd';
-import React, { useState } from 'react';
+import { Button, Typography } from 'antd';
+import { useState } from 'react';
 import ChangePassword from '../ChangePassword';
 import ProfileHeader from './ProfileHeader';
 import ProfileContent from './ProfileContent';
 import useTypeSafeTranslation from '#/shared/hooks/useTypeSafeTranslation';
-import { User } from '#/generated/schemas';
-import { DeepPartial } from '#/shared/utils/type';
+import { EditFilled } from '@ant-design/icons';
+import UpdateProfileFormModal from './UpdateProfileModal';
 
 function ProfileDetail() {
   const { t } = useTypeSafeTranslation();
-  const [visible, setVisible] = useState<boolean>(false);
-
-  const showEditForm = () => {
-    //
-  };
+  const [changePasswordModalVisible, setChangePasswordModalVisible] =
+    useState<boolean>(false);
+  const [updateProfileModalVisible, setUpdateProfileModalVisible] =
+    useState<boolean>(false);
 
   return (
-    <>
-      <Card className="rounded-xl py-2 px-6">
-        <Row gutter={[24, 24]}>
-          <Col xs={8} lg={6} className="flex justify-center">
-            <ProfileHeader
-            // avatar={userData?.avatar}
-            // firstName={userData?.firstName}
-            // lastName={userData?.lastName}
-            />
-          </Col>
-          <Col xs={16} lg={16} className="pl-16">
-            <ProfileContent
-            // email={userData?.email}
-            // phoneNumber1={userData?.phoneNumber1}
-            // phoneNumber2={userData?.phoneNumber2}
-            // address={userData?.address}
-            // createdAt={userData?.createdAt}
-            // updatedAt={userData?.updatedAt}
-            />
-          </Col>
-          <Col xs={16} lg={2}>
-            <Typography className="float-right mr-[-1.25rem]">
-              <Button onClick={showEditForm} />
-            </Typography>
-          </Col>
-        </Row>
-      </Card>
+    <div>
+      <div className="relative rounded-xl bg-[white] shadow-card">
+        <Typography className="absolute top-0 right-0 m-4">
+          <Button
+            onClick={() => setUpdateProfileModalVisible(true)}
+            type="primary"
+            icon={<EditFilled />}
+          >
+            Edit Profile
+          </Button>
+        </Typography>
+        <div className="grid grid-cols-12 gap-4">
+          <div className="col-span-4 xlg:col-span-12">
+            <ProfileHeader />
+          </div>
+          <div className="col-span-8 xlg:col-span-12">
+            <ProfileContent />
+          </div>
+        </div>
+      </div>
       <Button
-        className="mt-4 border-primary-color font-medium text-primary-color hover:bg-primary-color hover:text-grey-light"
-        onClick={() => setVisible(true)}
+        className="mt-4"
+        onClick={() => setChangePasswordModalVisible(true)}
       >
         {t('changePassword.title')}
       </Button>
-      <ChangePassword setVisible={setVisible} visible={visible} />
-    </>
+      <UpdateProfileFormModal
+        visible={updateProfileModalVisible}
+        setVisible={setUpdateProfileModalVisible}
+      />
+      <ChangePassword
+        setVisible={setChangePasswordModalVisible}
+        visible={changePasswordModalVisible}
+      />
+    </div>
   );
 }
 

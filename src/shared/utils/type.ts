@@ -17,11 +17,6 @@ export interface NavItem {
   icon?: JSX.Element;
 }
 
-export enum Platform {
-  Admin = 'admin',
-  Client = 'client',
-}
-
 export type DeepPartial<T> = T extends Primitive
   ? T
   : { [P in keyof T]?: DeepPartial<T[P]> };

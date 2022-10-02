@@ -2,7 +2,6 @@
 import { Button, Col, Drawer, Form, FormInstance, Row } from 'antd';
 import { Store } from 'rc-field-form/es/interface';
 import React, { forwardRef, Ref, cloneElement } from 'react';
-import { useTranslation } from 'react-i18next';
 
 export interface FormModalProps<UpsertDto, Values = Record<string, unknown>> {
   onSubmit: (values: UpsertDto) => void;
@@ -31,7 +30,6 @@ export const FormModal = forwardRef(
     ref: Ref<FormModalRef>,
   ) => {
     const [form] = Form.useForm();
-    const { t } = useTranslation();
 
     const afterVisibleChange = (value: boolean) => {
       if (!value) form.resetFields();
@@ -63,8 +61,8 @@ export const FormModal = forwardRef(
           <Row gutter={12} className="mt-12">
             <Col xs={12}>
               <Form.Item>
-                <Button type="ghost" onClick={onClose} block size="large">
-                  {t('button.cancel')}
+                <Button onClick={onClose} block size="large">
+                  Cancel
                 </Button>
               </Form.Item>
             </Col>

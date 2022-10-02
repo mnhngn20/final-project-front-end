@@ -1,20 +1,24 @@
-import { Button, Col, Form, Row, Space } from 'antd';
-import { PropsWithChildren } from 'react';
+import { Col, Form, FormProps, Row, Space } from 'antd';
+import { Dispatch, PropsWithChildren, SetStateAction } from 'react';
+import { BroomSVG, SearchSVG } from '#/assets/svgs';
+import ButtonBrown from '../styled/ButtonBrown';
 
 interface Props<Type> {
   onFilter: (values: Partial<Type>) => void;
-  extraButton?: JSX.Element;
+  setFilterBusinessTypes?: Dispatch<SetStateAction<string>>;
 }
 
 function FilterWrapper<Type>({
   onFilter,
   children,
-  extraButton,
-}: PropsWithChildren<Props<Type>>) {
+  setFilterBusinessTypes,
+  ...props
+}: PropsWithChildren<Props<Type>> & FormProps) {
   const [form] = Form.useForm();
   const onReset = () => {
     form.resetFields();
     onFilter({});
+    setFilterBusinessTypes && setFilterBusinessTypes('');
   };
 
   return (
@@ -22,24 +26,35 @@ function FilterWrapper<Type>({
       className="flex items-center justify-between"
       form={form}
       onFinish={onFilter}
+      {...props}
     >
       <Row className="w-full">
-        <Col xs={24} md={24} xl={17}>
+        <Col xs={24} md={24} lg={16} xl={17} xxl={20}>
           <Row align="middle" gutter={10}>
             {children}
           </Row>
         </Col>
-        <Col xs={24} md={24} xl={7}>
-          <Space size="middle" className="flex justify-end">
+        <Col xs={24} md={24} lg={8} xl={7} xxl={4}>
+          <Space size={4} className="flex justify-end gap-2">
             <Form.Item>
-              <Button type="primary" htmlType="submit">
-                Filter
-              </Button>
+              <ButtonBrown
+                htmlType="submit"
+                type="primary"
+                icon={<SearchSVG width={16} height={16} className="anticon" />}
+                className="px-3"
+              >
+                Search
+              </ButtonBrown>
             </Form.Item>
             <Form.Item>
-              <Button onClick={onReset}>Clear Filter</Button>
+              <ButtonBrown
+                onClick={onReset}
+                icon={<BroomSVG width={16} height={16} className="anticon" />}
+                className="px-3"
+              >
+                Clear
+              </ButtonBrown>
             </Form.Item>
-            {extraButton && <Form.Item>{extraButton}</Form.Item>}
           </Space>
         </Col>
       </Row>

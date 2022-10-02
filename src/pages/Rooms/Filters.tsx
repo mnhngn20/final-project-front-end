@@ -5,15 +5,11 @@ import FilterWrapper from '#/shared/components/commons/FilterWrapper';
 
 interface Props {
   onFilter: (values: GetUsersFilter) => void;
-  extraButton?: JSX.Element;
 }
 
-function Filter({ onFilter, extraButton }: Props) {
+function Filter({ onFilter }: Props) {
   return (
-    <FilterWrapper<GetUsersFilter>
-      onFilter={onFilter}
-      extraButton={extraButton}
-    >
+    <FilterWrapper<GetUsersFilter> onFilter={onFilter}>
       <Col xl={6} xs={12}>
         <Form.Item name="email">
           <Input placeholder="Search Email" />

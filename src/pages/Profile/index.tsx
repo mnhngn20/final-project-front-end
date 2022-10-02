@@ -1,18 +1,11 @@
-import { PageContainer } from '@ant-design/pro-layout';
 import ProfileDetail from './ProfileDetail';
-import useTypeSafeTranslation from '#/shared/hooks/useTypeSafeTranslation';
+import PageLayout from '#/shared/components/layout/PageLayout';
 
 function ProfileInformation() {
-  const { t } = useTypeSafeTranslation();
-
   return (
-    <PageContainer
-      header={{
-        title: t('header.profile'),
-      }}
-    >
+    <PageLayout title="User Profile">
       <ProfileDetail />
-    </PageContainer>
+    </PageLayout>
   );
 }
 

@@ -3,9 +3,9 @@ module.exports = {
   important: true,
   theme: {
     colors: {
-      'primary-color': '#b94676',
+      'primary-color': '#6b28aa',
       'primary-color-hover': 'rgba(185, 70, 118, 0.9)',
-      'secondary-color': '#765dd1',
+      'secondary-color': '#c63ebe',
       'grey-text': '#23262F',
       'grey-primary': '#F7F8F9',
       'grey-secondary-100': '#c5c7cd',
@@ -22,7 +22,7 @@ module.exports = {
       woodsmoke: '#0B0C0F',
       info: '#5487f5',
       'info-light': '#e5edfe',
-      success: '#e5edfe',
+      success: '#00c48c',
       'success-light': '#d9f6ee',
       'success-light-hover': 'rgba(217, 246, 238, 0.7)',
       'success-heavy': '#00c48c',
@@ -50,7 +50,8 @@ module.exports = {
     },
     screens: {
       '2xl': { max: '1600px' },
-      xl: { max: '1200px' },
+      xl: { max: '1300px' },
+      xlg: { max: '1250px' },
       lg: { max: '992px' },
       xmd: { max: '960px' },
       md: { max: '768px' },

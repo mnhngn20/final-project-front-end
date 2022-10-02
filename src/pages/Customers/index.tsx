@@ -1,18 +1,10 @@
-import useTypeSafeTranslation from '#/shared/hooks/useTypeSafeTranslation';
-import { PageContainer } from '@ant-design/pro-layout';
+import PageLayout from '#/shared/components/layout/PageLayout';
 import List from './List';
 
 export default function Customers() {
-  const { t } = useTypeSafeTranslation();
-
   return (
-    <PageContainer
-      fixedHeader
-      header={{
-        title: 'Manage Customers',
-      }}
-    >
+    <PageLayout title="Manage Customer">
       <List />
-    </PageContainer>
+    </PageLayout>
   );
 }

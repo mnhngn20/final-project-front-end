@@ -5,6 +5,10 @@ export const sum = (a: number, b: number) => a + b;
 export const zeroPad = (num: number, places = 2) =>
   String(num).padStart(places, '0');
 
+export const scrollToTop = () => {
+  window.scrollTo(0, 0);
+};
+
 export const findSection = (key: string, sections: Section[]) =>
   sections?.find(section => section?.id === key);
 

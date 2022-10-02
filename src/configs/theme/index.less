@@ -1,7 +1,7 @@
 @import '~antd/es/style/themes/default.less';
 
-@primary-color: #b94676;
-@secondary-color: #765dd1;
+@primary-color: #6b28aa;
+@secondary-color: #c63ebe;
 @scroll-bar: #d9dce4;
 @grey-secondary-100: #c5c7cd;
 @grey-secondary-200: #aaafbb;
@@ -133,9 +133,14 @@ div.ant-spin-spinning {
   &-default {
     border-color: @primary-color !important;
     color: @primary-color !important;
-
     span {
       color: @primary-color;
+    }
+  }
+  &-ghost {
+    border: 1px dashed @grey-secondary-300 !important;
+    &:hover {
+      border: 1px solid @primary-color !important;
     }
   }
 }
@@ -167,7 +172,6 @@ div.ant-spin-spinning {
   &-tbody {
     tr > td {
       border: none;
-      vertical-align: baseline;
     }
   }
 }
@@ -185,6 +189,8 @@ div.ant-spin-spinning {
   }
 }
 .ant-layout {
+  background-color: @layout-content !important;
+
   &-header {
     background: white !important;
   }
@@ -200,6 +206,15 @@ div.ant-spin-spinning {
         }
       }
     }
+  }
+}
+
+.ant-image {
+  &-mask {
+    border-radius: 8px;
+  }
+  img {
+    border-radius: 8px;
   }
 }
 

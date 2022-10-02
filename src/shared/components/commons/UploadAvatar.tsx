@@ -1,4 +1,4 @@
-import { AvatarProps, Slider, Upload } from 'antd';
+import { AvatarProps, Upload } from 'antd';
 import ImgCrop from 'antd-img-crop';
 import { useEffect, useState } from 'react';
 import { RcFile } from 'antd/es/upload';
@@ -7,12 +7,14 @@ import 'antd/es/modal/style';
 import 'antd/es/slider/style';
 import uploadCloudinary from '#/shared/utils/uploadCloudinary';
 import { showError } from '#/shared/utils/notification';
+import { LoadingOutlined } from '@ant-design/icons';
 
 interface Props {
   onChange?: (url: string) => void;
   disabled?: boolean;
   isPersonAvatar?: boolean;
   src?: string | null;
+  size?: string | number;
 }
 
 function UploadAvatar({
@@ -24,7 +26,7 @@ function UploadAvatar({
   ...rest
 }: Props & AvatarProps) {
   const [imageURL, setImageURL] = useState(src);
-  const [progress, setProgress] = useState(0);
+  const [loading, setLoading] = useState(false);
   useEffect(() => {
     setImageURL(src as string);
   }, [src]);
@@ -35,17 +37,17 @@ function UploadAvatar({
     file: string | Blob | RcFile | File;
   }) => {
     try {
-      setProgress(0);
+      setLoading(true);
       const res = await uploadCloudinary({
         file: file as Blob,
-        onUploadProgress: (percent: number) => setProgress(percent),
       });
       const url = res.data.url;
       onChange?.(url);
       setImageURL(url);
-      setProgress(100);
     } catch (error) {
       showError(error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -62,12 +64,16 @@ function UploadAvatar({
           showInfo: false,
         }}
       >
-        {progress !== 0 && progress !== 100 ? (
-          <>
-            <Avatar size={size} className="flex items-center justify-center">
-              <Slider value={progress} className="w-20" />
-            </Avatar>
-          </>
+        {loading ? (
+          <div
+            style={{
+              width: size,
+              height: size,
+            }}
+            className="flex items-center justify-center rounded-full border-[1px] border-grey-secondary-300"
+          >
+            <LoadingOutlined />
+          </div>
         ) : (
           <Avatar
             isPersonAvatar={isPersonAvatar}

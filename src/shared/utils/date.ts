@@ -11,7 +11,7 @@ export const formatDate = (
   date?: dayjs.ConfigType,
   formatter = 'DD/MM/YYYY',
 ) => {
-  return date ? dayjs(date).format(formatter) : '';
+  return date ? dayjs(date).format(formatter) : 'N/A';
 };
 
 export const formatTimestampToUnix = (

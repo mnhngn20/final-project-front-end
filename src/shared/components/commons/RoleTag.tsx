@@ -1,19 +1,28 @@
 import { Tag } from 'antd';
-import { Maybe, UserRole } from '#/generated/schemas';
+import { UserRole } from '#/generated/schemas';
 
 interface Props {
-  role?: Maybe<UserRole>;
+  role?: UserRole;
 }
 
-function RoleTag({ role }: Props) {
-  const roleColor = (() => {
-    if (role === UserRole.SuperAdmin) return 'var(--info-color)';
-    if (role === UserRole.Admin) return 'var(--error-color)';
-    if (role === UserRole.Customer) return 'var(--grey-color)';
-  })();
+const getRoleColor = (role?: UserRole) => {
+  switch (role) {
+    case UserRole.SuperAdmin:
+      return 'bg-info';
+    case UserRole.Admin:
+      return 'bg-alert';
+    case UserRole.Customer:
+      return 'bg-success';
+  }
+};
 
+function RoleTag({ role }: Props) {
   return (
-    <Tag color={roleColor} className="r-40">
+    <Tag
+      className={`r-40 border-none py-1 px-3 text-[white] ${getRoleColor(
+        role,
+      )}`}
+    >
       {role}
     </Tag>
   );
