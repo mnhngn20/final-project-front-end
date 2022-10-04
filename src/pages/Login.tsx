@@ -4,6 +4,7 @@ import useTypeSafeTranslation from '#/shared/hooks/useTypeSafeTranslation';
 import AuthLayout from '#/shared/components/layout/AuthLayout';
 import { RegisterLoginInput, useLoginMutation } from '#/generated/schemas';
 import { setToken } from '#/shared/utils/token';
+import { showError } from '#/shared/utils/notification';
 
 function Login() {
   const { t } = useTypeSafeTranslation();
@@ -15,6 +16,7 @@ function Login() {
         navigate('/');
       }
     },
+    onError: showError,
   });
 
   const onLogin = ({ email, password }: RegisterLoginInput) => {

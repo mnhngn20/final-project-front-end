@@ -2,6 +2,8 @@ import { TranslationKeys } from '#/generated/translationKeys';
 import FuneralImage from '#/assets/images/funeral.jpg';
 import PersonalInformation from '#/pages/FuneralPlan/PersonalInformation';
 
+export const IMAGE_TYPES = 'image/jpeg,image/png,image/jpg';
+
 export interface Section {
   title: TranslationKeys;
   id: string;

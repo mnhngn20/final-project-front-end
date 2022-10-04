@@ -215,7 +215,7 @@ function List() {
           };
           return (
             <div className="flex items-center justify-center gap-4 text-base text-primary-color">
-              <Link to={`/users/${record?.id}`}>
+              <Link to={`/customers/${record?.id}`}>
                 <EyeFilled />
               </Link>
               <Button type="link" onClick={onEdit}>

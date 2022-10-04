@@ -448,18 +448,18 @@ export type UpsertRoomInput = {
 };
 
 export type User = {
-  address: Scalars['String'];
+  address?: Maybe<Scalars['String']>;
   avatar?: Maybe<Scalars['String']>;
   createdAt: Scalars['DateTime'];
   dateOfBirth: Scalars['DateTime'];
   email: Scalars['String'];
   id: Scalars['ID'];
-  identityNumber: Scalars['String'];
+  identityNumber?: Maybe<Scalars['String']>;
   isActive?: Maybe<Scalars['Boolean']>;
   location?: Maybe<Location>;
   locationId?: Maybe<Scalars['Float']>;
   name: Scalars['String'];
-  phoneNumber: Scalars['String'];
+  phoneNumber?: Maybe<Scalars['String']>;
   role: UserRole;
   room?: Maybe<Room>;
   roomId?: Maybe<Scalars['Float']>;
@@ -787,6 +787,81 @@ export type ChangeUserStatusMutationOptions = Apollo.BaseMutationOptions<
   ChangeUserStatusMutation,
   ChangeUserStatusMutationVariables
 >;
+export const GetUserDocument = gql`
+  query getUser($id: Float!) {
+    getUser(id: $id) {
+      message
+      user {
+        id
+        name
+        email
+        address
+        phoneNumber
+        dateOfBirth
+        identityNumber
+        avatar
+        isActive
+        role
+        locationId
+        location {
+          id
+        }
+        room {
+          name
+        }
+        roomId
+        createdAt
+      }
+    }
+  }
+`;
+
+/**
+ * __useGetUserQuery__
+ *
+ * To run a query within a React component, call `useGetUserQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetUserQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetUserQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useGetUserQuery(
+  baseOptions: Apollo.QueryHookOptions<GetUserQuery, GetUserQueryVariables>,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<GetUserQuery, GetUserQueryVariables>(
+    GetUserDocument,
+    options,
+  );
+}
+export function useGetUserLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    GetUserQuery,
+    GetUserQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<GetUserQuery, GetUserQueryVariables>(
+    GetUserDocument,
+    options,
+  );
+}
+export type GetUserQueryHookResult = ReturnType<typeof useGetUserQuery>;
+export type GetUserLazyQueryHookResult = ReturnType<typeof useGetUserLazyQuery>;
+export type GetUserQueryResult = Apollo.QueryResult<
+  GetUserQuery,
+  GetUserQueryVariables
+>;
+export function refetchGetUserQuery(variables: GetUserQueryVariables) {
+  return { query: GetUserDocument, variables: variables };
+}
 export const GetUsersDocument = gql`
   query getUsers($input: GetUsersInput!) {
     getUsers(input: $input) {
@@ -949,10 +1024,10 @@ export type LoginMutation = {
       id: string;
       email: string;
       name: string;
-      identityNumber: string;
+      identityNumber?: string | null;
       dateOfBirth: any;
       avatar?: string | null;
-      phoneNumber: string;
+      phoneNumber?: string | null;
       isActive?: boolean | null;
       role: UserRole;
       locationId?: number | null;
@@ -989,6 +1064,33 @@ export type ChangeUserStatusMutationVariables = Exact<{
 
 export type ChangeUserStatusMutation = { changeUserStatus: string };
 
+export type GetUserQueryVariables = Exact<{
+  id: Scalars['Float'];
+}>;
+
+export type GetUserQuery = {
+  getUser: {
+    message?: string | null;
+    user?: {
+      id: string;
+      name: string;
+      email: string;
+      address?: string | null;
+      phoneNumber?: string | null;
+      dateOfBirth: any;
+      identityNumber?: string | null;
+      avatar?: string | null;
+      isActive?: boolean | null;
+      role: UserRole;
+      locationId?: number | null;
+      roomId?: number | null;
+      createdAt: any;
+      location?: { id: string } | null;
+      room?: { name?: string | null } | null;
+    } | null;
+  };
+};
+
 export type GetUsersQueryVariables = Exact<{
   input: GetUsersInput;
 }>;
@@ -1003,10 +1105,10 @@ export type GetUsersQuery = {
       id: string;
       name: string;
       email: string;
-      address: string;
-      phoneNumber: string;
+      address?: string | null;
+      phoneNumber?: string | null;
       dateOfBirth: any;
-      identityNumber: string;
+      identityNumber?: string | null;
       avatar?: string | null;
       isActive?: boolean | null;
       role: UserRole;
@@ -1028,11 +1130,11 @@ export type MeQuery = {
       id: string;
       name: string;
       email: string;
-      address: string;
-      phoneNumber: string;
+      address?: string | null;
+      phoneNumber?: string | null;
       dateOfBirth: any;
       role: UserRole;
-      identityNumber: string;
+      identityNumber?: string | null;
       avatar?: string | null;
       isActive?: boolean | null;
       locationId?: number | null;

@@ -1,5 +1,5 @@
 import { Typography } from 'antd';
-import ProfileItem from './ProfileItem';
+import ProfileItem from '../../shared/components/commons/DetailItem';
 import {
   BirthdaySVG,
   CalendarSVG,

@@ -1,0 +1,26 @@
+query getUser($id: Float!) {
+  getUser(id: $id) {
+    message
+    user {
+      id
+      name
+      email
+      address
+      phoneNumber
+      dateOfBirth
+      identityNumber
+      avatar
+      isActive
+      role
+      locationId
+      location {
+        id
+      }
+      room {
+        name
+      }
+      roomId
+      createdAt
+    }
+  }
+}
