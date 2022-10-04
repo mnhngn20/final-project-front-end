@@ -1,0 +1,8 @@
+mutation upsertRoom($input: UpsertRoomInput!) {
+  upsertRoom(input: $input) {
+    message
+    room {
+      id
+    }
+  }
+}

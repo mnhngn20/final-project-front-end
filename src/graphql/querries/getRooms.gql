@@ -1,0 +1,27 @@
+query getRooms($input: GetRoomsInput!) {
+  getRooms(input: $input) {
+    page
+    total
+    totalPages
+    message
+    items {
+      id
+      name
+      locationId
+      description
+      images
+      thumbnail
+      status
+      basePrice
+      locationId
+      floor
+      user {
+        name
+        email
+        avatar
+      }
+      createdAt
+      updatedAt
+    }
+  }
+}

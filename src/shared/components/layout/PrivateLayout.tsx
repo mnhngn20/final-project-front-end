@@ -45,7 +45,7 @@ function PrivateLayout({
       },
       {
         icon: <Icon component={HouseSVG} />,
-        name: 'Room',
+        name: 'Rooms',
         path: '/rooms',
       },
     ],

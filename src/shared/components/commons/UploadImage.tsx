@@ -12,7 +12,7 @@ interface Props {
   onChange?: (url?: string) => void;
 }
 
-function UploadImages({
+function UploadImage({
   src = '',
   onChange,
   ...restProps
@@ -109,4 +109,4 @@ function UploadImages({
   );
 }
 
-export default UploadImages;
+export default UploadImage;

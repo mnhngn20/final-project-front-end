@@ -1,28 +1,38 @@
-import { Form, Input, Col } from 'antd';
-import { GetUsersFilter } from './List';
-import StatusSelector from '#/shared/components/selectors/StatusSelector';
+import { Form, Input, Col, InputNumber } from 'antd';
+import { GetRoomsFilter } from './List';
 import FilterWrapper from '#/shared/components/commons/FilterWrapper';
+import RoomStatusSelector from '#/shared/components/selectors/RoomStatusSelector';
 
 interface Props {
-  onFilter: (values: GetUsersFilter) => void;
+  onFilter: (values: GetRoomsFilter) => void;
 }
 
 function Filter({ onFilter }: Props) {
   return (
-    <FilterWrapper<GetUsersFilter> onFilter={onFilter}>
+    <FilterWrapper<GetRoomsFilter> onFilter={onFilter}>
       <Col xl={6} xs={12}>
-        <Form.Item name="email">
-          <Input placeholder="Search Email" />
+        <Form.Item name="name">
+          <Input placeholder="Search room name" />
         </Form.Item>
       </Col>
       <Col xl={6} xs={12}>
-        <Form.Item name="fullName">
-          <Input placeholder="Search Name" />
+        <Form.Item name="minBasePrice">
+          <InputNumber placeholder="Search by min price" className="w-full" />
         </Form.Item>
       </Col>
       <Col xl={6} xs={12}>
-        <Form.Item name="isActive">
-          <StatusSelector placeholder="Filter by status" />
+        <Form.Item name="maxBasePrice">
+          <Input placeholder="Search by max price" className="w-full" />
+        </Form.Item>
+      </Col>
+      <Col xl={6} xs={12}>
+        <Form.Item name="floor">
+          <InputNumber className="w-full" placeholder="Search by floor" />
+        </Form.Item>
+      </Col>
+      <Col xl={6} xs={12}>
+        <Form.Item name="status">
+          <RoomStatusSelector placeholder="Filter by room status" />
         </Form.Item>
       </Col>
     </FilterWrapper>

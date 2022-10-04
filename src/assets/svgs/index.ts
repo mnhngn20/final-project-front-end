@@ -1,4 +1,5 @@
-export { ReactComponent as BackIcon } from './backIc.svg';
+export { ReactComponent as LeftSVG } from './left.svg';
+export { ReactComponent as RightSVG } from './right.svg';
 export { ReactComponent as CustomerSVG } from './customer.svg';
 export { ReactComponent as ArrowDownSVG } from './arrow-down.svg';
 export { ReactComponent as MessageSVG } from './message.svg';
@@ -31,3 +32,5 @@ export { ReactComponent as RoomSVG } from './room.svg';
 export { ReactComponent as NoteSVG } from './note.svg';
 export { ReactComponent as UserOutlineSVG } from './user-outline.svg';
 export { ReactComponent as EyeSVG } from './eye.svg';
+export { ReactComponent as DevicesOutlineSVG } from './devices-outline.svg';
+export { ReactComponent as SquareDollarOutlineSVG } from './square-dollar-outline.svg';

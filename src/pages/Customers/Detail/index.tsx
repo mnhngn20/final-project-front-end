@@ -74,7 +74,7 @@ function Detail() {
       <FormModal<UpdateUserInput>
         loading={updateUserLoading}
         onSubmit={onSubmit}
-        name="Location"
+        name="User"
         onClose={() => setEditModalVisible(false)}
         selectedItem={
           editModalVisible

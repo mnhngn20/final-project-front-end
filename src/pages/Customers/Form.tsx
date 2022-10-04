@@ -12,7 +12,7 @@ function UserForm({ initialValues }: Props) {
   return (
     <>
       <div className="mb-8 flex justify-center">
-        <Form.Item name="avatar" noStyle>
+        <Form.Item name="avatar" noStyle valuePropName="src">
           <UploadAvatar src={initialValues?.avatar} size={120} />
         </Form.Item>
       </div>

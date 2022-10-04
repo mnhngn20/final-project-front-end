@@ -1,0 +1,34 @@
+query getRoom($id: Float!) {
+  getRoom(id: $id) {
+    message
+    room {
+      id
+      name
+      locationId
+      description
+      images
+      thumbnail
+      status
+      basePrice
+      location {
+        name
+      }
+      user {
+        name
+        email
+        avatar
+      }
+      floor
+      equipments {
+        id
+        roomId
+        name
+        description
+        image
+        isActive
+      }
+      createdAt
+      updatedAt
+    }
+  }
+}

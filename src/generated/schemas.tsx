@@ -108,6 +108,7 @@ export type GetLocationsInput = {
 };
 
 export type GetRoomsInput = {
+  floor?: InputMaybe<Scalars['Float']>;
   limit?: InputMaybe<Scalars['Float']>;
   locationId?: InputMaybe<Scalars['Float']>;
   maxBasePrice?: InputMaybe<Scalars['Float']>;
@@ -354,6 +355,7 @@ export type Room = {
   createdAt: Scalars['DateTime'];
   description?: Maybe<Scalars['String']>;
   equipments?: Maybe<Array<Equipment>>;
+  floor?: Maybe<Scalars['Float']>;
   id: Scalars['ID'];
   images?: Maybe<Scalars['String']>;
   location?: Maybe<Location>;
@@ -440,11 +442,11 @@ export type UpsertLocationInput = {
 export type UpsertRoomInput = {
   basePrice?: InputMaybe<Scalars['Float']>;
   description?: InputMaybe<Scalars['String']>;
+  floor?: InputMaybe<Scalars['Float']>;
   id?: InputMaybe<Scalars['Float']>;
   images?: InputMaybe<Scalars['String']>;
-  locationId?: InputMaybe<Scalars['Float']>;
   name?: InputMaybe<Scalars['String']>;
-  status?: InputMaybe<RoomStatus>;
+  thumbnail?: InputMaybe<Scalars['String']>;
 };
 
 export type User = {
@@ -739,6 +741,59 @@ export type UpdateUserMutationOptions = Apollo.BaseMutationOptions<
   UpdateUserMutation,
   UpdateUserMutationVariables
 >;
+export const UpsertRoomDocument = gql`
+  mutation upsertRoom($input: UpsertRoomInput!) {
+    upsertRoom(input: $input) {
+      message
+      room {
+        id
+      }
+    }
+  }
+`;
+export type UpsertRoomMutationFn = Apollo.MutationFunction<
+  UpsertRoomMutation,
+  UpsertRoomMutationVariables
+>;
+
+/**
+ * __useUpsertRoomMutation__
+ *
+ * To run a mutation, you first call `useUpsertRoomMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpsertRoomMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [upsertRoomMutation, { data, loading, error }] = useUpsertRoomMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useUpsertRoomMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    UpsertRoomMutation,
+    UpsertRoomMutationVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<UpsertRoomMutation, UpsertRoomMutationVariables>(
+    UpsertRoomDocument,
+    options,
+  );
+}
+export type UpsertRoomMutationHookResult = ReturnType<
+  typeof useUpsertRoomMutation
+>;
+export type UpsertRoomMutationResult =
+  Apollo.MutationResult<UpsertRoomMutation>;
+export type UpsertRoomMutationOptions = Apollo.BaseMutationOptions<
+  UpsertRoomMutation,
+  UpsertRoomMutationVariables
+>;
 export const ChangeUserStatusDocument = gql`
   mutation changeUserStatus($input: ChangeUserStatusInput!) {
     changeUserStatus(input: $input)
@@ -787,6 +842,167 @@ export type ChangeUserStatusMutationOptions = Apollo.BaseMutationOptions<
   ChangeUserStatusMutation,
   ChangeUserStatusMutationVariables
 >;
+export const GetRoomDocument = gql`
+  query getRoom($id: Float!) {
+    getRoom(id: $id) {
+      message
+      room {
+        id
+        name
+        locationId
+        description
+        images
+        thumbnail
+        status
+        basePrice
+        location {
+          name
+        }
+        user {
+          name
+          email
+          avatar
+        }
+        floor
+        equipments {
+          id
+          roomId
+          name
+          description
+          image
+          isActive
+        }
+        createdAt
+        updatedAt
+      }
+    }
+  }
+`;
+
+/**
+ * __useGetRoomQuery__
+ *
+ * To run a query within a React component, call `useGetRoomQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetRoomQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetRoomQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useGetRoomQuery(
+  baseOptions: Apollo.QueryHookOptions<GetRoomQuery, GetRoomQueryVariables>,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<GetRoomQuery, GetRoomQueryVariables>(
+    GetRoomDocument,
+    options,
+  );
+}
+export function useGetRoomLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    GetRoomQuery,
+    GetRoomQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<GetRoomQuery, GetRoomQueryVariables>(
+    GetRoomDocument,
+    options,
+  );
+}
+export type GetRoomQueryHookResult = ReturnType<typeof useGetRoomQuery>;
+export type GetRoomLazyQueryHookResult = ReturnType<typeof useGetRoomLazyQuery>;
+export type GetRoomQueryResult = Apollo.QueryResult<
+  GetRoomQuery,
+  GetRoomQueryVariables
+>;
+export function refetchGetRoomQuery(variables: GetRoomQueryVariables) {
+  return { query: GetRoomDocument, variables: variables };
+}
+export const GetRoomsDocument = gql`
+  query getRooms($input: GetRoomsInput!) {
+    getRooms(input: $input) {
+      page
+      total
+      totalPages
+      message
+      items {
+        id
+        name
+        locationId
+        description
+        images
+        thumbnail
+        status
+        basePrice
+        locationId
+        floor
+        user {
+          name
+          email
+          avatar
+        }
+        createdAt
+        updatedAt
+      }
+    }
+  }
+`;
+
+/**
+ * __useGetRoomsQuery__
+ *
+ * To run a query within a React component, call `useGetRoomsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetRoomsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetRoomsQuery({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useGetRoomsQuery(
+  baseOptions: Apollo.QueryHookOptions<GetRoomsQuery, GetRoomsQueryVariables>,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<GetRoomsQuery, GetRoomsQueryVariables>(
+    GetRoomsDocument,
+    options,
+  );
+}
+export function useGetRoomsLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    GetRoomsQuery,
+    GetRoomsQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<GetRoomsQuery, GetRoomsQueryVariables>(
+    GetRoomsDocument,
+    options,
+  );
+}
+export type GetRoomsQueryHookResult = ReturnType<typeof useGetRoomsQuery>;
+export type GetRoomsLazyQueryHookResult = ReturnType<
+  typeof useGetRoomsLazyQuery
+>;
+export type GetRoomsQueryResult = Apollo.QueryResult<
+  GetRoomsQuery,
+  GetRoomsQueryVariables
+>;
+export function refetchGetRoomsQuery(variables: GetRoomsQueryVariables) {
+  return { query: GetRoomsDocument, variables: variables };
+}
 export const GetUserDocument = gql`
   query getUser($id: Float!) {
     getUser(id: $id) {
@@ -1058,11 +1274,79 @@ export type UpdateUserMutation = {
   updateUser: { message?: string | null; user?: { id: string } | null };
 };
 
+export type UpsertRoomMutationVariables = Exact<{
+  input: UpsertRoomInput;
+}>;
+
+export type UpsertRoomMutation = {
+  upsertRoom: { message?: string | null; room?: { id: string } | null };
+};
+
 export type ChangeUserStatusMutationVariables = Exact<{
   input: ChangeUserStatusInput;
 }>;
 
 export type ChangeUserStatusMutation = { changeUserStatus: string };
+
+export type GetRoomQueryVariables = Exact<{
+  id: Scalars['Float'];
+}>;
+
+export type GetRoomQuery = {
+  getRoom: {
+    message?: string | null;
+    room?: {
+      id: string;
+      name?: string | null;
+      locationId: number;
+      description?: string | null;
+      images?: string | null;
+      thumbnail?: string | null;
+      status: RoomStatus;
+      basePrice: number;
+      floor?: number | null;
+      createdAt: any;
+      updatedAt: any;
+      location?: { name: string } | null;
+      user?: { name: string; email: string; avatar?: string | null } | null;
+      equipments?: Array<{
+        id: string;
+        roomId: number;
+        name: string;
+        description?: string | null;
+        image?: string | null;
+        isActive: boolean;
+      }> | null;
+    } | null;
+  };
+};
+
+export type GetRoomsQueryVariables = Exact<{
+  input: GetRoomsInput;
+}>;
+
+export type GetRoomsQuery = {
+  getRooms: {
+    page?: number | null;
+    total?: number | null;
+    totalPages?: number | null;
+    message?: string | null;
+    items: Array<{
+      id: string;
+      name?: string | null;
+      locationId: number;
+      description?: string | null;
+      images?: string | null;
+      thumbnail?: string | null;
+      status: RoomStatus;
+      basePrice: number;
+      floor?: number | null;
+      createdAt: any;
+      updatedAt: any;
+      user?: { name: string; email: string; avatar?: string | null } | null;
+    }>;
+  };
+};
 
 export type GetUserQueryVariables = Exact<{
   id: Scalars['Float'];

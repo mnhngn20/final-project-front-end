@@ -10,6 +10,8 @@ const Dashboard = loadable(import('#/pages/Dashboard'));
 const Customers = loadable(import('#/pages/Customers'));
 const CustomerDetail = loadable(import('#/pages/Customers/Detail'));
 const Profile = loadable(import('#/pages/Profile'));
+const Rooms = loadable(import('#/pages/Rooms'));
+const RoomDetail = loadable(import('#/pages/Rooms/Detail'));
 
 function PrivateRoute() {
   const { pathname } = useLocation();
@@ -40,6 +42,19 @@ function PrivateRoute() {
         {
           path: ':id',
           element: <CustomerDetail />,
+        },
+      ],
+    },
+    {
+      path: '/rooms',
+      children: [
+        {
+          index: true,
+          element: <Rooms />,
+        },
+        {
+          path: ':id',
+          element: <RoomDetail />,
         },
       ],
     },

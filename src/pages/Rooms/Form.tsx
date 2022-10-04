@@ -1,75 +1,34 @@
-import { DatePicker, Form, Input } from 'antd';
-import UploadAvatar from '#/shared/components/commons/UploadAvatar';
-import { User, UserRole } from '#/generated/schemas';
-import UserRoleSelector from '#/shared/components/selectors/UserRoleSelector';
-import { validateRegex } from '#/shared/utils/validation';
+import { Form, Input, InputNumber } from 'antd';
+import UploadImage from '#/shared/components/commons/UploadImage';
+import UploadImages from '#/shared/components/commons/UploadImages';
 
-interface Props {
-  initialValues?: User;
-  isSuperAdmin: boolean;
-}
-
-function UserForm({ initialValues, isSuperAdmin }: Props) {
+function UserForm() {
   return (
     <>
-      <div className="mb-8 flex justify-center">
-        <Form.Item name="avatar" noStyle>
-          <UploadAvatar src={initialValues?.avatar} size={120} />
-        </Form.Item>
-      </div>
+      <Form.Item name="thumbnail" label="Thumbnail" valuePropName="src">
+        <UploadImage />
+      </Form.Item>
+      <Form.Item name="name" label="Room Name" rules={[{ required: true }]}>
+        <Input type="text" placeholder="Enter room name" />
+      </Form.Item>
+      <Form.Item name="floor" label="Room Floor" rules={[{ required: true }]}>
+        <Input type="text" placeholder="Enter room floor" />
+      </Form.Item>
       <Form.Item
-        name="email"
-        label="Email"
+        name="basePrice"
+        label="Room Base Price"
         rules={[{ required: true }]}
-        initialValue={initialValues?.email}
       >
-        <Input
-          type="text"
-          placeholder="Enter user email"
-          disabled={!!initialValues?.id}
-        />
-      </Form.Item>
-      {!initialValues?.id && (
-        <>
-          <Form.Item
-            name="password"
-            label="Password"
-            hidden={!!initialValues?.id}
-            rules={[{ required: true }]}
-          >
-            <Input type="password" placeholder="Enter user password" />
-          </Form.Item>
-        </>
-      )}
-      <Form.Item name="fullName" label="Full Name">
-        <Input type="text" placeholder="Enter user name" />
-      </Form.Item>
-      <Form.Item name="identityNumber" label="Government ID">
-        <Input placeholder="Enter user identity number" />
-      </Form.Item>
-      <Form.Item name="dob" label="Date of Birth">
-        <DatePicker
+        <InputNumber
+          placeholder="Enter room base price ($)"
           className="w-full"
-          placeholder="Choose user birthday"
-          format="DD/MM/YYYY"
-          disabledDate={d => !d || d.isAfter()}
         />
       </Form.Item>
-      <Form.Item
-        name="phoneNumber"
-        label="Phone Number"
-        rules={[{ pattern: validateRegex.phoneNumber }]}
-      >
-        <Input type="text" placeholder="Enter user phone number" />
+      <Form.Item name="description" label="Description">
+        <Input.TextArea rows={3} placeholder="Enter room description" />
       </Form.Item>
-      <Form.Item name="role" label="User role" hidden={!isSuperAdmin}>
-        <UserRoleSelector
-          placeholder="Select user role"
-          disabled={
-            initialValues?.role === UserRole.SuperAdmin ||
-            initialValues?.role === UserRole.Customer
-          }
-        />
+      <Form.Item name="images" label="Room Images" valuePropName="srcList">
+        <UploadImages />
       </Form.Item>
     </>
   );

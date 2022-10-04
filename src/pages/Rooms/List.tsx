@@ -1,86 +1,69 @@
-import { Button, Table, Switch } from 'antd';
+import { Button, Table, Typography } from 'antd';
 import { useState, useMemo } from 'react';
-import dayjs, { Dayjs } from 'dayjs';
-import { EditFilled, EyeFilled } from '@ant-design/icons';
 import { useReactiveVar } from '@apollo/client';
-import UserForm from './Form';
+import RoomForm from './Form';
 import Filters from './Filters';
 import {
   User,
   OrderBy,
-  UserRole,
-  UpdateUserInput,
-  useGetUsersQuery,
-  useCreateUserMutation,
-  useUpdateUserMutation,
-  useChangeUserStatusMutation,
+  useUpsertRoomMutation,
+  Room,
+  UpsertRoomInput,
+  useGetRoomsQuery,
+  RoomStatus,
 } from '#/generated/schemas';
 import { userVar } from '#/graphql/cache';
 import { FormModal } from '#/shared/components/commons/FormModal';
 import { useTable } from '#/shared/hooks/useTable';
 import { Link } from 'react-router-dom';
-import { Store } from 'antd/lib/form/interface';
 import { DeepPartial } from '#/shared/utils/type';
 import { showError, showSuccess } from '#/shared/utils/notification';
 import { formatDisplayUser, formatId } from '#/shared/utils/format';
 import { formatDate } from '#/shared/utils/date';
-import RoleTag from '#/shared/components/commons/RoleTag';
+import Image from '#/shared/components/commons/Image';
 import { ColumnsType } from 'antd/lib/table';
+import { AddSVG, EditSVG, EyeSVG } from '#/assets/svgs';
+import DefaultImage from '#/assets/images/default.png';
+import PaginationPanel from '#/shared/components/commons/PaginationPanel';
 
-export type GetUsersFilter<T = string> = {
-  email?: string;
+export type GetRoomsFilter = {
   name?: string;
-  locationId?: number;
-  isActive?: T;
-  role?: UserRole;
+  minBasePrice?: number;
+  maxBasePrice?: number;
+  status?: RoomStatus;
+  floor?: number;
 };
 
 function List() {
-  const [filters, setFilters] = useState<GetUsersFilter<boolean> | undefined>(
-    undefined,
-  );
+  const [filters, setFilters] = useState<GetRoomsFilter | undefined>(undefined);
   const currentUser = useReactiveVar(userVar) as User;
   const { pageSize, onChange, currentPage, setCurrentPage } = useTable();
   const [selectedItem, setSelectedItem] = useState<
-    DeepPartial<User> | undefined
+    DeepPartial<Room> | undefined
   >(undefined);
   const clearSelectedItem = () => {
     setSelectedItem(undefined);
   };
-  const { data, loading, refetch } = useGetUsersQuery({
+  const { data, loading, refetch } = useGetRoomsQuery({
     variables: {
       input: {
         orderBy: OrderBy.Desc,
         page: currentPage,
         limit: pageSize,
+        locationId: currentUser?.locationId,
         ...filters,
       },
     },
   });
-  const users = data?.getUsers?.items ?? [];
+  const rooms = data?.getRooms?.items ?? [];
 
-  const [changeUserStatus, { loading: changeUserStatusLoading }] =
-    useChangeUserStatusMutation({
-      onCompleted() {
-        showSuccess('Updated status successfully');
-        refetch();
-        clearSelectedItem();
-      },
-      onError: showError,
-    });
-
-  const [createUser, { loading: createLoading }] = useCreateUserMutation({
+  const [upsertRoom, { loading: upsertRoomLoading }] = useUpsertRoomMutation({
     onCompleted() {
-      showSuccess('Created user successfully!');
-      refetch();
-      clearSelectedItem();
-    },
-    onError: showError,
-  });
-
-  const [updateUser, { loading: updateLoading }] = useUpdateUserMutation({
-    onCompleted() {
-      showSuccess('Update user successfully!');
+      showSuccess(
+        selectedItem?.id
+          ? 'Updated user successfully!'
+          : 'Created user successfully!',
+      );
       refetch();
       clearSelectedItem();
     },
@@ -89,46 +72,48 @@ function List() {
 
   const onFilter = ({
     name,
-    email,
-    role,
-    locationId,
-    isActive,
-  }: GetUsersFilter) => {
+    maxBasePrice,
+    minBasePrice,
+    status,
+    floor,
+  }: GetRoomsFilter) => {
     const newFilter = {
       ...(name && { name }),
-      ...(email && { email }),
-      ...(role && { role }),
-      ...(isActive && { isActive: isActive === 'true' }),
-      ...(locationId !== undefined && { locationId }),
+      ...(status && { status }),
+      ...(maxBasePrice && { maxBasePrice: Number(maxBasePrice) }),
+      ...(minBasePrice && { minBasePrice: Number(minBasePrice) }),
+      ...(floor && { floor }),
     };
     setCurrentPage(1);
     setFilters(newFilter);
   };
 
-  const onSubmit = (values: Store) => {
-    const { locationId, ...updateValues } = values;
-    if (selectedItem?.id) {
-      updateUser({
-        variables: {
-          input: {
-            ...updateValues,
+  const onSubmit = ({
+    basePrice,
+    description,
+    images,
+    name,
+    thumbnail,
+    floor,
+  }: UpsertRoomInput) => {
+    upsertRoom({
+      variables: {
+        input: {
+          basePrice,
+          description,
+          images,
+          name,
+          thumbnail,
+          floor: Number(floor),
+          ...(selectedItem?.id && {
             id: Number(selectedItem?.id),
-          },
+          }),
         },
-      });
-    } else {
-      createUser({
-        variables: {
-          input: {
-            ...values,
-            ...(locationId && { locationId: Number(locationId) }),
-          },
-        },
-      });
-    }
+      },
+    });
   };
 
-  const COLUMNS: ColumnsType<DeepPartial<User>> = useMemo(
+  const COLUMNS: ColumnsType<DeepPartial<Room>> = useMemo(
     () => [
       {
         title: 'ID',
@@ -137,111 +122,124 @@ function List() {
         render: formatId,
       },
       {
-        title: 'Full Name',
-        dataIndex: 'name',
-        key: 'name',
-        render: (_, record: DeepPartial<User>) => formatDisplayUser(record),
+        title: 'Image',
+        dataIndex: 'thumbnail',
+        key: 'thumbnail',
+        render(thumbnail: string) {
+          return (
+            <Image
+              url={thumbnail ?? DefaultImage}
+              width={100}
+              height={100}
+              className="object-cover"
+            />
+          );
+        },
       },
       {
-        title: 'Date of Birth',
-        dataIndex: 'dob',
-        key: 'dob',
+        title: 'Room Name',
+        dataIndex: 'name',
+        key: 'name',
+      },
+      {
+        title: 'Created Date',
+        dataIndex: 'createdAt',
+        key: 'createdAt',
         render: (date: Date) => formatDate(date),
       },
       {
-        title: 'Phone',
-        dataIndex: 'phoneNumber',
-        key: 'phoneNumber',
-      },
-      {
-        title: 'Card ID',
-        dataIndex: 'identityNumber',
-        key: 'identityNumber',
-      },
-      {
-        title: 'Role',
-        dataIndex: 'role',
-        key: 'role',
-        render: (role?: UserRole) => <RoleTag role={role} />,
-      },
-      {
         title: 'Status',
-        dataIndex: 'isActive',
-        key: 'isActive',
-        render: (isActive: boolean, { id }: DeepPartial<User>) => (
-          <Switch
-            checked={isActive}
-            onChange={() =>
-              changeUserStatus({
-                variables: {
-                  input: {
-                    id: Number(id),
-                    isActive: !isActive,
-                  },
-                },
-              })
-            }
-          />
-        ),
+        dataIndex: 'status',
+        key: 'status',
+      },
+      {
+        title: 'Description',
+        dataIndex: 'description',
+        key: 'description',
+      },
+      {
+        title: 'Base Price',
+        dataIndex: 'basePrice',
+        key: 'basePrice',
+        render: (basePrice?: number) => `$ ${basePrice}`,
+      },
+      {
+        title: 'Current Owner',
+        dataIndex: 'basePrice',
+        key: 'basePrice',
+        render: (_: unknown, { user }: DeepPartial<Room>) =>
+          user ? formatDisplayUser({ ...user }) : 'N/A',
       },
       {
         title: '',
         dataIndex: 'id',
         key: 'action',
         fixed: 'right' as const,
-        render: (_: unknown, record: DeepPartial<User>) => {
+        render: (_: unknown, record: DeepPartial<Room>) => {
           const onEdit = () => {
             setSelectedItem({
               ...record,
-              dateOfBirth: dayjs(String(record?.dateOfBirth)).isValid()
-                ? (dayjs(String(record?.dateOfBirth)) as DeepPartial<Dayjs>)
-                : undefined,
             });
           };
           return (
-            <div className="flex items-center justify-center">
-              <Button className="mr-2 border-none" shape="circle">
-                <Link to={`/users/${record?.id}`}>
-                  <EyeFilled />
-                </Link>
-              </Button>
-              <Button onClick={onEdit} className="border-none" shape="circle">
-                <EditFilled />
+            <div className="flex items-center justify-center gap-4 text-base text-primary-color">
+              <Link to={`/rooms/${record?.id}`}>
+                <EyeSVG width={24} height={24} />
+              </Link>
+              <Button type="link" onClick={onEdit}>
+                <EditSVG width={24} height={24} />
               </Button>
             </div>
           );
         },
       },
     ],
-    [changeUserStatus],
+    [],
   );
 
   return (
     <>
       <Filters onFilter={onFilter} />
-      <Table
-        rowKey="id"
-        dataSource={users as unknown as DeepPartial<User>[]}
-        columns={COLUMNS}
-        scroll={{ x: 'max-content' }}
-        loading={
-          loading || createLoading || updateLoading || changeUserStatusLoading
-        }
-        onChange={onChange}
-        pagination={{
-          total: data?.getUsers.total ?? 0,
-          current: currentPage,
-        }}
-      />
-      <FormModal<UpdateUserInput>
-        loading={createLoading || updateLoading}
+      <div className="rounded-xl bg-[white] px-4">
+        <div className="flex items-center justify-between py-4">
+          <Typography className="text-xl font-semibold">
+            Location List
+          </Typography>
+          <Button
+            type="primary"
+            onClick={() => setSelectedItem({})}
+            icon={<AddSVG className="anticon" />}
+          >
+            Create
+          </Button>
+        </div>
+        <Table
+          rowKey="id"
+          dataSource={rooms as DeepPartial<Room>[]}
+          columns={COLUMNS}
+          scroll={{ x: 'max-content' }}
+          loading={loading || upsertRoomLoading}
+          onChange={onChange}
+          pagination={false}
+        />
+        <PaginationPanel
+          current={currentPage ?? 1}
+          pageSize={10}
+          total={data?.getRooms?.total ?? 0}
+          setCurrentPage={setCurrentPage}
+          className="flex justify-end py-6 pr-6"
+          showQuickJumper
+        />
+      </div>
+      <FormModal<UpsertRoomInput>
+        loading={upsertRoomLoading}
         onSubmit={onSubmit}
-        name="User"
+        name="Room"
         onClose={clearSelectedItem}
         selectedItem={selectedItem}
         initialValues={selectedItem}
       >
-        <UserForm isSuperAdmin={currentUser.role === UserRole.SuperAdmin} />
+        <RoomForm />
       </FormModal>
     </>
   );

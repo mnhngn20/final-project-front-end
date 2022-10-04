@@ -3,7 +3,7 @@ import Icon from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
 import AuthLayout from '#/shared/components/layout/AuthLayout';
 import useTypeSafeTranslation from '#/shared/hooks/useTypeSafeTranslation';
-import { BackIcon } from '#/assets/svgs';
+import { LeftSVG } from '#/assets/svgs';
 
 function ForgotPassword() {
   const { t } = useTypeSafeTranslation();
@@ -16,7 +16,7 @@ function ForgotPassword() {
           <Button
             shape="circle"
             className="mb-[2.5rem] ml-[1.5rem]"
-            icon={<Icon component={BackIcon} />}
+            icon={<Icon component={LeftSVG} />}
             onClick={() => navigate(-1)}
           />
         </div>

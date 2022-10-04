@@ -1,7 +1,6 @@
 import { Button, Table, Switch, Typography } from 'antd';
 import { useState, useMemo } from 'react';
 import dayjs, { Dayjs } from 'dayjs';
-import { EditFilled, EyeFilled } from '@ant-design/icons';
 import UserForm from './Form';
 import Filters from './Filters';
 import {
@@ -24,7 +23,7 @@ import { formatDisplayUser, formatId } from '#/shared/utils/format';
 import { formatDate } from '#/shared/utils/date';
 import RoleTag from '#/shared/components/commons/RoleTag';
 import { ColumnsType } from 'antd/lib/table';
-import { AddSVG } from '#/assets/svgs';
+import { AddSVG, EditSVG, EyeSVG } from '#/assets/svgs';
 import PaginationPanel from '#/shared/components/commons/PaginationPanel';
 import { useReactiveVar } from '@apollo/client';
 import { userVar } from '#/graphql/cache';
@@ -216,10 +215,10 @@ function List() {
           return (
             <div className="flex items-center justify-center gap-4 text-base text-primary-color">
               <Link to={`/customers/${record?.id}`}>
-                <EyeFilled />
+                <EyeSVG width={24} height={24} />
               </Link>
               <Button type="link" onClick={onEdit}>
-                <EditFilled />
+                <EditSVG width={24} height={24} />
               </Button>
             </div>
           );
