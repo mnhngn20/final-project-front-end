@@ -69,7 +69,7 @@ function UploadImage({
         className="flex items-center"
         {...restProps}
       >
-        {file ? (
+        {file && !loading ? (
           <div className="relative flex h-28 w-28 items-center justify-center rounded-lg border-2 border-[#b1b7cc] p-2 hover:border-primary-color">
             <Image
               width="100%"

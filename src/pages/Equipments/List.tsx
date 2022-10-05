@@ -1,16 +1,16 @@
-import { Button, Table, Typography } from 'antd';
+import { Button, Switch, Table, Typography } from 'antd';
 import { useState, useMemo } from 'react';
 import { useReactiveVar } from '@apollo/client';
-import RoomForm from './Form';
+import EquipmentForm from './Form';
 import Filters from './Filters';
 import {
   User,
   OrderBy,
-  useUpsertRoomMutation,
-  Room,
-  UpsertRoomInput,
-  useGetRoomsQuery,
-  RoomStatus,
+  Equipment,
+  useGetEquipmentsQuery,
+  useUpsertEquipmentMutation,
+  UpsertEquipmentInput,
+  useUpdateEquipmentStatusMutation,
 } from '#/generated/schemas';
 import { userVar } from '#/graphql/cache';
 import { FormModal } from '#/shared/components/commons/FormModal';
@@ -18,7 +18,7 @@ import { useTable } from '#/shared/hooks/useTable';
 import { Link } from 'react-router-dom';
 import { DeepPartial } from '#/shared/utils/type';
 import { showError, showSuccess } from '#/shared/utils/notification';
-import { formatDisplayUser, formatId } from '#/shared/utils/format';
+import { formatId } from '#/shared/utils/format';
 import { formatDate } from '#/shared/utils/date';
 import Image from '#/shared/components/commons/Image';
 import { ColumnsType } from 'antd/lib/table';
@@ -26,25 +26,25 @@ import { AddSVG, EditSVG, EyeSVG } from '#/assets/svgs';
 import DefaultImage from '#/assets/images/default.png';
 import PaginationPanel from '#/shared/components/commons/PaginationPanel';
 
-export type GetRoomsFilter = {
+export type GetEquipmentsFilter<T = string> = {
   name?: string;
-  minBasePrice?: number;
-  maxBasePrice?: number;
-  status?: RoomStatus;
-  floor?: number;
+  isActive?: T;
+  roomId?: number;
 };
 
 function List() {
-  const [filters, setFilters] = useState<GetRoomsFilter | undefined>(undefined);
+  const [filters, setFilters] = useState<
+    GetEquipmentsFilter<boolean> | undefined
+  >(undefined);
   const currentUser = useReactiveVar(userVar) as User;
   const { pageSize, onChange, currentPage, setCurrentPage } = useTable();
   const [selectedItem, setSelectedItem] = useState<
-    DeepPartial<Room> | undefined
+    DeepPartial<Equipment> | undefined
   >(undefined);
   const clearSelectedItem = () => {
     setSelectedItem(undefined);
   };
-  const { data, loading, refetch } = useGetRoomsQuery({
+  const { data, loading, refetch } = useGetEquipmentsQuery({
     variables: {
       input: {
         orderBy: OrderBy.Desc,
@@ -55,56 +55,57 @@ function List() {
       },
     },
   });
-  const rooms = data?.getRooms?.items ?? [];
+  const equipments = data?.getEquipments?.items ?? [];
 
-  const [upsertRoom, { loading: upsertRoomLoading }] = useUpsertRoomMutation({
-    onCompleted() {
-      showSuccess(
-        selectedItem?.id
-          ? 'Updated room successfully!'
-          : 'Created room successfully!',
-      );
-      refetch();
-      clearSelectedItem();
-    },
-    onError: showError,
-  });
+  const [upsertEquipment, { loading: upsertEquipmentLoading }] =
+    useUpsertEquipmentMutation({
+      onCompleted() {
+        showSuccess(
+          selectedItem?.id
+            ? 'Updated equipment successfully!'
+            : 'Created equipment successfully!',
+        );
+        refetch();
+        clearSelectedItem();
+      },
+      onError: showError,
+    });
 
-  const onFilter = ({
-    name,
-    maxBasePrice,
-    minBasePrice,
-    status,
-    floor,
-  }: GetRoomsFilter) => {
+  const onFilter = ({ name, isActive, roomId }: GetEquipmentsFilter) => {
     const newFilter = {
       ...(name && { name }),
-      ...(status && { status }),
-      ...(maxBasePrice && { maxBasePrice: Number(maxBasePrice) }),
-      ...(minBasePrice && { minBasePrice: Number(minBasePrice) }),
-      ...(floor && { floor }),
+      ...(isActive && { isActive: isActive === 'true' }),
+      ...(roomId && { roomId: Number(roomId) }),
     };
     setCurrentPage(1);
     setFilters(newFilter);
   };
 
+  const [updateEquipmentStatus, { loading: updateEquipmentStatusLoading }] =
+    useUpdateEquipmentStatusMutation({
+      onCompleted() {
+        showSuccess('Updated status successfully');
+        refetch();
+        clearSelectedItem();
+      },
+      onError: showError,
+    });
+
   const onSubmit = ({
-    basePrice,
-    description,
-    images,
+    roomId,
+    image,
+    isActive,
     name,
-    thumbnail,
-    floor,
-  }: UpsertRoomInput) => {
-    upsertRoom({
+    description,
+  }: UpsertEquipmentInput) => {
+    upsertEquipment({
       variables: {
         input: {
-          basePrice,
+          image,
+          isActive,
           description,
-          images,
           name,
-          thumbnail,
-          floor: Number(floor),
+          roomId: Number(roomId),
           ...(selectedItem?.id && {
             id: Number(selectedItem?.id),
           }),
@@ -113,7 +114,7 @@ function List() {
     });
   };
 
-  const COLUMNS: ColumnsType<DeepPartial<Room>> = useMemo(
+  const COLUMNS: ColumnsType<DeepPartial<Equipment>> = useMemo(
     () => [
       {
         title: 'ID',
@@ -123,12 +124,12 @@ function List() {
       },
       {
         title: 'Image',
-        dataIndex: 'thumbnail',
-        key: 'thumbnail',
-        render(thumbnail: string) {
+        dataIndex: 'image',
+        key: 'image',
+        render(image: string) {
           return (
             <Image
-              url={thumbnail ?? DefaultImage}
+              url={image ?? DefaultImage}
               width={100}
               height={100}
               className="object-cover"
@@ -148,34 +149,38 @@ function List() {
         render: (date: Date) => formatDate(date),
       },
       {
-        title: 'Status',
-        dataIndex: 'status',
-        key: 'status',
-      },
-      {
         title: 'Description',
         dataIndex: 'description',
         key: 'description',
       },
       {
-        title: 'Base Price',
-        dataIndex: 'basePrice',
-        key: 'basePrice',
-        render: (basePrice?: number) => `$ ${basePrice}`,
-      },
-      {
-        title: 'Current Owner',
-        dataIndex: 'basePrice',
-        key: 'basePrice',
-        render: (_: unknown, { user }: DeepPartial<Room>) =>
-          user ? formatDisplayUser({ ...user }) : 'N/A',
+        title: 'Status',
+        dataIndex: 'isActive',
+        key: 'isActive',
+        render(isActive: boolean, { id }: DeepPartial<Equipment>) {
+          return (
+            <Switch
+              checked={isActive}
+              onChange={() =>
+                updateEquipmentStatus({
+                  variables: {
+                    input: {
+                      id: Number(id),
+                      isActive: !isActive,
+                    },
+                  },
+                })
+              }
+            />
+          );
+        },
       },
       {
         title: '',
         dataIndex: 'id',
         key: 'action',
         fixed: 'right' as const,
-        render: (_: unknown, record: DeepPartial<Room>) => {
+        render: (_: unknown, record: DeepPartial<Equipment>) => {
           const onEdit = () => {
             setSelectedItem({
               ...record,
@@ -183,7 +188,7 @@ function List() {
           };
           return (
             <div className="flex items-center justify-center gap-4 text-base text-primary-color">
-              <Link to={`/rooms/${record?.id}`}>
+              <Link to={`/equipments/${record?.id}`}>
                 <EyeSVG width={24} height={24} />
               </Link>
               <Button type="link" onClick={onEdit}>
@@ -194,7 +199,7 @@ function List() {
         },
       },
     ],
-    [],
+    [updateEquipmentStatus],
   );
 
   return (
@@ -202,7 +207,9 @@ function List() {
       <Filters onFilter={onFilter} />
       <div className="rounded-xl bg-[white] px-4">
         <div className="flex items-center justify-between py-4">
-          <Typography className="text-xl font-semibold">Room List</Typography>
+          <Typography className="text-xl font-semibold">
+            Equipment List
+          </Typography>
           <Button
             type="primary"
             onClick={() => setSelectedItem({})}
@@ -213,31 +220,33 @@ function List() {
         </div>
         <Table
           rowKey="id"
-          dataSource={rooms as DeepPartial<Room>[]}
+          dataSource={equipments as DeepPartial<Equipment>[]}
           columns={COLUMNS}
           scroll={{ x: 'max-content' }}
-          loading={loading || upsertRoomLoading}
+          loading={
+            loading || upsertEquipmentLoading || updateEquipmentStatusLoading
+          }
           onChange={onChange}
           pagination={false}
         />
         <PaginationPanel
           current={currentPage ?? 1}
           pageSize={10}
-          total={data?.getRooms?.total ?? 0}
+          total={data?.getEquipments?.total ?? 0}
           setCurrentPage={setCurrentPage}
           className="flex justify-end py-6 pr-6"
           showQuickJumper
         />
       </div>
-      <FormModal<UpsertRoomInput>
-        loading={upsertRoomLoading}
+      <FormModal<UpsertEquipmentInput>
+        loading={upsertEquipmentLoading}
         onSubmit={onSubmit}
-        name="Room"
+        name="Equipment"
         onClose={clearSelectedItem}
         selectedItem={selectedItem}
         initialValues={selectedItem}
       >
-        <RoomForm />
+        <EquipmentForm />
       </FormModal>
     </>
   );

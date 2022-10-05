@@ -1,0 +1,25 @@
+query getEquipments($input: GetEquipmentsInput!) {
+  getEquipments(input: $input) {
+    page
+    total
+    totalPages
+    message
+    items {
+      id
+      roomId
+      locationId
+      name
+      description
+      image
+      isActive
+      room {
+        name
+      }
+      location {
+        name
+      }
+      createdAt
+      updatedAt
+    }
+  }
+}

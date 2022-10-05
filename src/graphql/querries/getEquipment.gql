@@ -1,0 +1,22 @@
+query getEquipment($id: Float!) {
+  getEquipment(id: $id) {
+    message
+    equipment {
+      id
+      roomId
+      locationId
+      name
+      description
+      image
+      isActive
+      room {
+        name
+      }
+      location {
+        name
+      }
+      createdAt
+      updatedAt
+    }
+  }
+}

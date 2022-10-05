@@ -417,7 +417,7 @@ export type UpdateUserInput = {
 };
 
 export type UpsertEquipmentInput = {
-  equipmentTypeId?: InputMaybe<Scalars['Float']>;
+  description?: InputMaybe<Scalars['String']>;
   id?: InputMaybe<Scalars['Float']>;
   image?: InputMaybe<Scalars['String']>;
   isActive?: InputMaybe<Scalars['Boolean']>;
@@ -638,6 +638,59 @@ export type RegisterMutationOptions = Apollo.BaseMutationOptions<
   RegisterMutation,
   RegisterMutationVariables
 >;
+export const UpdateEquipmentStatusDocument = gql`
+  mutation updateEquipmentStatus($input: UpdateEquipmentStatusInput!) {
+    updateEquipmentStatus(input: $input) {
+      message
+      equipment {
+        id
+      }
+    }
+  }
+`;
+export type UpdateEquipmentStatusMutationFn = Apollo.MutationFunction<
+  UpdateEquipmentStatusMutation,
+  UpdateEquipmentStatusMutationVariables
+>;
+
+/**
+ * __useUpdateEquipmentStatusMutation__
+ *
+ * To run a mutation, you first call `useUpdateEquipmentStatusMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateEquipmentStatusMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateEquipmentStatusMutation, { data, loading, error }] = useUpdateEquipmentStatusMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useUpdateEquipmentStatusMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    UpdateEquipmentStatusMutation,
+    UpdateEquipmentStatusMutationVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<
+    UpdateEquipmentStatusMutation,
+    UpdateEquipmentStatusMutationVariables
+  >(UpdateEquipmentStatusDocument, options);
+}
+export type UpdateEquipmentStatusMutationHookResult = ReturnType<
+  typeof useUpdateEquipmentStatusMutation
+>;
+export type UpdateEquipmentStatusMutationResult =
+  Apollo.MutationResult<UpdateEquipmentStatusMutation>;
+export type UpdateEquipmentStatusMutationOptions = Apollo.BaseMutationOptions<
+  UpdateEquipmentStatusMutation,
+  UpdateEquipmentStatusMutationVariables
+>;
 export const UpdateMeDocument = gql`
   mutation updateMe($input: UpdateMeInput!) {
     updateMe(input: $input) {
@@ -741,6 +794,59 @@ export type UpdateUserMutationOptions = Apollo.BaseMutationOptions<
   UpdateUserMutation,
   UpdateUserMutationVariables
 >;
+export const UpsertEquipmentDocument = gql`
+  mutation upsertEquipment($input: UpsertEquipmentInput!) {
+    upsertEquipment(input: $input) {
+      message
+      equipment {
+        id
+      }
+    }
+  }
+`;
+export type UpsertEquipmentMutationFn = Apollo.MutationFunction<
+  UpsertEquipmentMutation,
+  UpsertEquipmentMutationVariables
+>;
+
+/**
+ * __useUpsertEquipmentMutation__
+ *
+ * To run a mutation, you first call `useUpsertEquipmentMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpsertEquipmentMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [upsertEquipmentMutation, { data, loading, error }] = useUpsertEquipmentMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useUpsertEquipmentMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    UpsertEquipmentMutation,
+    UpsertEquipmentMutationVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<
+    UpsertEquipmentMutation,
+    UpsertEquipmentMutationVariables
+  >(UpsertEquipmentDocument, options);
+}
+export type UpsertEquipmentMutationHookResult = ReturnType<
+  typeof useUpsertEquipmentMutation
+>;
+export type UpsertEquipmentMutationResult =
+  Apollo.MutationResult<UpsertEquipmentMutation>;
+export type UpsertEquipmentMutationOptions = Apollo.BaseMutationOptions<
+  UpsertEquipmentMutation,
+  UpsertEquipmentMutationVariables
+>;
 export const UpsertRoomDocument = gql`
   mutation upsertRoom($input: UpsertRoomInput!) {
     upsertRoom(input: $input) {
@@ -842,6 +948,169 @@ export type ChangeUserStatusMutationOptions = Apollo.BaseMutationOptions<
   ChangeUserStatusMutation,
   ChangeUserStatusMutationVariables
 >;
+export const GetEquipmentDocument = gql`
+  query getEquipment($id: Float!) {
+    getEquipment(id: $id) {
+      message
+      equipment {
+        id
+        roomId
+        locationId
+        name
+        description
+        image
+        isActive
+        room {
+          name
+        }
+        location {
+          name
+        }
+        createdAt
+        updatedAt
+      }
+    }
+  }
+`;
+
+/**
+ * __useGetEquipmentQuery__
+ *
+ * To run a query within a React component, call `useGetEquipmentQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetEquipmentQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetEquipmentQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useGetEquipmentQuery(
+  baseOptions: Apollo.QueryHookOptions<
+    GetEquipmentQuery,
+    GetEquipmentQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<GetEquipmentQuery, GetEquipmentQueryVariables>(
+    GetEquipmentDocument,
+    options,
+  );
+}
+export function useGetEquipmentLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    GetEquipmentQuery,
+    GetEquipmentQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<GetEquipmentQuery, GetEquipmentQueryVariables>(
+    GetEquipmentDocument,
+    options,
+  );
+}
+export type GetEquipmentQueryHookResult = ReturnType<
+  typeof useGetEquipmentQuery
+>;
+export type GetEquipmentLazyQueryHookResult = ReturnType<
+  typeof useGetEquipmentLazyQuery
+>;
+export type GetEquipmentQueryResult = Apollo.QueryResult<
+  GetEquipmentQuery,
+  GetEquipmentQueryVariables
+>;
+export function refetchGetEquipmentQuery(
+  variables: GetEquipmentQueryVariables,
+) {
+  return { query: GetEquipmentDocument, variables: variables };
+}
+export const GetEquipmentsDocument = gql`
+  query getEquipments($input: GetEquipmentsInput!) {
+    getEquipments(input: $input) {
+      page
+      total
+      totalPages
+      message
+      items {
+        id
+        roomId
+        locationId
+        name
+        description
+        image
+        isActive
+        room {
+          name
+        }
+        location {
+          name
+        }
+        createdAt
+        updatedAt
+      }
+    }
+  }
+`;
+
+/**
+ * __useGetEquipmentsQuery__
+ *
+ * To run a query within a React component, call `useGetEquipmentsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetEquipmentsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetEquipmentsQuery({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useGetEquipmentsQuery(
+  baseOptions: Apollo.QueryHookOptions<
+    GetEquipmentsQuery,
+    GetEquipmentsQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<GetEquipmentsQuery, GetEquipmentsQueryVariables>(
+    GetEquipmentsDocument,
+    options,
+  );
+}
+export function useGetEquipmentsLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    GetEquipmentsQuery,
+    GetEquipmentsQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<GetEquipmentsQuery, GetEquipmentsQueryVariables>(
+    GetEquipmentsDocument,
+    options,
+  );
+}
+export type GetEquipmentsQueryHookResult = ReturnType<
+  typeof useGetEquipmentsQuery
+>;
+export type GetEquipmentsLazyQueryHookResult = ReturnType<
+  typeof useGetEquipmentsLazyQuery
+>;
+export type GetEquipmentsQueryResult = Apollo.QueryResult<
+  GetEquipmentsQuery,
+  GetEquipmentsQueryVariables
+>;
+export function refetchGetEquipmentsQuery(
+  variables: GetEquipmentsQueryVariables,
+) {
+  return { query: GetEquipmentsDocument, variables: variables };
+}
 export const GetRoomDocument = gql`
   query getRoom($id: Float!) {
     getRoom(id: $id) {
@@ -1258,6 +1527,17 @@ export type RegisterMutationVariables = Exact<{
 
 export type RegisterMutation = { register: { message?: string | null } };
 
+export type UpdateEquipmentStatusMutationVariables = Exact<{
+  input: UpdateEquipmentStatusInput;
+}>;
+
+export type UpdateEquipmentStatusMutation = {
+  updateEquipmentStatus: {
+    message?: string | null;
+    equipment?: { id: string } | null;
+  };
+};
+
 export type UpdateMeMutationVariables = Exact<{
   input: UpdateMeInput;
 }>;
@@ -1274,6 +1554,17 @@ export type UpdateUserMutation = {
   updateUser: { message?: string | null; user?: { id: string } | null };
 };
 
+export type UpsertEquipmentMutationVariables = Exact<{
+  input: UpsertEquipmentInput;
+}>;
+
+export type UpsertEquipmentMutation = {
+  upsertEquipment: {
+    message?: string | null;
+    equipment?: { id: string } | null;
+  };
+};
+
 export type UpsertRoomMutationVariables = Exact<{
   input: UpsertRoomInput;
 }>;
@@ -1287,6 +1578,55 @@ export type ChangeUserStatusMutationVariables = Exact<{
 }>;
 
 export type ChangeUserStatusMutation = { changeUserStatus: string };
+
+export type GetEquipmentQueryVariables = Exact<{
+  id: Scalars['Float'];
+}>;
+
+export type GetEquipmentQuery = {
+  getEquipment: {
+    message?: string | null;
+    equipment?: {
+      id: string;
+      roomId: number;
+      locationId: number;
+      name: string;
+      description?: string | null;
+      image?: string | null;
+      isActive: boolean;
+      createdAt: any;
+      updatedAt: any;
+      room: { name?: string | null };
+      location: { name: string };
+    } | null;
+  };
+};
+
+export type GetEquipmentsQueryVariables = Exact<{
+  input: GetEquipmentsInput;
+}>;
+
+export type GetEquipmentsQuery = {
+  getEquipments: {
+    page?: number | null;
+    total?: number | null;
+    totalPages?: number | null;
+    message?: string | null;
+    items: Array<{
+      id: string;
+      roomId: number;
+      locationId: number;
+      name: string;
+      description?: string | null;
+      image?: string | null;
+      isActive: boolean;
+      createdAt: any;
+      updatedAt: any;
+      room: { name?: string | null };
+      location: { name: string };
+    }>;
+  };
+};
 
 export type GetRoomQueryVariables = Exact<{
   id: Scalars['Float'];

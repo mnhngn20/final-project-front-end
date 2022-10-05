@@ -1,0 +1,8 @@
+mutation upsertEquipment($input: UpsertEquipmentInput!) {
+  upsertEquipment(input: $input) {
+    message
+    equipment {
+      id
+    }
+  }
+}

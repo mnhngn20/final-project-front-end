@@ -1,0 +1,8 @@
+mutation updateEquipmentStatus($input: UpdateEquipmentStatusInput!) {
+  updateEquipmentStatus(input: $input) {
+    message
+    equipment {
+      id
+    }
+  }
+}

@@ -7,7 +7,12 @@ import { useLocation } from 'react-router-dom';
 import RightContentHeader from './RightContentHeader';
 import Logo from '#/assets/images/logo.png';
 import { appConfig } from '#/configs/config';
-import { CustomerSVG, DashboardSVG, HouseSVG } from '#/assets/svgs';
+import {
+  CustomerSVG,
+  DashboardSVG,
+  DevicesOutlineSVG,
+  HouseSVG,
+} from '#/assets/svgs';
 import { User } from '#/generated/schemas';
 import { MenuSidebarItem } from '../commons/MenuSideBarItem';
 import { DeepPartial } from '#/shared/utils/type';
@@ -47,6 +52,11 @@ function PrivateLayout({
         icon: <Icon component={HouseSVG} />,
         name: 'Rooms',
         path: '/rooms',
+      },
+      {
+        icon: <Icon component={DevicesOutlineSVG} />,
+        name: 'Equipments',
+        path: '/equipments',
       },
     ],
   };
