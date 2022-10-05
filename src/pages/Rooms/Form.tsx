@@ -2,7 +2,7 @@ import { Form, Input, InputNumber } from 'antd';
 import UploadImage from '#/shared/components/commons/UploadImage';
 import UploadImages from '#/shared/components/commons/UploadImages';
 
-function UserForm() {
+function RoomForm() {
   return (
     <>
       <Form.Item name="thumbnail" label="Thumbnail" valuePropName="src">
@@ -34,4 +34,4 @@ function UserForm() {
   );
 }
 
-export default UserForm;
+export default RoomForm;

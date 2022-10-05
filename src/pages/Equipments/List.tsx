@@ -15,14 +15,13 @@ import {
 import { userVar } from '#/graphql/cache';
 import { FormModal } from '#/shared/components/commons/FormModal';
 import { useTable } from '#/shared/hooks/useTable';
-import { Link } from 'react-router-dom';
 import { DeepPartial } from '#/shared/utils/type';
 import { showError, showSuccess } from '#/shared/utils/notification';
 import { formatId } from '#/shared/utils/format';
 import { formatDate } from '#/shared/utils/date';
 import Image from '#/shared/components/commons/Image';
 import { ColumnsType } from 'antd/lib/table';
-import { AddSVG, EditSVG, EyeSVG } from '#/assets/svgs';
+import { AddSVG, EditSVG } from '#/assets/svgs';
 import DefaultImage from '#/assets/images/default.png';
 import PaginationPanel from '#/shared/components/commons/PaginationPanel';
 
@@ -32,7 +31,11 @@ export type GetEquipmentsFilter<T = string> = {
   roomId?: number;
 };
 
-function List() {
+interface ListProps {
+  roomId?: number;
+}
+
+function List({ roomId }: ListProps) {
   const [filters, setFilters] = useState<
     GetEquipmentsFilter<boolean> | undefined
   >(undefined);
@@ -50,7 +53,8 @@ function List() {
         orderBy: OrderBy.Desc,
         page: currentPage,
         limit: pageSize,
-        locationId: currentUser?.locationId,
+        locationId: Number(currentUser?.locationId),
+        ...(roomId && { roomId: Number(roomId) }),
         ...filters,
       },
     },
@@ -188,9 +192,6 @@ function List() {
           };
           return (
             <div className="flex items-center justify-center gap-4 text-base text-primary-color">
-              <Link to={`/equipments/${record?.id}`}>
-                <EyeSVG width={24} height={24} />
-              </Link>
               <Button type="link" onClick={onEdit}>
                 <EditSVG width={24} height={24} />
               </Button>
@@ -246,7 +247,7 @@ function List() {
         selectedItem={selectedItem}
         initialValues={selectedItem}
       >
-        <EquipmentForm />
+        <EquipmentForm roomId={roomId} />
       </FormModal>
     </>
   );

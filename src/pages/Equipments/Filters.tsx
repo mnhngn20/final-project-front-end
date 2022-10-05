@@ -6,9 +6,10 @@ import RoomSelector from '#/shared/components/selectors/RoomSelector';
 
 interface Props {
   onFilter: (values: GetEquipmentsFilter) => void;
+  roomId?: number;
 }
 
-function Filter({ onFilter }: Props) {
+function Filter({ onFilter, roomId }: Props) {
   return (
     <FilterWrapper<GetEquipmentsFilter> onFilter={onFilter}>
       <Col xl={6} xs={12}>
@@ -21,11 +22,13 @@ function Filter({ onFilter }: Props) {
           <StatusSelector placeholder="Search by status" className="w-full" />
         </Form.Item>
       </Col>
-      <Col xl={6} xs={12}>
-        <Form.Item name="roomId">
-          <RoomSelector placeholder="Search by room" className="w-full" />
-        </Form.Item>
-      </Col>
+      {!roomId && (
+        <Col xl={6} xs={12}>
+          <Form.Item name="roomId">
+            <RoomSelector placeholder="Search by room" className="w-full" />
+          </Form.Item>
+        </Col>
+      )}
     </FilterWrapper>
   );
 }

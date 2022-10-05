@@ -11,6 +11,7 @@ import { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import RoomForm from '../Form';
 import SideContent from './SideContent';
+import EquipmentList from '#/pages/Equipments/List';
 
 function Detail() {
   const { id } = useParams();
@@ -52,9 +53,12 @@ function Detail() {
         title="Location Detail"
         mainContent={<SideContent room={room ?? {}} />}
         sideContent={
-          <ImageCarousel
-            images={room?.images ? room?.images?.split(',') : []}
-          />
+          <div className="flex flex-col gap-4">
+            <ImageCarousel
+              images={room?.images ? room?.images?.split(',') : []}
+            />
+            <EquipmentList roomId={Number(id)} />
+          </div>
         }
         onEdit={() => setEditModalVisible(true)}
       />

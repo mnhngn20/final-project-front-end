@@ -50,7 +50,7 @@ function List() {
         orderBy: OrderBy.Desc,
         page: currentPage,
         limit: pageSize,
-        locationId: currentUser?.locationId,
+        locationId: Number(currentUser?.locationId),
         ...filters,
       },
     },

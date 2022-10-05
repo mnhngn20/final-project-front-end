@@ -2,7 +2,11 @@ import { Form, Input, Switch } from 'antd';
 import UploadImage from '#/shared/components/commons/UploadImage';
 import RoomSelector from '#/shared/components/selectors/RoomSelector';
 
-function UserForm() {
+interface EquipmentFormProps {
+  roomId?: number;
+}
+
+function EquipmentForm({ roomId }: EquipmentFormProps) {
   return (
     <>
       <Form.Item
@@ -20,7 +24,12 @@ function UserForm() {
       >
         <Input type="text" placeholder="Enter equipment name" />
       </Form.Item>
-      <Form.Item name="roomId" label="Room" rules={[{ required: true }]}>
+      <Form.Item
+        name="roomId"
+        label="Room"
+        rules={[{ required: true }]}
+        initialValue={String(roomId)}
+      >
         <RoomSelector placeholder="Select Room" />
       </Form.Item>
       <Form.Item name="description" label="Description">
@@ -37,4 +46,4 @@ function UserForm() {
   );
 }
 
-export default UserForm;
+export default EquipmentForm;
