@@ -1,0 +1,8 @@
+mutation upsertLocation($input: UpsertLocationInput!) {
+  upsertLocation(input: $input) {
+    message
+    location {
+      id
+    }
+  }
+}

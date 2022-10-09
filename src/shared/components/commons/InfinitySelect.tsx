@@ -40,6 +40,13 @@ export function convertDataToSelectOptions<T>(
   }));
 }
 
+const getValue = (value?: SelectValue | null) => {
+  if (typeof value === 'object') {
+    return value;
+  }
+  return value && String(value);
+};
+
 function InfinitySelect<Query, QueryVariables, Type>({
   query,
   formatData,
@@ -79,7 +86,7 @@ function InfinitySelect<Query, QueryVariables, Type>({
 
   return (
     <Select
-      value={value && String(value)}
+      value={getValue(value)}
       onPopupScroll={loadMore}
       loading={loading}
       options={options}

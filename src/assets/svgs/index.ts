@@ -35,3 +35,5 @@ export { ReactComponent as EyeSVG } from './eye.svg';
 export { ReactComponent as DevicesOutlineSVG } from './devices-outline.svg';
 export { ReactComponent as SquareDollarOutlineSVG } from './square-dollar-outline.svg';
 export { ReactComponent as LampFilledSVG } from './lamp-filled.svg';
+export { ReactComponent as BuildingFilledSVG } from './building-filled.svg';
+export { ReactComponent as DevicesFilledSVG } from './devices-filled.svg';

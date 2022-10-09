@@ -1,0 +1,31 @@
+query getLocation($id: Float!) {
+  getLocation(id: $id) {
+    message
+    location {
+      id
+      name
+      address
+      long
+      lat
+      images
+      thumbnail
+      description
+      numOfFloor
+      income
+      isActive
+      createdAt
+      locationServices {
+        id
+        name
+        description
+      }
+      contactInformations {
+        address
+        name
+        id
+        phoneNumber
+        email
+      }
+    }
+  }
+}

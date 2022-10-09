@@ -8,9 +8,10 @@ import RightContentHeader from './RightContentHeader';
 import Logo from '#/assets/images/logo.png';
 import { appConfig } from '#/configs/config';
 import {
+  BuildingFilledSVG,
   CustomerSVG,
   DashboardSVG,
-  DevicesOutlineSVG,
+  DevicesFilledSVG,
   HouseSVG,
   LampFilledSVG,
 } from '#/assets/svgs';
@@ -45,6 +46,11 @@ function PrivateLayout({
         path: '/',
       },
       {
+        icon: <Icon component={BuildingFilledSVG} />,
+        name: 'My Location',
+        path: '/my-location',
+      },
+      {
         icon: <Icon component={CustomerSVG} />,
         name: 'Customers',
         path: '/customers',
@@ -55,7 +61,7 @@ function PrivateLayout({
         path: '/rooms',
       },
       {
-        icon: <Icon component={DevicesOutlineSVG} />,
+        icon: <Icon component={DevicesFilledSVG} />,
         name: 'Equipments',
         path: '/equipments',
       },

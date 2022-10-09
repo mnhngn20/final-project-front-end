@@ -605,6 +605,7 @@ export type UpsertLocationInput = {
   images?: InputMaybe<Scalars['String']>;
   isActive?: InputMaybe<Scalars['Boolean']>;
   lat?: InputMaybe<Scalars['Float']>;
+  locationServiceIds?: InputMaybe<Array<Scalars['Float']>>;
   long?: InputMaybe<Scalars['Float']>;
   name?: InputMaybe<Scalars['String']>;
   numOfFloor: Scalars['Float'];
@@ -1132,6 +1133,59 @@ export type UpsertEquipmentMutationOptions = Apollo.BaseMutationOptions<
   UpsertEquipmentMutation,
   UpsertEquipmentMutationVariables
 >;
+export const UpsertLocationDocument = gql`
+  mutation upsertLocation($input: UpsertLocationInput!) {
+    upsertLocation(input: $input) {
+      message
+      location {
+        id
+      }
+    }
+  }
+`;
+export type UpsertLocationMutationFn = Apollo.MutationFunction<
+  UpsertLocationMutation,
+  UpsertLocationMutationVariables
+>;
+
+/**
+ * __useUpsertLocationMutation__
+ *
+ * To run a mutation, you first call `useUpsertLocationMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpsertLocationMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [upsertLocationMutation, { data, loading, error }] = useUpsertLocationMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useUpsertLocationMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    UpsertLocationMutation,
+    UpsertLocationMutationVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<
+    UpsertLocationMutation,
+    UpsertLocationMutationVariables
+  >(UpsertLocationDocument, options);
+}
+export type UpsertLocationMutationHookResult = ReturnType<
+  typeof useUpsertLocationMutation
+>;
+export type UpsertLocationMutationResult =
+  Apollo.MutationResult<UpsertLocationMutation>;
+export type UpsertLocationMutationOptions = Apollo.BaseMutationOptions<
+  UpsertLocationMutation,
+  UpsertLocationMutationVariables
+>;
 export const UpsertRoomDocument = gql`
   mutation upsertRoom($input: UpsertRoomInput!) {
     upsertRoom(input: $input) {
@@ -1556,6 +1610,165 @@ export function refetchGetEquipmentsQuery(
   variables: GetEquipmentsQueryVariables,
 ) {
   return { query: GetEquipmentsDocument, variables: variables };
+}
+export const GetLocationDocument = gql`
+  query getLocation($id: Float!) {
+    getLocation(id: $id) {
+      message
+      location {
+        id
+        name
+        address
+        long
+        lat
+        images
+        thumbnail
+        description
+        numOfFloor
+        income
+        isActive
+        createdAt
+        locationServices {
+          id
+          name
+          description
+        }
+        contactInformations {
+          address
+          name
+          id
+          phoneNumber
+          email
+        }
+      }
+    }
+  }
+`;
+
+/**
+ * __useGetLocationQuery__
+ *
+ * To run a query within a React component, call `useGetLocationQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetLocationQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetLocationQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useGetLocationQuery(
+  baseOptions: Apollo.QueryHookOptions<
+    GetLocationQuery,
+    GetLocationQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<GetLocationQuery, GetLocationQueryVariables>(
+    GetLocationDocument,
+    options,
+  );
+}
+export function useGetLocationLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    GetLocationQuery,
+    GetLocationQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<GetLocationQuery, GetLocationQueryVariables>(
+    GetLocationDocument,
+    options,
+  );
+}
+export type GetLocationQueryHookResult = ReturnType<typeof useGetLocationQuery>;
+export type GetLocationLazyQueryHookResult = ReturnType<
+  typeof useGetLocationLazyQuery
+>;
+export type GetLocationQueryResult = Apollo.QueryResult<
+  GetLocationQuery,
+  GetLocationQueryVariables
+>;
+export function refetchGetLocationQuery(variables: GetLocationQueryVariables) {
+  return { query: GetLocationDocument, variables: variables };
+}
+export const GetLocationServicesDocument = gql`
+  query getLocationServices($input: GetLocationServicesInput!) {
+    getLocationServices(input: $input) {
+      page
+      total
+      totalPages
+      message
+      items {
+        id
+        name
+        description
+        isActive
+        createdAt
+        updatedAt
+      }
+    }
+  }
+`;
+
+/**
+ * __useGetLocationServicesQuery__
+ *
+ * To run a query within a React component, call `useGetLocationServicesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetLocationServicesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetLocationServicesQuery({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useGetLocationServicesQuery(
+  baseOptions: Apollo.QueryHookOptions<
+    GetLocationServicesQuery,
+    GetLocationServicesQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<
+    GetLocationServicesQuery,
+    GetLocationServicesQueryVariables
+  >(GetLocationServicesDocument, options);
+}
+export function useGetLocationServicesLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    GetLocationServicesQuery,
+    GetLocationServicesQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<
+    GetLocationServicesQuery,
+    GetLocationServicesQueryVariables
+  >(GetLocationServicesDocument, options);
+}
+export type GetLocationServicesQueryHookResult = ReturnType<
+  typeof useGetLocationServicesQuery
+>;
+export type GetLocationServicesLazyQueryHookResult = ReturnType<
+  typeof useGetLocationServicesLazyQuery
+>;
+export type GetLocationServicesQueryResult = Apollo.QueryResult<
+  GetLocationServicesQuery,
+  GetLocationServicesQueryVariables
+>;
+export function refetchGetLocationServicesQuery(
+  variables: GetLocationServicesQueryVariables,
+) {
+  return { query: GetLocationServicesDocument, variables: variables };
 }
 export const GetRoomDocument = gql`
   query getRoom($id: Float!) {
@@ -2030,6 +2243,14 @@ export type UpsertEquipmentMutation = {
   };
 };
 
+export type UpsertLocationMutationVariables = Exact<{
+  input: UpsertLocationInput;
+}>;
+
+export type UpsertLocationMutation = {
+  upsertLocation: { message?: string | null; location?: { id: string } | null };
+};
+
 export type UpsertRoomMutationVariables = Exact<{
   input: UpsertRoomInput;
 }>;
@@ -2136,6 +2357,63 @@ export type GetEquipmentsQuery = {
       updatedAt: any;
       room: { id: string; name?: string | null };
       location: { id: string; name: string };
+    }>;
+  };
+};
+
+export type GetLocationQueryVariables = Exact<{
+  id: Scalars['Float'];
+}>;
+
+export type GetLocationQuery = {
+  getLocation: {
+    message?: string | null;
+    location?: {
+      id: string;
+      name: string;
+      address: string;
+      long?: number | null;
+      lat?: number | null;
+      images?: string | null;
+      thumbnail?: string | null;
+      description?: string | null;
+      numOfFloor?: number | null;
+      income: number;
+      isActive: boolean;
+      createdAt: any;
+      locationServices: Array<{
+        id: string;
+        name: string;
+        description?: string | null;
+      }>;
+      contactInformations?: Array<{
+        address?: string | null;
+        name?: string | null;
+        id: string;
+        phoneNumber?: string | null;
+        email?: string | null;
+      }> | null;
+    } | null;
+  };
+};
+
+export type GetLocationServicesQueryVariables = Exact<{
+  input: GetLocationServicesInput;
+}>;
+
+export type GetLocationServicesQuery = {
+  getLocationServices: {
+    page?: number | null;
+    total?: number | null;
+    totalPages?: number | null;
+    message?: string | null;
+    items: Array<{
+      id: string;
+      name: string;
+      description?: string | null;
+      isActive: boolean;
+      createdAt: any;
+      updatedAt: any;
     }>;
   };
 };

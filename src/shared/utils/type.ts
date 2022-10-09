@@ -17,6 +17,11 @@ export interface NavItem {
   icon?: JSX.Element;
 }
 
+export type Coordinates = {
+  lat: number;
+  long: number;
+};
+
 export type DeepPartial<T> = T extends Primitive
   ? T
   : { [P in keyof T]?: DeepPartial<T[P]> };

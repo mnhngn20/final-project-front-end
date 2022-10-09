@@ -14,6 +14,7 @@ const Rooms = loadable(import('#/pages/Rooms'));
 const RoomDetail = loadable(import('#/pages/Rooms/Detail'));
 const Equipments = loadable(import('#/pages/Equipments'));
 const Amenities = loadable(import('#/pages/Amenities'));
+const Location = loadable(import('#/pages/Location'));
 
 function PrivateRoute() {
   const { pathname } = useLocation();
@@ -34,6 +35,15 @@ function PrivateRoute() {
   };
 
   const routes = useRoutes([
+    {
+      path: '/my-location',
+      children: [
+        {
+          index: true,
+          element: <Location />,
+        },
+      ],
+    },
     {
       path: '/customers',
       children: [
