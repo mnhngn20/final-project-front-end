@@ -1,23 +1,22 @@
-query getEquipments($input: GetEquipmentsInput!) {
-  getEquipments(input: $input) {
+query getAmenities($input: GetAmenitiesInput!) {
+  getAmenities(input: $input) {
     page
     total
     totalPages
     message
     items {
       id
-      roomId
-      locationId
       name
       description
-      image
       isActive
-      room {
+      amenityTypeId
+      amenityType {
         id
         name
+        description
       }
+      locationId
       location {
-        id
         name
       }
       createdAt

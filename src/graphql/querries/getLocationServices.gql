@@ -1,0 +1,16 @@
+query getLocationServices($input: GetLocationServicesInput!) {
+  getLocationServices(input: $input) {
+    page
+    total
+    totalPages
+    message
+    items {
+      id
+      name
+      description
+      isActive
+      createdAt
+      updatedAt
+    }
+  }
+}

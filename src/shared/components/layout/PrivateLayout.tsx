@@ -12,6 +12,7 @@ import {
   DashboardSVG,
   DevicesOutlineSVG,
   HouseSVG,
+  LampFilledSVG,
 } from '#/assets/svgs';
 import { User } from '#/generated/schemas';
 import { MenuSidebarItem } from '../commons/MenuSideBarItem';
@@ -57,6 +58,11 @@ function PrivateLayout({
         icon: <Icon component={DevicesOutlineSVG} />,
         name: 'Equipments',
         path: '/equipments',
+      },
+      {
+        icon: <Icon component={LampFilledSVG} />,
+        name: 'Amenities',
+        path: '/amenities',
       },
     ],
   };

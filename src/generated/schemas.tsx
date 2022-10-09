@@ -22,6 +22,56 @@ export type Scalars = {
   DateTime: any;
 };
 
+export type Amenity = {
+  amenityType: AmenityType;
+  amenityTypeId: Scalars['Float'];
+  createdAt: Scalars['DateTime'];
+  description?: Maybe<Scalars['String']>;
+  id: Scalars['ID'];
+  isActive: Scalars['Boolean'];
+  location: Location;
+  locationId: Scalars['Float'];
+  name: Scalars['String'];
+  updatedAt: Scalars['DateTime'];
+};
+
+export type AmenityListResponse = ListResponse & {
+  items: Array<Amenity>;
+  message?: Maybe<Scalars['String']>;
+  page?: Maybe<Scalars['Float']>;
+  total?: Maybe<Scalars['Float']>;
+  totalPages?: Maybe<Scalars['Float']>;
+};
+
+export type AmenityResponse = IResponse & {
+  amenity?: Maybe<Amenity>;
+  message?: Maybe<Scalars['String']>;
+};
+
+export type AmenityType = {
+  amenities?: Maybe<Array<Amenity>>;
+  createdAt: Scalars['DateTime'];
+  description?: Maybe<Scalars['String']>;
+  icon?: Maybe<Scalars['String']>;
+  id: Scalars['ID'];
+  isActive: Scalars['Boolean'];
+  name: Scalars['String'];
+  updatedAt: Scalars['DateTime'];
+};
+
+export type AmenityTypeListResponse = ListResponse & {
+  items: Array<AmenityType>;
+  message?: Maybe<Scalars['String']>;
+  page?: Maybe<Scalars['Float']>;
+  total?: Maybe<Scalars['Float']>;
+  totalPages?: Maybe<Scalars['Float']>;
+};
+
+export type AmenityTypeResponse = IResponse & {
+  amenityType?: Maybe<AmenityType>;
+  message?: Maybe<Scalars['String']>;
+};
+
 export type ChangePasswordInput = {
   oldPassword: Scalars['String'];
   password: Scalars['String'];
@@ -88,6 +138,23 @@ export type GetAccessTokenInput = {
   refreshToken: Scalars['String'];
 };
 
+export type GetAmenitiesInput = {
+  amenityTypeId?: InputMaybe<Scalars['Float']>;
+  isActive?: InputMaybe<Scalars['Boolean']>;
+  limit?: InputMaybe<Scalars['Float']>;
+  locationId?: InputMaybe<Scalars['Float']>;
+  name?: InputMaybe<Scalars['String']>;
+  orderBy?: InputMaybe<OrderBy>;
+  page?: InputMaybe<Scalars['Float']>;
+};
+
+export type GetAmenityTypesInput = {
+  limit?: InputMaybe<Scalars['Float']>;
+  name?: InputMaybe<Scalars['String']>;
+  orderBy?: InputMaybe<OrderBy>;
+  page?: InputMaybe<Scalars['Float']>;
+};
+
 export type GetEquipmentsInput = {
   isActive?: InputMaybe<Scalars['Boolean']>;
   limit?: InputMaybe<Scalars['Float']>;
@@ -96,6 +163,14 @@ export type GetEquipmentsInput = {
   orderBy?: InputMaybe<OrderBy>;
   page?: InputMaybe<Scalars['Float']>;
   roomId?: InputMaybe<Scalars['Float']>;
+};
+
+export type GetLocationServicesInput = {
+  isActive?: InputMaybe<Scalars['Boolean']>;
+  limit?: InputMaybe<Scalars['Float']>;
+  name?: InputMaybe<Scalars['String']>;
+  orderBy?: InputMaybe<OrderBy>;
+  page?: InputMaybe<Scalars['Float']>;
 };
 
 export type GetLocationsInput = {
@@ -152,6 +227,7 @@ export type ListUserResponse = ListResponse & {
 
 export type Location = {
   address: Scalars['String'];
+  amenities: Array<Amenity>;
   contactInformations?: Maybe<Array<ContactInformation>>;
   createdAt: Scalars['DateTime'];
   description?: Maybe<Scalars['String']>;
@@ -161,6 +237,7 @@ export type Location = {
   income: Scalars['Float'];
   isActive: Scalars['Boolean'];
   lat?: Maybe<Scalars['Float']>;
+  locationServices: Array<LocationService>;
   long?: Maybe<Scalars['Float']>;
   name: Scalars['String'];
   numOfFloor?: Maybe<Scalars['Float']>;
@@ -191,6 +268,29 @@ export type LocationResponse = IResponse & {
   message?: Maybe<Scalars['String']>;
 };
 
+export type LocationService = {
+  createdAt: Scalars['DateTime'];
+  description?: Maybe<Scalars['String']>;
+  id: Scalars['ID'];
+  isActive: Scalars['Boolean'];
+  location: Array<Location>;
+  name: Scalars['String'];
+  updatedAt: Scalars['DateTime'];
+};
+
+export type LocationServiceListResponse = ListResponse & {
+  items: Array<LocationService>;
+  message?: Maybe<Scalars['String']>;
+  page?: Maybe<Scalars['Float']>;
+  total?: Maybe<Scalars['Float']>;
+  totalPages?: Maybe<Scalars['Float']>;
+};
+
+export type LocationServiceResponse = IResponse & {
+  locationService?: Maybe<LocationService>;
+  message?: Maybe<Scalars['String']>;
+};
+
 export type LoginResponse = IResponse & {
   accessToken?: Maybe<Scalars['String']>;
   message?: Maybe<Scalars['String']>;
@@ -207,12 +307,16 @@ export type Mutation = {
   register: UserResponse;
   resetPassword: ResetPasswordResponse;
   resetPasswordConfirm: ResetPasswordResponse;
+  updateAmenityStatus: AmenityResponse;
   updateEquipmentStatus: EquipmentResponse;
   updateLocationStatus: LocationResponse;
   updateMe: UserResponse;
   updateUser: UserResponse;
+  upsertAmenity: AmenityResponse;
+  upsertAmenityType: AmenityTypeResponse;
   upsertEquipment: EquipmentResponse;
   upsertLocation: LocationResponse;
+  upsertLocationService: LocationServiceResponse;
   upsertRoom: RoomResponse;
 };
 
@@ -248,6 +352,10 @@ export type MutationResetPasswordConfirmArgs = {
   input: ResetPasswordConfirmInput;
 };
 
+export type MutationUpdateAmenityStatusArgs = {
+  input: UpdateAmenityStatusInput;
+};
+
 export type MutationUpdateEquipmentStatusArgs = {
   input: UpdateEquipmentStatusInput;
 };
@@ -264,12 +372,24 @@ export type MutationUpdateUserArgs = {
   input: UpdateUserInput;
 };
 
+export type MutationUpsertAmenityArgs = {
+  input: UpsertAmenityInput;
+};
+
+export type MutationUpsertAmenityTypeArgs = {
+  input: UpsertAmenityTypeInput;
+};
+
 export type MutationUpsertEquipmentArgs = {
   input: UpsertEquipmentInput;
 };
 
 export type MutationUpsertLocationArgs = {
   input: UpsertLocationInput;
+};
+
+export type MutationUpsertLocationServiceArgs = {
+  input: UpsertLocationServiceInput;
 };
 
 export type MutationUpsertRoomArgs = {
@@ -282,15 +402,37 @@ export enum OrderBy {
 }
 
 export type Query = {
+  getAmenities: AmenityListResponse;
+  getAmenity: AmenityResponse;
+  getAmenityType: AmenityTypeResponse;
+  getAmenityTypes: AmenityTypeListResponse;
   getEquipment: EquipmentResponse;
   getEquipments: EquipmentListResponse;
   getLocation: LocationResponse;
+  getLocationService: LocationServiceResponse;
+  getLocationServices: LocationServiceListResponse;
   getLocations: LocationListResponse;
   getRoom: RoomResponse;
   getRooms: RoomListResponse;
   getUser: UserResponse;
   getUsers: ListUserResponse;
   me: UserResponse;
+};
+
+export type QueryGetAmenitiesArgs = {
+  input: GetAmenitiesInput;
+};
+
+export type QueryGetAmenityArgs = {
+  id: Scalars['Float'];
+};
+
+export type QueryGetAmenityTypeArgs = {
+  id: Scalars['Float'];
+};
+
+export type QueryGetAmenityTypesArgs = {
+  input: GetAmenityTypesInput;
 };
 
 export type QueryGetEquipmentArgs = {
@@ -303,6 +445,14 @@ export type QueryGetEquipmentsArgs = {
 
 export type QueryGetLocationArgs = {
   id: Scalars['Float'];
+};
+
+export type QueryGetLocationServiceArgs = {
+  id: Scalars['Float'];
+};
+
+export type QueryGetLocationServicesArgs = {
+  input: GetLocationServicesInput;
 };
 
 export type QueryGetLocationsArgs = {
@@ -386,6 +536,11 @@ export enum UserRole {
   SuperAdmin = 'SuperAdmin',
 }
 
+export type UpdateAmenityStatusInput = {
+  id: Scalars['Float'];
+  isActive?: InputMaybe<Scalars['Boolean']>;
+};
+
 export type UpdateEquipmentStatusInput = {
   id: Scalars['Float'];
   isActive?: InputMaybe<Scalars['Boolean']>;
@@ -416,6 +571,23 @@ export type UpdateUserInput = {
   roomId?: InputMaybe<Scalars['Float']>;
 };
 
+export type UpsertAmenityInput = {
+  amenityTypeId: Scalars['Float'];
+  description?: InputMaybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['Float']>;
+  isActive?: InputMaybe<Scalars['Boolean']>;
+  locationId?: InputMaybe<Scalars['Float']>;
+  name?: InputMaybe<Scalars['String']>;
+};
+
+export type UpsertAmenityTypeInput = {
+  description?: InputMaybe<Scalars['String']>;
+  icon?: InputMaybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['Float']>;
+  isActive?: InputMaybe<Scalars['Boolean']>;
+  name?: InputMaybe<Scalars['String']>;
+};
+
 export type UpsertEquipmentInput = {
   description?: InputMaybe<Scalars['String']>;
   id?: InputMaybe<Scalars['Float']>;
@@ -437,6 +609,13 @@ export type UpsertLocationInput = {
   name?: InputMaybe<Scalars['String']>;
   numOfFloor: Scalars['Float'];
   thumbnail?: InputMaybe<Scalars['String']>;
+};
+
+export type UpsertLocationServiceInput = {
+  description?: InputMaybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['Float']>;
+  isActive?: InputMaybe<Scalars['Boolean']>;
+  name?: InputMaybe<Scalars['String']>;
 };
 
 export type UpsertRoomInput = {
@@ -638,6 +817,59 @@ export type RegisterMutationOptions = Apollo.BaseMutationOptions<
   RegisterMutation,
   RegisterMutationVariables
 >;
+export const UpdateAmenityStatusDocument = gql`
+  mutation updateAmenityStatus($input: UpdateAmenityStatusInput!) {
+    updateAmenityStatus(input: $input) {
+      message
+      amenity {
+        id
+      }
+    }
+  }
+`;
+export type UpdateAmenityStatusMutationFn = Apollo.MutationFunction<
+  UpdateAmenityStatusMutation,
+  UpdateAmenityStatusMutationVariables
+>;
+
+/**
+ * __useUpdateAmenityStatusMutation__
+ *
+ * To run a mutation, you first call `useUpdateAmenityStatusMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateAmenityStatusMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateAmenityStatusMutation, { data, loading, error }] = useUpdateAmenityStatusMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useUpdateAmenityStatusMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    UpdateAmenityStatusMutation,
+    UpdateAmenityStatusMutationVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<
+    UpdateAmenityStatusMutation,
+    UpdateAmenityStatusMutationVariables
+  >(UpdateAmenityStatusDocument, options);
+}
+export type UpdateAmenityStatusMutationHookResult = ReturnType<
+  typeof useUpdateAmenityStatusMutation
+>;
+export type UpdateAmenityStatusMutationResult =
+  Apollo.MutationResult<UpdateAmenityStatusMutation>;
+export type UpdateAmenityStatusMutationOptions = Apollo.BaseMutationOptions<
+  UpdateAmenityStatusMutation,
+  UpdateAmenityStatusMutationVariables
+>;
 export const UpdateEquipmentStatusDocument = gql`
   mutation updateEquipmentStatus($input: UpdateEquipmentStatusInput!) {
     updateEquipmentStatus(input: $input) {
@@ -794,6 +1026,59 @@ export type UpdateUserMutationOptions = Apollo.BaseMutationOptions<
   UpdateUserMutation,
   UpdateUserMutationVariables
 >;
+export const UpsertAmenityDocument = gql`
+  mutation upsertAmenity($input: UpsertAmenityInput!) {
+    upsertAmenity(input: $input) {
+      message
+      amenity {
+        id
+      }
+    }
+  }
+`;
+export type UpsertAmenityMutationFn = Apollo.MutationFunction<
+  UpsertAmenityMutation,
+  UpsertAmenityMutationVariables
+>;
+
+/**
+ * __useUpsertAmenityMutation__
+ *
+ * To run a mutation, you first call `useUpsertAmenityMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpsertAmenityMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [upsertAmenityMutation, { data, loading, error }] = useUpsertAmenityMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useUpsertAmenityMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    UpsertAmenityMutation,
+    UpsertAmenityMutationVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<
+    UpsertAmenityMutation,
+    UpsertAmenityMutationVariables
+  >(UpsertAmenityDocument, options);
+}
+export type UpsertAmenityMutationHookResult = ReturnType<
+  typeof useUpsertAmenityMutation
+>;
+export type UpsertAmenityMutationResult =
+  Apollo.MutationResult<UpsertAmenityMutation>;
+export type UpsertAmenityMutationOptions = Apollo.BaseMutationOptions<
+  UpsertAmenityMutation,
+  UpsertAmenityMutationVariables
+>;
 export const UpsertEquipmentDocument = gql`
   mutation upsertEquipment($input: UpsertEquipmentInput!) {
     upsertEquipment(input: $input) {
@@ -948,6 +1233,165 @@ export type ChangeUserStatusMutationOptions = Apollo.BaseMutationOptions<
   ChangeUserStatusMutation,
   ChangeUserStatusMutationVariables
 >;
+export const GetAmenitiesDocument = gql`
+  query getAmenities($input: GetAmenitiesInput!) {
+    getAmenities(input: $input) {
+      page
+      total
+      totalPages
+      message
+      items {
+        id
+        name
+        description
+        isActive
+        amenityTypeId
+        amenityType {
+          id
+          name
+          description
+        }
+        locationId
+        location {
+          name
+        }
+        createdAt
+        updatedAt
+      }
+    }
+  }
+`;
+
+/**
+ * __useGetAmenitiesQuery__
+ *
+ * To run a query within a React component, call `useGetAmenitiesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetAmenitiesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetAmenitiesQuery({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useGetAmenitiesQuery(
+  baseOptions: Apollo.QueryHookOptions<
+    GetAmenitiesQuery,
+    GetAmenitiesQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<GetAmenitiesQuery, GetAmenitiesQueryVariables>(
+    GetAmenitiesDocument,
+    options,
+  );
+}
+export function useGetAmenitiesLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    GetAmenitiesQuery,
+    GetAmenitiesQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<GetAmenitiesQuery, GetAmenitiesQueryVariables>(
+    GetAmenitiesDocument,
+    options,
+  );
+}
+export type GetAmenitiesQueryHookResult = ReturnType<
+  typeof useGetAmenitiesQuery
+>;
+export type GetAmenitiesLazyQueryHookResult = ReturnType<
+  typeof useGetAmenitiesLazyQuery
+>;
+export type GetAmenitiesQueryResult = Apollo.QueryResult<
+  GetAmenitiesQuery,
+  GetAmenitiesQueryVariables
+>;
+export function refetchGetAmenitiesQuery(
+  variables: GetAmenitiesQueryVariables,
+) {
+  return { query: GetAmenitiesDocument, variables: variables };
+}
+export const GetAmenityTypesDocument = gql`
+  query getAmenityTypes($input: GetAmenityTypesInput!) {
+    getAmenityTypes(input: $input) {
+      page
+      total
+      totalPages
+      message
+      items {
+        id
+        name
+        icon
+        description
+        isActive
+        createdAt
+        updatedAt
+      }
+    }
+  }
+`;
+
+/**
+ * __useGetAmenityTypesQuery__
+ *
+ * To run a query within a React component, call `useGetAmenityTypesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetAmenityTypesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetAmenityTypesQuery({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useGetAmenityTypesQuery(
+  baseOptions: Apollo.QueryHookOptions<
+    GetAmenityTypesQuery,
+    GetAmenityTypesQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<GetAmenityTypesQuery, GetAmenityTypesQueryVariables>(
+    GetAmenityTypesDocument,
+    options,
+  );
+}
+export function useGetAmenityTypesLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    GetAmenityTypesQuery,
+    GetAmenityTypesQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<
+    GetAmenityTypesQuery,
+    GetAmenityTypesQueryVariables
+  >(GetAmenityTypesDocument, options);
+}
+export type GetAmenityTypesQueryHookResult = ReturnType<
+  typeof useGetAmenityTypesQuery
+>;
+export type GetAmenityTypesLazyQueryHookResult = ReturnType<
+  typeof useGetAmenityTypesLazyQuery
+>;
+export type GetAmenityTypesQueryResult = Apollo.QueryResult<
+  GetAmenityTypesQuery,
+  GetAmenityTypesQueryVariables
+>;
+export function refetchGetAmenityTypesQuery(
+  variables: GetAmenityTypesQueryVariables,
+) {
+  return { query: GetAmenityTypesDocument, variables: variables };
+}
 export const GetEquipmentDocument = gql`
   query getEquipment($id: Float!) {
     getEquipment(id: $id) {
@@ -1044,9 +1488,11 @@ export const GetEquipmentsDocument = gql`
         image
         isActive
         room {
+          id
           name
         }
         location {
+          id
           name
         }
         createdAt
@@ -1527,6 +1973,17 @@ export type RegisterMutationVariables = Exact<{
 
 export type RegisterMutation = { register: { message?: string | null } };
 
+export type UpdateAmenityStatusMutationVariables = Exact<{
+  input: UpdateAmenityStatusInput;
+}>;
+
+export type UpdateAmenityStatusMutation = {
+  updateAmenityStatus: {
+    message?: string | null;
+    amenity?: { id: string } | null;
+  };
+};
+
 export type UpdateEquipmentStatusMutationVariables = Exact<{
   input: UpdateEquipmentStatusInput;
 }>;
@@ -1554,6 +2011,14 @@ export type UpdateUserMutation = {
   updateUser: { message?: string | null; user?: { id: string } | null };
 };
 
+export type UpsertAmenityMutationVariables = Exact<{
+  input: UpsertAmenityInput;
+}>;
+
+export type UpsertAmenityMutation = {
+  upsertAmenity: { message?: string | null; amenity?: { id: string } | null };
+};
+
 export type UpsertEquipmentMutationVariables = Exact<{
   input: UpsertEquipmentInput;
 }>;
@@ -1578,6 +2043,53 @@ export type ChangeUserStatusMutationVariables = Exact<{
 }>;
 
 export type ChangeUserStatusMutation = { changeUserStatus: string };
+
+export type GetAmenitiesQueryVariables = Exact<{
+  input: GetAmenitiesInput;
+}>;
+
+export type GetAmenitiesQuery = {
+  getAmenities: {
+    page?: number | null;
+    total?: number | null;
+    totalPages?: number | null;
+    message?: string | null;
+    items: Array<{
+      id: string;
+      name: string;
+      description?: string | null;
+      isActive: boolean;
+      amenityTypeId: number;
+      locationId: number;
+      createdAt: any;
+      updatedAt: any;
+      amenityType: { id: string; name: string; description?: string | null };
+      location: { name: string };
+    }>;
+  };
+};
+
+export type GetAmenityTypesQueryVariables = Exact<{
+  input: GetAmenityTypesInput;
+}>;
+
+export type GetAmenityTypesQuery = {
+  getAmenityTypes: {
+    page?: number | null;
+    total?: number | null;
+    totalPages?: number | null;
+    message?: string | null;
+    items: Array<{
+      id: string;
+      name: string;
+      icon?: string | null;
+      description?: string | null;
+      isActive: boolean;
+      createdAt: any;
+      updatedAt: any;
+    }>;
+  };
+};
 
 export type GetEquipmentQueryVariables = Exact<{
   id: Scalars['Float'];
@@ -1622,8 +2134,8 @@ export type GetEquipmentsQuery = {
       isActive: boolean;
       createdAt: any;
       updatedAt: any;
-      room: { name?: string | null };
-      location: { name: string };
+      room: { id: string; name?: string | null };
+      location: { id: string; name: string };
     }>;
   };
 };

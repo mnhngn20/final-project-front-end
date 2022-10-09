@@ -1,0 +1,8 @@
+mutation updateAmenityStatus($input: UpdateAmenityStatusInput!) {
+  updateAmenityStatus(input: $input) {
+    message
+    amenity {
+      id
+    }
+  }
+}

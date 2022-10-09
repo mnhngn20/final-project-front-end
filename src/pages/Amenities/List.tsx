@@ -1,92 +1,61 @@
-import { Button, Switch, Table, Typography } from 'antd';
+import { Button, Table, Switch, Typography } from 'antd';
 import { useState, useMemo } from 'react';
-import { useReactiveVar } from '@apollo/client';
-import EquipmentForm from './Form';
+import AmenityForm from './Form';
 import Filters from './Filters';
 import {
-  User,
   OrderBy,
-  Equipment,
-  useGetEquipmentsQuery,
-  useUpsertEquipmentMutation,
-  UpsertEquipmentInput,
-  useUpdateEquipmentStatusMutation,
+  Amenity,
+  useGetAmenitiesQuery,
+  UpsertAmenityInput,
+  useUpdateAmenityStatusMutation,
+  useUpsertAmenityMutation,
 } from '#/generated/schemas';
-import { userVar } from '#/graphql/cache';
 import { FormModal } from '#/shared/components/commons/FormModal';
 import { useTable } from '#/shared/hooks/useTable';
 import { DeepPartial } from '#/shared/utils/type';
 import { showError, showSuccess } from '#/shared/utils/notification';
 import { formatId } from '#/shared/utils/format';
 import { formatDate } from '#/shared/utils/date';
-import Image from '#/shared/components/commons/Image';
 import { ColumnsType } from 'antd/lib/table';
 import { AddSVG, EditSVG } from '#/assets/svgs';
-import DefaultImage from '#/assets/images/default.png';
 import PaginationPanel from '#/shared/components/commons/PaginationPanel';
+import { useReactiveVar } from '@apollo/client';
+import { userVar } from '#/graphql/cache';
 
-export type GetEquipmentsFilter<T = string> = {
+export type GetAmenitiesFilter<T = string> = {
+  amenityTypeId?: number;
   name?: string;
   isActive?: T;
-  roomId?: number;
 };
 
-interface ListProps {
-  roomId?: number;
-}
-
-function List({ roomId }: ListProps) {
+function List() {
+  const currentUser = useReactiveVar(userVar);
   const [filters, setFilters] = useState<
-    GetEquipmentsFilter<boolean> | undefined
+    GetAmenitiesFilter<boolean> | undefined
   >(undefined);
-  const currentUser = useReactiveVar(userVar) as User;
   const { pageSize, onChange, currentPage, setCurrentPage } = useTable();
   const [selectedItem, setSelectedItem] = useState<
-    DeepPartial<Equipment> | undefined
+    DeepPartial<Amenity> | undefined
   >(undefined);
   const clearSelectedItem = () => {
     setSelectedItem(undefined);
   };
-  const { data, loading, refetch } = useGetEquipmentsQuery({
+  const { data, loading, refetch } = useGetAmenitiesQuery({
     variables: {
       input: {
         orderBy: OrderBy.Desc,
         page: currentPage,
         limit: pageSize,
-        locationId: Number(currentUser?.locationId),
-        ...(roomId && { roomId: Number(roomId) }),
+        locationId: currentUser.locationId,
         ...filters,
       },
     },
+    fetchPolicy: 'network-only',
   });
-  const equipments = data?.getEquipments?.items ?? [];
+  const users = data?.getAmenities?.items ?? [];
 
-  const [upsertEquipment, { loading: upsertEquipmentLoading }] =
-    useUpsertEquipmentMutation({
-      onCompleted() {
-        showSuccess(
-          selectedItem?.id
-            ? 'Updated equipment successfully!'
-            : 'Created equipment successfully!',
-        );
-        refetch();
-        clearSelectedItem();
-      },
-      onError: showError,
-    });
-
-  const onFilter = ({ name, isActive, roomId }: GetEquipmentsFilter) => {
-    const newFilter = {
-      ...(name && { name }),
-      ...(isActive && { isActive: isActive === 'true' }),
-      ...(roomId && { roomId: Number(roomId) }),
-    };
-    setCurrentPage(1);
-    setFilters(newFilter);
-  };
-
-  const [updateEquipmentStatus, { loading: updateEquipmentStatusLoading }] =
-    useUpdateEquipmentStatusMutation({
+  const [updateAmenityStatus, { loading: updateAmenityStatusLoading }] =
+    useUpdateAmenityStatusMutation({
       onCompleted() {
         showSuccess('Updated status successfully');
         refetch();
@@ -95,30 +64,42 @@ function List({ roomId }: ListProps) {
       onError: showError,
     });
 
-  const onSubmit = ({
-    roomId,
-    image,
-    isActive,
-    name,
-    description,
-  }: UpsertEquipmentInput) => {
-    upsertEquipment({
+  const [upsertAmenity, { loading: upsertAmenityLoading }] =
+    useUpsertAmenityMutation({
+      onCompleted() {
+        showSuccess('Update amenity successfully!');
+        refetch();
+        clearSelectedItem();
+      },
+      onError: showError,
+    });
+
+  const onFilter = ({ name, amenityTypeId, isActive }: GetAmenitiesFilter) => {
+    const newFilter = {
+      ...(name && { name }),
+      ...(amenityTypeId && { amenityTypeId: Number(amenityTypeId) }),
+      ...(isActive && { isActive: isActive === 'true' }),
+    };
+    setCurrentPage(1);
+    setFilters(newFilter);
+  };
+
+  const onSubmit = ({ amenityTypeId, ...values }: UpsertAmenityInput) => {
+    upsertAmenity({
       variables: {
         input: {
-          image,
-          isActive,
-          description,
-          name,
-          roomId: Number(roomId),
+          ...values,
           ...(selectedItem?.id && {
             id: Number(selectedItem?.id),
           }),
+          amenityTypeId: Number(amenityTypeId),
+          locationId: Number(currentUser?.locationId),
         },
       },
     });
   };
 
-  const COLUMNS: ColumnsType<DeepPartial<Equipment>> = useMemo(
+  const COLUMNS: ColumnsType<DeepPartial<Amenity>> = useMemo(
     () => [
       {
         title: 'ID',
@@ -127,35 +108,19 @@ function List({ roomId }: ListProps) {
         render: formatId,
       },
       {
-        title: 'Image',
-        dataIndex: 'image',
-        key: 'image',
-        render(image: string) {
-          return (
-            <Image
-              url={image ?? DefaultImage}
-              width={100}
-              height={100}
-              className="object-cover"
-            />
-          );
-        },
-      },
-      {
-        title: 'Equipment Name',
+        title: 'Amenity Name',
         dataIndex: 'name',
         key: 'name',
       },
       {
-        title: 'Room Name',
-        dataIndex: ['room', 'name'],
-        key: 'roomName',
+        title: 'Card ID',
+        dataIndex: 'identityNumber',
+        key: 'identityNumber',
       },
       {
-        title: 'Created Date',
-        dataIndex: 'createdAt',
-        key: 'createdAt',
-        render: (date: Date) => formatDate(date),
+        title: 'AmenityType',
+        dataIndex: ['amenityType', 'name'],
+        key: 'amenityType',
       },
       {
         title: 'Description',
@@ -163,33 +128,37 @@ function List({ roomId }: ListProps) {
         key: 'description',
       },
       {
+        title: 'Created At',
+        dataIndex: 'createdAt',
+        key: 'createdAt',
+        render: (createdAt: string) => formatDate(createdAt),
+      },
+      {
         title: 'Status',
         dataIndex: 'isActive',
         key: 'isActive',
-        render(isActive: boolean, { id }: DeepPartial<Equipment>) {
-          return (
-            <Switch
-              checked={isActive}
-              onChange={() =>
-                updateEquipmentStatus({
-                  variables: {
-                    input: {
-                      id: Number(id),
-                      isActive: !isActive,
-                    },
+        render: (isActive: boolean, { id }: DeepPartial<Amenity>) => (
+          <Switch
+            checked={isActive}
+            onChange={() =>
+              updateAmenityStatus({
+                variables: {
+                  input: {
+                    id: Number(id),
+                    isActive: !isActive,
                   },
-                })
-              }
-            />
-          );
-        },
+                },
+              })
+            }
+          />
+        ),
       },
       {
         title: '',
         dataIndex: 'id',
         key: 'action',
         fixed: 'right' as const,
-        render: (_: unknown, record: DeepPartial<Equipment>) => {
+        render: (_: unknown, record: DeepPartial<Amenity>) => {
           const onEdit = () => {
             setSelectedItem({
               ...record,
@@ -205,7 +174,7 @@ function List({ roomId }: ListProps) {
         },
       },
     ],
-    [updateEquipmentStatus],
+    [updateAmenityStatus],
   );
 
   return (
@@ -214,45 +183,47 @@ function List({ roomId }: ListProps) {
       <div className="rounded-xl bg-[white] px-4">
         <div className="flex items-center justify-between py-4">
           <Typography className="text-xl font-semibold">
-            Equipment List
+            Amenity List
           </Typography>
           <Button
             type="primary"
-            onClick={() => setSelectedItem({})}
+            className="w-min"
             icon={<AddSVG className="anticon" />}
+            onClick={() => setSelectedItem({})}
           >
             Create
           </Button>
         </div>
         <Table
           rowKey="id"
-          dataSource={equipments as DeepPartial<Equipment>[]}
+          dataSource={users as unknown as DeepPartial<Amenity>[]}
           columns={COLUMNS}
           scroll={{ x: 'max-content' }}
           loading={
-            loading || upsertEquipmentLoading || updateEquipmentStatusLoading
+            loading || upsertAmenityLoading || updateAmenityStatusLoading
           }
           onChange={onChange}
           pagination={false}
         />
+
         <PaginationPanel
           current={currentPage ?? 1}
           pageSize={10}
-          total={data?.getEquipments?.total ?? 0}
+          total={data?.getAmenities?.total ?? 0}
           setCurrentPage={setCurrentPage}
           className="flex justify-end py-6 pr-6"
           showQuickJumper
         />
       </div>
-      <FormModal<UpsertEquipmentInput>
-        loading={upsertEquipmentLoading}
+      <FormModal<UpsertAmenityInput>
+        loading={upsertAmenityLoading}
         onSubmit={onSubmit}
-        name="Equipment"
+        name="Amenity"
         onClose={clearSelectedItem}
         selectedItem={selectedItem}
         initialValues={selectedItem}
       >
-        <EquipmentForm roomId={roomId} />
+        <AmenityForm />
       </FormModal>
     </>
   );

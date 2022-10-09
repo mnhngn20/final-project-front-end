@@ -1,0 +1,17 @@
+query getAmenityTypes($input: GetAmenityTypesInput!) {
+  getAmenityTypes(input: $input) {
+    page
+    total
+    totalPages
+    message
+    items {
+      id
+      name
+      icon
+      description
+      isActive
+      createdAt
+      updatedAt
+    }
+  }
+}

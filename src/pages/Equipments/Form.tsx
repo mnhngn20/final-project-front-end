@@ -1,12 +1,14 @@
 import { Form, Input, Switch } from 'antd';
 import UploadImage from '#/shared/components/commons/UploadImage';
 import RoomSelector from '#/shared/components/selectors/RoomSelector';
+import { Equipment } from '#/generated/schemas';
 
 interface EquipmentFormProps {
   roomId?: number;
+  initialValues?: Equipment;
 }
 
-function EquipmentForm({ roomId }: EquipmentFormProps) {
+function EquipmentForm({ roomId, initialValues }: EquipmentFormProps) {
   return (
     <>
       <Form.Item
@@ -28,9 +30,12 @@ function EquipmentForm({ roomId }: EquipmentFormProps) {
         name="roomId"
         label="Room"
         rules={[{ required: true }]}
-        initialValue={String(roomId)}
+        {...(roomId ? { initialValue: String(roomId) } : {})}
       >
-        <RoomSelector placeholder="Select Room" />
+        <RoomSelector
+          placeholder="Select Room"
+          initValues={initialValues?.room ? [initialValues?.room] : []}
+        />
       </Form.Item>
       <Form.Item name="description" label="Description">
         <Input.TextArea rows={3} placeholder="Enter equipment description" />

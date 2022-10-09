@@ -13,6 +13,7 @@ const Profile = loadable(import('#/pages/Profile'));
 const Rooms = loadable(import('#/pages/Rooms'));
 const RoomDetail = loadable(import('#/pages/Rooms/Detail'));
 const Equipments = loadable(import('#/pages/Equipments'));
+const Amenities = loadable(import('#/pages/Amenities'));
 
 function PrivateRoute() {
   const { pathname } = useLocation();
@@ -43,6 +44,15 @@ function PrivateRoute() {
         {
           path: ':id',
           element: <CustomerDetail />,
+        },
+      ],
+    },
+    {
+      path: '/amenities',
+      children: [
+        {
+          index: true,
+          element: <Amenities />,
         },
       ],
     },

@@ -1,0 +1,8 @@
+mutation upsertAmenity($input: UpsertAmenityInput!) {
+  upsertAmenity(input: $input) {
+    message
+    amenity {
+      id
+    }
+  }
+}

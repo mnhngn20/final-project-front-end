@@ -48,6 +48,7 @@ function InfinitySelect<Query, QueryVariables, Type>({
   variables,
   fetchPolicy,
   hasNullValue,
+  value,
   ...rest
 }: Props<Query, QueryVariables, Type>) {
   const { data, loading, loadMore, onSearch } = useInfiniteLoadQuery<
@@ -78,6 +79,7 @@ function InfinitySelect<Query, QueryVariables, Type>({
 
   return (
     <Select
+      value={value && String(value)}
       onPopupScroll={loadMore}
       loading={loading}
       options={options}
