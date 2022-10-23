@@ -1,0 +1,8 @@
+mutation upsertIncident($input: UpsertIncidentInput!) {
+  upsertIncident(input: $input) {
+    message
+    incident {
+      id
+    }
+  }
+}

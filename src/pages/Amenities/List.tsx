@@ -113,11 +113,6 @@ function List() {
         key: 'name',
       },
       {
-        title: 'Card ID',
-        dataIndex: 'identityNumber',
-        key: 'identityNumber',
-      },
-      {
         title: 'AmenityType',
         dataIndex: ['amenityType', 'name'],
         key: 'amenityType',

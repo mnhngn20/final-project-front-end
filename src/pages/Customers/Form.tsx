@@ -3,6 +3,7 @@ import UploadAvatar from '#/shared/components/commons/UploadAvatar';
 import { User } from '#/generated/schemas';
 import { validateRegex } from '#/shared/utils/validation';
 import { DatePicker } from '#/shared/components/commons/DatePicker';
+import RoomSelector from '#/shared/components/selectors/RoomSelector';
 
 interface Props {
   initialValues?: User;
@@ -62,6 +63,14 @@ function UserForm({ initialValues }: Props) {
       )}
       <Form.Item name="name" label="Full Name">
         <Input type="text" placeholder="Enter user name" />
+      </Form.Item>
+      <Form.Item hidden={!initialValues?.id} name="roomId" label="Room">
+        <RoomSelector
+          variables={{
+            input: { locationId: Number(initialValues?.locationId) },
+          }}
+          placeholder="Select customer room"
+        />
       </Form.Item>
       <Form.Item name="identityNumber" label="Government ID">
         <Input placeholder="Enter user identity number" />

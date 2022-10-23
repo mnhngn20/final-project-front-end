@@ -37,3 +37,7 @@ export { ReactComponent as SquareDollarOutlineSVG } from './square-dollar-outlin
 export { ReactComponent as LampFilledSVG } from './lamp-filled.svg';
 export { ReactComponent as BuildingFilledSVG } from './building-filled.svg';
 export { ReactComponent as DevicesFilledSVG } from './devices-filled.svg';
+export { ReactComponent as ReceiptFilledSVG } from './receipt-filled.svg';
+export { ReactComponent as WarningFilledSVG } from './warning-filled.svg';
+export { ReactComponent as FlagOutlineSVG } from './flag-outline.svg';
+export { ReactComponent as CalendarFilledSVG } from './calendar-filled.svg';

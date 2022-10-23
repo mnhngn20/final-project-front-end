@@ -5,13 +5,13 @@ import {
 } from '#/generated/schemas';
 import { userVar } from '#/graphql/cache';
 import { FormModal } from '#/shared/components/commons/FormModal';
-import ImageCarousel from '#/shared/components/commons/ImageCarousel';
 import DetailLayout from '#/shared/components/layout/DetailLayout';
 import { showError, showSuccess } from '#/shared/utils/notification';
 import { Coordinates } from '#/shared/utils/type';
 import { useReactiveVar } from '@apollo/client';
 import { useState } from 'react';
 import LocationForm from './Form';
+import MainContent from './MainContent';
 import SideContent from './SideContent';
 
 function Detail() {
@@ -67,11 +67,7 @@ function Detail() {
         loading={loading}
         title="Location Detail"
         mainContent={<SideContent location={location ?? {}} />}
-        sideContent={
-          <ImageCarousel
-            images={location?.images ? location?.images?.split(',') : []}
-          />
-        }
+        sideContent={<MainContent location={location ?? {}} />}
         onEdit={() => setEditModalVisible(true)}
       />
       <FormModal<

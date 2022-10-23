@@ -92,7 +92,6 @@ function Detail() {
             dateOfBirth: dayjs(user?.dateOfBirth),
           }),
         }}
-        width="1000"
       >
         <UserForm />
       </FormModal>

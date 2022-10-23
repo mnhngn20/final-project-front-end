@@ -1,0 +1,42 @@
+query getPayments($input: GetPaymentsInput!) {
+  getPayments(input: $input) {
+    page
+    total
+    totalPages
+    message
+    items {
+      id
+      totalPrice
+      electricCounter
+      waterPrice
+      discount
+      discountType
+      status
+      prePaidFee
+      extraFee
+      users {
+        name
+        id
+        email
+        avatar
+      }
+      roomId
+      room {
+        name
+        floor
+        thumbnail
+        basePrice
+      }
+      locationReservationId
+      locationReservation {
+        totalCalculatedPrice
+        totalReceivedPrice
+      }
+      locationId
+      location {
+        name
+        electricCounterPrice
+      }
+    }
+  }
+}

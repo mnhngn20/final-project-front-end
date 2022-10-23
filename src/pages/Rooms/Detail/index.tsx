@@ -4,14 +4,13 @@ import {
   useUpsertRoomMutation,
 } from '#/generated/schemas';
 import { FormModal } from '#/shared/components/commons/FormModal';
-import ImageCarousel from '#/shared/components/commons/ImageCarousel';
 import DetailLayout from '#/shared/components/layout/DetailLayout';
 import { showError, showSuccess } from '#/shared/utils/notification';
 import { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import RoomForm from '../Form';
 import SideContent from './SideContent';
-import EquipmentList from '#/pages/Equipments/List';
+import MainContent from './MainContent';
 
 function Detail() {
   const { id } = useParams();
@@ -50,16 +49,9 @@ function Detail() {
     <>
       <DetailLayout
         loading={loading}
-        title="Location Detail"
+        title="Room Detail"
         mainContent={<SideContent room={room ?? {}} />}
-        sideContent={
-          <div className="flex flex-col gap-4">
-            <ImageCarousel
-              images={room?.images ? room?.images?.split(',') : []}
-            />
-            <EquipmentList roomId={Number(id)} />
-          </div>
-        }
+        sideContent={<MainContent room={room ?? {}} />}
         onEdit={() => setEditModalVisible(true)}
       />
       <FormModal<UpsertRoomInput>

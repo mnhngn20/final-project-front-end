@@ -11,7 +11,6 @@ import {
   LocationSVG,
   NoteSVG,
   SquareDollarOutlineSVG,
-  UserOutlineSVG,
 } from '#/assets/svgs';
 import { formatDate } from '#/shared/utils/date';
 import { getRoomStatusColor } from '../ultils';
@@ -64,13 +63,8 @@ function SideContent({ room }: SideContentProps) {
           />
           <DetailItem
             icon={SquareDollarOutlineSVG}
-            toolTip="Number of equipment"
-            value={room?.basePrice}
-          />
-          <DetailItem
-            icon={UserOutlineSVG}
-            toolTip="Owner name"
-            value={room?.user?.name ?? 'N/A'}
+            toolTip="Base Price"
+            value={room?.basePrice?.toLocaleString()}
           />
           <DetailItem
             icon={NoteSVG}

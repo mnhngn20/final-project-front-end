@@ -15,6 +15,12 @@ const RoomDetail = loadable(import('#/pages/Rooms/Detail'));
 const Equipments = loadable(import('#/pages/Equipments'));
 const Amenities = loadable(import('#/pages/Amenities'));
 const Location = loadable(import('#/pages/Location'));
+const Incidents = loadable(import('#/pages/Incidents'));
+const IncidentDetail = loadable(import('#/pages/Incidents/Detail'));
+const LocationReservationDetail = loadable(
+  import('#/pages/LocationReservations/Detail'),
+);
+const LocationReservations = loadable(import('#/pages/LocationReservations'));
 
 function PrivateRoute() {
   const { pathname } = useLocation();
@@ -27,6 +33,7 @@ function PrivateRoute() {
       showError(error);
       logout();
     },
+    fetchPolicy: 'network-only',
   });
 
   const logout = () => {
@@ -54,6 +61,32 @@ function PrivateRoute() {
         {
           path: ':id',
           element: <CustomerDetail />,
+        },
+      ],
+    },
+    {
+      path: '/incidents',
+      children: [
+        {
+          index: true,
+          element: <Incidents />,
+        },
+        {
+          path: ':id',
+          element: <IncidentDetail />,
+        },
+      ],
+    },
+    {
+      path: '/location-reservations',
+      children: [
+        {
+          index: true,
+          element: <LocationReservations />,
+        },
+        {
+          path: ':id',
+          element: <LocationReservationDetail />,
         },
       ],
     },

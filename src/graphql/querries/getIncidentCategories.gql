@@ -1,0 +1,15 @@
+query getIncidentCategories($input: GetIncidentCategoriesInput!) {
+  getIncidentCategories(input: $input) {
+    page
+    total
+    totalPages
+    message
+    items {
+      id
+      name
+      description
+      icon
+      createdAt
+    }
+  }
+}

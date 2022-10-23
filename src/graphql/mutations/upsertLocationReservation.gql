@@ -1,0 +1,8 @@
+mutation upsertLocationReservation($input: UpsertLocationReservationInput!) {
+  upsertLocationReservation(input: $input) {
+    message
+    locationReservation {
+      id
+    }
+  }
+}

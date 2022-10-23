@@ -1,0 +1,39 @@
+query getPayment($id: Float!) {
+  getPayment(id: $id) {
+    message
+    payment {
+      id
+      totalPrice
+      electricCounter
+      waterPrice
+      discount
+      discountType
+      status
+      prePaidFee
+      extraFee
+      users {
+        name
+        id
+        email
+        avatar
+      }
+      roomId
+      room {
+        name
+        floor
+        basePrice
+        thumbnail
+      }
+      locationReservationId
+      locationReservation {
+        totalCalculatedPrice
+        totalReceivedPrice
+      }
+      locationId
+      location {
+        name
+        electricCounterPrice
+      }
+    }
+  }
+}

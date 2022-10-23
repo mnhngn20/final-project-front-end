@@ -1,0 +1,28 @@
+query getLocationReservations($input: GetLocationReservationsInput!) {
+  getLocationReservations(input: $input) {
+    page
+    total
+    totalPages
+    message
+    items {
+      id
+      totalCalculatedPrice
+      status
+      totalReceivedPrice
+      startDate
+      createdById
+      createdBy {
+        name
+        avatar
+        email
+      }
+      locationId
+      location {
+        name
+        images
+      }
+      createdAt
+      updatedAt
+    }
+  }
+}

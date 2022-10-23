@@ -35,7 +35,11 @@ export type GetUsersFilter<T = string> = {
   isActive?: T;
 };
 
-function List() {
+interface ListProps {
+  roomId?: number;
+}
+
+function List({ roomId }: ListProps) {
   const currentUser = useReactiveVar(userVar);
   const [filters, setFilters] = useState<GetUsersFilter<boolean> | undefined>(
     undefined,
@@ -55,6 +59,7 @@ function List() {
         limit: pageSize,
         role: UserRole.Customer,
         locationId: currentUser.locationId,
+        ...(roomId && { roomId: Number(roomId) }),
         ...filters,
       },
     },
@@ -109,6 +114,7 @@ function List() {
     email,
     password,
     address,
+    roomId,
   }: Store) => {
     if (selectedItem?.id) {
       updateUser({
@@ -121,6 +127,7 @@ function List() {
             address,
             id: Number(selectedItem?.id),
             dateOfBirth: dayjs.utc(dateOfBirth).startOf('date').toISOString(),
+            ...(roomId && { roomId: Number(roomId) }),
           },
         },
       });
@@ -179,6 +186,12 @@ function List() {
         render: (role?: UserRole) => <RoleTag role={role} />,
       },
       {
+        title: 'Current Room',
+        dataIndex: ['room', 'name'],
+        key: 'roomName',
+        render: (roomName?: string) => roomName ?? 'N/A',
+      },
+      {
         title: 'Status',
         dataIndex: 'isActive',
         key: 'isActive',
@@ -234,14 +247,16 @@ function List() {
       <div className="rounded-xl bg-[white] px-4">
         <div className="flex items-center justify-between py-4">
           <Typography className="text-xl font-semibold">User List</Typography>
-          <Button
-            type="primary"
-            className="w-min"
-            icon={<AddSVG className="anticon" />}
-            onClick={() => setSelectedItem({})}
-          >
-            Create
-          </Button>
+          {!roomId && (
+            <Button
+              type="primary"
+              className="w-min"
+              icon={<AddSVG className="anticon" />}
+              onClick={() => setSelectedItem({})}
+            >
+              Create
+            </Button>
+          )}
         </div>
         <Table
           rowKey="id"

@@ -1,0 +1,54 @@
+query getIncidents($input: GetIncidentsInput!) {
+  getIncidents(input: $input) {
+    page
+    total
+    totalPages
+    message
+    items {
+      id
+      title
+      description
+      fromCustomer
+      dueDate
+      priority
+      images
+      reportImages
+      reportMessage
+      status
+      employeeId
+      employee {
+        id
+        name
+        email
+        avatar
+      }
+      reporterId
+      reporter {
+        id
+        name
+        email
+        avatar
+      }
+      roomId
+      room {
+        id
+        name
+        floor
+        thumbnail
+      }
+      incidentCategoryId
+      incidentCategory {
+        id
+        name
+        description
+      }
+      locationId
+      location {
+        name
+        address
+        thumbnail
+      }
+      createdAt
+    }
+  }
+}

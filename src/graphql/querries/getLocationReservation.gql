@@ -1,0 +1,25 @@
+query getLocationReservation($id: Float!) {
+  getLocationReservation(id: $id) {
+    message
+    locationReservation {
+      id
+      totalCalculatedPrice
+      status
+      totalReceivedPrice
+      startDate
+      createdById
+      createdBy {
+        name
+        avatar
+        email
+      }
+      locationId
+      location {
+        name
+        images
+      }
+      createdAt
+      updatedAt
+    }
+  }
+}

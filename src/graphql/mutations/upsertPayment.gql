@@ -1,0 +1,8 @@
+mutation upsertPayment($input: UpsertPaymentInput!) {
+  upsertPayment(input: $input) {
+    message
+    payment {
+      id
+    }
+  }
+}

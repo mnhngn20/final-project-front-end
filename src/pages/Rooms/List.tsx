@@ -18,13 +18,15 @@ import { useTable } from '#/shared/hooks/useTable';
 import { Link } from 'react-router-dom';
 import { DeepPartial } from '#/shared/utils/type';
 import { showError, showSuccess } from '#/shared/utils/notification';
-import { formatDisplayUser, formatId } from '#/shared/utils/format';
+import { formatId } from '#/shared/utils/format';
 import { formatDate } from '#/shared/utils/date';
 import Image from '#/shared/components/commons/Image';
 import { ColumnsType } from 'antd/lib/table';
 import { AddSVG, EditSVG, EyeSVG } from '#/assets/svgs';
 import DefaultImage from '#/assets/images/default.png';
 import PaginationPanel from '#/shared/components/commons/PaginationPanel';
+import CustomTag from '#/shared/components/commons/CustomTag';
+import { getRoomStatusColor } from './ultils';
 
 export type GetRoomsFilter = {
   name?: string;
@@ -151,6 +153,14 @@ function List() {
         title: 'Status',
         dataIndex: 'status',
         key: 'status',
+        render(status: RoomStatus) {
+          return (
+            <CustomTag
+              content={status}
+              className={getRoomStatusColor(status)}
+            />
+          );
+        },
       },
       {
         title: 'Description',
@@ -162,13 +172,6 @@ function List() {
         dataIndex: 'basePrice',
         key: 'basePrice',
         render: (basePrice?: number) => `$ ${basePrice}`,
-      },
-      {
-        title: 'Current Owner',
-        dataIndex: 'basePrice',
-        key: 'basePrice',
-        render: (_: unknown, { user }: DeepPartial<Room>) =>
-          user ? formatDisplayUser({ ...user }) : 'N/A',
       },
       {
         title: '',

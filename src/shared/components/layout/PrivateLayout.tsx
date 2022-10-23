@@ -14,6 +14,8 @@ import {
   DevicesFilledSVG,
   HouseSVG,
   LampFilledSVG,
+  ReceiptFilledSVG,
+  WarningFilledSVG,
 } from '#/assets/svgs';
 import { User } from '#/generated/schemas';
 import { MenuSidebarItem } from '../commons/MenuSideBarItem';
@@ -69,6 +71,16 @@ function PrivateLayout({
         icon: <Icon component={LampFilledSVG} />,
         name: 'Amenities',
         path: '/amenities',
+      },
+      {
+        icon: <Icon component={ReceiptFilledSVG} />,
+        name: 'Reservations',
+        path: '/location-reservations',
+      },
+      {
+        icon: <Icon component={WarningFilledSVG} />,
+        name: 'Incidents',
+        path: '/incidents',
       },
     ],
   };

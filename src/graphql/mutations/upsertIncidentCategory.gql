@@ -1,0 +1,8 @@
+mutation upsertIncidentCategory($input: UpsertIncidentCategoriesInput!) {
+  upsertIncidentCategory(input: $input) {
+    message
+    incidentCategory {
+      id
+    }
+  }
+}

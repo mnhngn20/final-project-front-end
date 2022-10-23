@@ -20,6 +20,7 @@ export type Scalars = {
   Int: number;
   Float: number;
   DateTime: any;
+  JSONObject: any;
 };
 
 export type Amenity = {
@@ -28,6 +29,7 @@ export type Amenity = {
   createdAt: Scalars['DateTime'];
   description?: Maybe<Scalars['String']>;
   id: Scalars['ID'];
+  image?: Maybe<Scalars['String']>;
   isActive: Scalars['Boolean'];
   location: Location;
   locationId: Scalars['Float'];
@@ -107,6 +109,11 @@ export type CreateUserInput = {
   roomId?: InputMaybe<Scalars['Float']>;
 };
 
+export enum DiscountType {
+  FixedCashDiscount = 'FixedCashDiscount',
+  PercentageDiscount = 'PercentageDiscount',
+}
+
 export type Equipment = {
   createdAt: Scalars['DateTime'];
   description?: Maybe<Scalars['String']>;
@@ -165,6 +172,40 @@ export type GetEquipmentsInput = {
   roomId?: InputMaybe<Scalars['Float']>;
 };
 
+export type GetIncidentCategoriesInput = {
+  limit?: InputMaybe<Scalars['Float']>;
+  name?: InputMaybe<Scalars['String']>;
+  orderBy?: InputMaybe<OrderBy>;
+  page?: InputMaybe<Scalars['Float']>;
+};
+
+export type GetIncidentsInput = {
+  dueDate?: InputMaybe<Scalars['DateTime']>;
+  employeeId?: InputMaybe<Scalars['Float']>;
+  fromCustomer?: InputMaybe<Scalars['Boolean']>;
+  incidentCategoryId?: InputMaybe<Scalars['Float']>;
+  limit?: InputMaybe<Scalars['Float']>;
+  locationId?: InputMaybe<Scalars['Float']>;
+  orderBy?: InputMaybe<OrderBy>;
+  page?: InputMaybe<Scalars['Float']>;
+  priority?: InputMaybe<IncidentPriority>;
+  reporterId?: InputMaybe<Scalars['Float']>;
+  roomId?: InputMaybe<Scalars['Float']>;
+  status?: InputMaybe<IncidentStatus>;
+  title?: InputMaybe<Scalars['String']>;
+};
+
+export type GetLocationReservationsInput = {
+  createdById?: InputMaybe<Scalars['Float']>;
+  fromDate?: InputMaybe<Scalars['DateTime']>;
+  limit?: InputMaybe<Scalars['Float']>;
+  locationId?: InputMaybe<Scalars['Float']>;
+  orderBy?: InputMaybe<OrderBy>;
+  page?: InputMaybe<Scalars['Float']>;
+  status?: InputMaybe<LocationReservationStatus>;
+  toDate?: InputMaybe<Scalars['DateTime']>;
+};
+
 export type GetLocationServicesInput = {
   isActive?: InputMaybe<Scalars['Boolean']>;
   limit?: InputMaybe<Scalars['Float']>;
@@ -175,11 +216,26 @@ export type GetLocationServicesInput = {
 
 export type GetLocationsInput = {
   address?: InputMaybe<Scalars['String']>;
+  distance?: InputMaybe<Scalars['Float']>;
   isActive?: InputMaybe<Scalars['Boolean']>;
+  lat?: InputMaybe<Scalars['Float']>;
   limit?: InputMaybe<Scalars['Float']>;
+  locationServiceIds?: InputMaybe<Array<Scalars['Float']>>;
+  long?: InputMaybe<Scalars['Float']>;
   name?: InputMaybe<Scalars['String']>;
   orderBy?: InputMaybe<OrderBy>;
   page?: InputMaybe<Scalars['Float']>;
+};
+
+export type GetPaymentsInput = {
+  limit?: InputMaybe<Scalars['Float']>;
+  locationId?: InputMaybe<Scalars['Float']>;
+  locationReservationId?: InputMaybe<Scalars['Float']>;
+  orderBy?: InputMaybe<OrderBy>;
+  page?: InputMaybe<Scalars['Float']>;
+  roomId?: InputMaybe<Scalars['Float']>;
+  status?: InputMaybe<PaymentStatus>;
+  userIds?: InputMaybe<Array<Scalars['Float']>>;
 };
 
 export type GetRoomsInput = {
@@ -206,9 +262,89 @@ export type GetUsersInput = {
   roomId?: InputMaybe<Scalars['Float']>;
 };
 
+export enum IncidentPriority {
+  High = 'High',
+  Low = 'Low',
+  Medium = 'Medium',
+  Urgent = 'Urgent',
+}
+
+export enum IncidentStatus {
+  Cancel = 'Cancel',
+  Done = 'Done',
+  InProgress = 'InProgress',
+  ToDo = 'ToDo',
+}
+
 export type IResponse = {
   message?: Maybe<Scalars['String']>;
 };
+
+export type Incident = {
+  createdAt: Scalars['DateTime'];
+  description?: Maybe<Scalars['String']>;
+  dueDate?: Maybe<Scalars['DateTime']>;
+  employee?: Maybe<User>;
+  employeeId?: Maybe<Scalars['Float']>;
+  fromCustomer?: Maybe<Scalars['Boolean']>;
+  id: Scalars['ID'];
+  images?: Maybe<Scalars['String']>;
+  incidentCategory: IncidentCategory;
+  incidentCategoryId: Scalars['Float'];
+  location: Location;
+  locationId: Scalars['Float'];
+  priority?: Maybe<IncidentPriority>;
+  reportImages?: Maybe<Scalars['String']>;
+  reportMessage?: Maybe<Scalars['String']>;
+  reporter: User;
+  reporterId: Scalars['Float'];
+  room: Room;
+  roomId: Scalars['Float'];
+  status?: Maybe<IncidentStatus>;
+  title: Scalars['String'];
+  updatedAt: Scalars['DateTime'];
+};
+
+export type IncidentCategory = {
+  createdAt: Scalars['DateTime'];
+  description?: Maybe<Scalars['String']>;
+  icon?: Maybe<Scalars['String']>;
+  id: Scalars['ID'];
+  incidents?: Maybe<Array<Incident>>;
+  name: Scalars['String'];
+  updatedAt: Scalars['DateTime'];
+};
+
+export type IncidentCategoryListResponse = ListResponse & {
+  items: Array<IncidentCategory>;
+  message?: Maybe<Scalars['String']>;
+  page?: Maybe<Scalars['Float']>;
+  total?: Maybe<Scalars['Float']>;
+  totalPages?: Maybe<Scalars['Float']>;
+};
+
+export type IncidentCategoryResponse = IResponse & {
+  incidentCategory?: Maybe<IncidentCategory>;
+  message?: Maybe<Scalars['String']>;
+};
+
+export type IncidentListResponse = ListResponse & {
+  items: Array<Incident>;
+  message?: Maybe<Scalars['String']>;
+  page?: Maybe<Scalars['Float']>;
+  total?: Maybe<Scalars['Float']>;
+  totalPages?: Maybe<Scalars['Float']>;
+};
+
+export type IncidentResponse = IResponse & {
+  incident?: Maybe<Incident>;
+  message?: Maybe<Scalars['String']>;
+};
+
+export enum LocationReservationStatus {
+  Draft = 'Draft',
+  Published = 'Published',
+}
 
 export type ListResponse = {
   message?: Maybe<Scalars['String']>;
@@ -231,16 +367,22 @@ export type Location = {
   contactInformations?: Maybe<Array<ContactInformation>>;
   createdAt: Scalars['DateTime'];
   description?: Maybe<Scalars['String']>;
+  electricCounterPrice?: Maybe<Scalars['Float']>;
   equipments?: Maybe<Array<Equipment>>;
+  geoLocation?: Maybe<Scalars['JSONObject']>;
   id: Scalars['ID'];
   images?: Maybe<Scalars['String']>;
+  incidents: Array<Incident>;
   income: Scalars['Float'];
   isActive: Scalars['Boolean'];
   lat?: Maybe<Scalars['Float']>;
+  locationReservations?: Maybe<Array<LocationReservation>>;
   locationServices: Array<LocationService>;
   long?: Maybe<Scalars['Float']>;
+  minPrice?: Maybe<Scalars['Float']>;
   name: Scalars['String'];
   numOfFloor?: Maybe<Scalars['Float']>;
+  payments?: Maybe<Array<Payment>>;
   rooms?: Maybe<Array<Room>>;
   thumbnail?: Maybe<Scalars['String']>;
   updatedAt: Scalars['DateTime'];
@@ -263,6 +405,34 @@ export type LocationListResponse = ListResponse & {
   totalPages?: Maybe<Scalars['Float']>;
 };
 
+export type LocationReservation = {
+  createdAt: Scalars['DateTime'];
+  createdBy: User;
+  createdById: Scalars['Float'];
+  id: Scalars['ID'];
+  location: Location;
+  locationId: Scalars['Float'];
+  payments?: Maybe<Array<Payment>>;
+  startDate: Scalars['DateTime'];
+  status: Scalars['String'];
+  totalCalculatedPrice: Scalars['Float'];
+  totalReceivedPrice: Scalars['Float'];
+  updatedAt: Scalars['DateTime'];
+};
+
+export type LocationReservationListResponse = ListResponse & {
+  items: Array<LocationReservation>;
+  message?: Maybe<Scalars['String']>;
+  page?: Maybe<Scalars['Float']>;
+  total?: Maybe<Scalars['Float']>;
+  totalPages?: Maybe<Scalars['Float']>;
+};
+
+export type LocationReservationResponse = IResponse & {
+  locationReservation?: Maybe<LocationReservation>;
+  message?: Maybe<Scalars['String']>;
+};
+
 export type LocationResponse = IResponse & {
   location?: Maybe<Location>;
   message?: Maybe<Scalars['String']>;
@@ -273,7 +443,6 @@ export type LocationService = {
   description?: Maybe<Scalars['String']>;
   id: Scalars['ID'];
   isActive: Scalars['Boolean'];
-  location: Array<Location>;
   name: Scalars['String'];
   updatedAt: Scalars['DateTime'];
 };
@@ -311,12 +480,17 @@ export type Mutation = {
   updateEquipmentStatus: EquipmentResponse;
   updateLocationStatus: LocationResponse;
   updateMe: UserResponse;
+  updatePaymentStatus: PaymentResponse;
   updateUser: UserResponse;
   upsertAmenity: AmenityResponse;
   upsertAmenityType: AmenityTypeResponse;
   upsertEquipment: EquipmentResponse;
+  upsertIncident: IncidentResponse;
+  upsertIncidentCategory: IncidentCategoryResponse;
   upsertLocation: LocationResponse;
+  upsertLocationReservation: LocationReservationResponse;
   upsertLocationService: LocationServiceResponse;
+  upsertPayment: PaymentResponse;
   upsertRoom: RoomResponse;
 };
 
@@ -368,6 +542,10 @@ export type MutationUpdateMeArgs = {
   input: UpdateMeInput;
 };
 
+export type MutationUpdatePaymentStatusArgs = {
+  input: UpdatePaymentStatusInput;
+};
+
 export type MutationUpdateUserArgs = {
   input: UpdateUserInput;
 };
@@ -384,12 +562,28 @@ export type MutationUpsertEquipmentArgs = {
   input: UpsertEquipmentInput;
 };
 
+export type MutationUpsertIncidentArgs = {
+  input: UpsertIncidentInput;
+};
+
+export type MutationUpsertIncidentCategoryArgs = {
+  input: UpsertIncidentCategoriesInput;
+};
+
 export type MutationUpsertLocationArgs = {
   input: UpsertLocationInput;
 };
 
+export type MutationUpsertLocationReservationArgs = {
+  input: UpsertLocationReservationInput;
+};
+
 export type MutationUpsertLocationServiceArgs = {
   input: UpsertLocationServiceInput;
+};
+
+export type MutationUpsertPaymentArgs = {
+  input: UpsertPaymentInput;
 };
 
 export type MutationUpsertRoomArgs = {
@@ -401,6 +595,47 @@ export enum OrderBy {
   Desc = 'DESC',
 }
 
+export enum PaymentStatus {
+  Canceled = 'Canceled',
+  MissingLivingPrice = 'MissingLivingPrice',
+  Paid = 'Paid',
+  Unpaid = 'Unpaid',
+}
+
+export type Payment = {
+  createdAt: Scalars['DateTime'];
+  discount?: Maybe<Scalars['Float']>;
+  discountType?: Maybe<DiscountType>;
+  electricCounter?: Maybe<Scalars['Float']>;
+  extraFee?: Maybe<Scalars['Float']>;
+  id: Scalars['ID'];
+  location: Location;
+  locationId: Scalars['Float'];
+  locationReservation: LocationReservation;
+  locationReservationId: Scalars['Float'];
+  prePaidFee?: Maybe<Scalars['Float']>;
+  room: Room;
+  roomId: Scalars['Float'];
+  status: PaymentStatus;
+  totalPrice?: Maybe<Scalars['Float']>;
+  updatedAt: Scalars['DateTime'];
+  users?: Maybe<Array<User>>;
+  waterPrice?: Maybe<Scalars['Float']>;
+};
+
+export type PaymentListResponse = ListResponse & {
+  items: Array<Payment>;
+  message?: Maybe<Scalars['String']>;
+  page?: Maybe<Scalars['Float']>;
+  total?: Maybe<Scalars['Float']>;
+  totalPages?: Maybe<Scalars['Float']>;
+};
+
+export type PaymentResponse = IResponse & {
+  message?: Maybe<Scalars['String']>;
+  payment?: Maybe<Payment>;
+};
+
 export type Query = {
   getAmenities: AmenityListResponse;
   getAmenity: AmenityResponse;
@@ -408,10 +643,18 @@ export type Query = {
   getAmenityTypes: AmenityTypeListResponse;
   getEquipment: EquipmentResponse;
   getEquipments: EquipmentListResponse;
+  getIncident: IncidentResponse;
+  getIncidentCategories: IncidentCategoryListResponse;
+  getIncidentCategory: IncidentCategoryResponse;
+  getIncidents: IncidentListResponse;
   getLocation: LocationResponse;
+  getLocationReservation: LocationReservationResponse;
+  getLocationReservations: LocationReservationListResponse;
   getLocationService: LocationServiceResponse;
   getLocationServices: LocationServiceListResponse;
   getLocations: LocationListResponse;
+  getPayment: PaymentResponse;
+  getPayments: PaymentListResponse;
   getRoom: RoomResponse;
   getRooms: RoomListResponse;
   getUser: UserResponse;
@@ -443,8 +686,32 @@ export type QueryGetEquipmentsArgs = {
   input: GetEquipmentsInput;
 };
 
+export type QueryGetIncidentArgs = {
+  id: Scalars['Float'];
+};
+
+export type QueryGetIncidentCategoriesArgs = {
+  input: GetIncidentCategoriesInput;
+};
+
+export type QueryGetIncidentCategoryArgs = {
+  id: Scalars['Float'];
+};
+
+export type QueryGetIncidentsArgs = {
+  input: GetIncidentsInput;
+};
+
 export type QueryGetLocationArgs = {
   id: Scalars['Float'];
+};
+
+export type QueryGetLocationReservationArgs = {
+  id: Scalars['Float'];
+};
+
+export type QueryGetLocationReservationsArgs = {
+  input: GetLocationReservationsInput;
 };
 
 export type QueryGetLocationServiceArgs = {
@@ -457,6 +724,14 @@ export type QueryGetLocationServicesArgs = {
 
 export type QueryGetLocationsArgs = {
   input: GetLocationsInput;
+};
+
+export type QueryGetPaymentArgs = {
+  id: Scalars['Float'];
+};
+
+export type QueryGetPaymentsArgs = {
+  input: GetPaymentsInput;
 };
 
 export type QueryGetRoomArgs = {
@@ -502,19 +777,22 @@ export type ResetPasswordResponse = {
 
 export type Room = {
   basePrice: Scalars['Float'];
+  capacity?: Maybe<Scalars['Float']>;
   createdAt: Scalars['DateTime'];
   description?: Maybe<Scalars['String']>;
   equipments?: Maybe<Array<Equipment>>;
   floor?: Maybe<Scalars['Float']>;
   id: Scalars['ID'];
   images?: Maybe<Scalars['String']>;
+  incidents?: Maybe<Array<Incident>>;
   location?: Maybe<Location>;
   locationId: Scalars['Float'];
   name?: Maybe<Scalars['String']>;
+  payments?: Maybe<Array<Payment>>;
   status: RoomStatus;
   thumbnail?: Maybe<Scalars['String']>;
   updatedAt: Scalars['DateTime'];
-  user?: Maybe<User>;
+  users?: Maybe<Array<User>>;
 };
 
 export type RoomListResponse = ListResponse & {
@@ -560,6 +838,11 @@ export type UpdateMeInput = {
   phoneNumber?: InputMaybe<Scalars['String']>;
 };
 
+export type UpdatePaymentStatusInput = {
+  id: Scalars['Float'];
+  status: PaymentStatus;
+};
+
 export type UpdateUserInput = {
   address?: InputMaybe<Scalars['String']>;
   avatar?: InputMaybe<Scalars['String']>;
@@ -575,6 +858,7 @@ export type UpsertAmenityInput = {
   amenityTypeId: Scalars['Float'];
   description?: InputMaybe<Scalars['String']>;
   id?: InputMaybe<Scalars['Float']>;
+  image?: InputMaybe<Scalars['String']>;
   isActive?: InputMaybe<Scalars['Boolean']>;
   locationId?: InputMaybe<Scalars['Float']>;
   name?: InputMaybe<Scalars['String']>;
@@ -597,19 +881,55 @@ export type UpsertEquipmentInput = {
   roomId: Scalars['Float'];
 };
 
+export type UpsertIncidentCategoriesInput = {
+  description?: InputMaybe<Scalars['String']>;
+  icon?: InputMaybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['Float']>;
+  isActive?: InputMaybe<Scalars['Boolean']>;
+  name?: InputMaybe<Scalars['String']>;
+};
+
+export type UpsertIncidentInput = {
+  description?: InputMaybe<Scalars['String']>;
+  dueDate?: InputMaybe<Scalars['DateTime']>;
+  employeeId?: InputMaybe<Scalars['Float']>;
+  fromCustomer?: InputMaybe<Scalars['Boolean']>;
+  id?: InputMaybe<Scalars['Float']>;
+  images?: InputMaybe<Scalars['String']>;
+  incidentCategoryId: Scalars['Float'];
+  locationId: Scalars['Float'];
+  priority?: InputMaybe<IncidentPriority>;
+  reportImages?: InputMaybe<Scalars['String']>;
+  reportMessage?: InputMaybe<Scalars['String']>;
+  reporterId: Scalars['Float'];
+  roomId?: InputMaybe<Scalars['Float']>;
+  status?: InputMaybe<IncidentStatus>;
+  title?: InputMaybe<Scalars['String']>;
+};
+
 export type UpsertLocationInput = {
   address?: InputMaybe<Scalars['String']>;
   contactInformations?: InputMaybe<Array<LocationContactInformationInput>>;
   description?: InputMaybe<Scalars['String']>;
+  electricCounterPrice?: InputMaybe<Scalars['Float']>;
   id?: InputMaybe<Scalars['Float']>;
   images?: InputMaybe<Scalars['String']>;
   isActive?: InputMaybe<Scalars['Boolean']>;
   lat?: InputMaybe<Scalars['Float']>;
   locationServiceIds?: InputMaybe<Array<Scalars['Float']>>;
   long?: InputMaybe<Scalars['Float']>;
+  minPrice?: InputMaybe<Scalars['Float']>;
   name?: InputMaybe<Scalars['String']>;
   numOfFloor: Scalars['Float'];
   thumbnail?: InputMaybe<Scalars['String']>;
+};
+
+export type UpsertLocationReservationInput = {
+  createdById: Scalars['Float'];
+  id?: InputMaybe<Scalars['Float']>;
+  locationId: Scalars['Float'];
+  startDate: Scalars['DateTime'];
+  status?: InputMaybe<LocationReservationStatus>;
 };
 
 export type UpsertLocationServiceInput = {
@@ -619,8 +939,23 @@ export type UpsertLocationServiceInput = {
   name?: InputMaybe<Scalars['String']>;
 };
 
+export type UpsertPaymentInput = {
+  discount?: InputMaybe<Scalars['Float']>;
+  discountType?: InputMaybe<DiscountType>;
+  electricCounter?: InputMaybe<Scalars['Float']>;
+  extraFee?: InputMaybe<Scalars['Float']>;
+  id?: InputMaybe<Scalars['Float']>;
+  locationId: Scalars['Float'];
+  locationReservationId: Scalars['Float'];
+  prePaidFee?: InputMaybe<Scalars['Float']>;
+  roomId: Scalars['Float'];
+  status?: InputMaybe<PaymentStatus>;
+  waterPrice?: InputMaybe<Scalars['Float']>;
+};
+
 export type UpsertRoomInput = {
   basePrice?: InputMaybe<Scalars['Float']>;
+  capacity?: InputMaybe<Scalars['Float']>;
   description?: InputMaybe<Scalars['String']>;
   floor?: InputMaybe<Scalars['Float']>;
   id?: InputMaybe<Scalars['Float']>;
@@ -635,13 +970,17 @@ export type User = {
   createdAt: Scalars['DateTime'];
   dateOfBirth: Scalars['DateTime'];
   email: Scalars['String'];
+  employeeIncidents?: Maybe<Array<Incident>>;
   id: Scalars['ID'];
   identityNumber?: Maybe<Scalars['String']>;
   isActive?: Maybe<Scalars['Boolean']>;
   location?: Maybe<Location>;
   locationId?: Maybe<Scalars['Float']>;
+  locationReservations?: Maybe<Array<LocationReservation>>;
   name: Scalars['String'];
+  payments?: Maybe<Array<Payment>>;
   phoneNumber?: Maybe<Scalars['String']>;
+  reportIncidents?: Maybe<Array<Incident>>;
   role: UserRole;
   room?: Maybe<Room>;
   roomId?: Maybe<Scalars['Float']>;
@@ -1133,6 +1472,112 @@ export type UpsertEquipmentMutationOptions = Apollo.BaseMutationOptions<
   UpsertEquipmentMutation,
   UpsertEquipmentMutationVariables
 >;
+export const UpsertIncidentDocument = gql`
+  mutation upsertIncident($input: UpsertIncidentInput!) {
+    upsertIncident(input: $input) {
+      message
+      incident {
+        id
+      }
+    }
+  }
+`;
+export type UpsertIncidentMutationFn = Apollo.MutationFunction<
+  UpsertIncidentMutation,
+  UpsertIncidentMutationVariables
+>;
+
+/**
+ * __useUpsertIncidentMutation__
+ *
+ * To run a mutation, you first call `useUpsertIncidentMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpsertIncidentMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [upsertIncidentMutation, { data, loading, error }] = useUpsertIncidentMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useUpsertIncidentMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    UpsertIncidentMutation,
+    UpsertIncidentMutationVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<
+    UpsertIncidentMutation,
+    UpsertIncidentMutationVariables
+  >(UpsertIncidentDocument, options);
+}
+export type UpsertIncidentMutationHookResult = ReturnType<
+  typeof useUpsertIncidentMutation
+>;
+export type UpsertIncidentMutationResult =
+  Apollo.MutationResult<UpsertIncidentMutation>;
+export type UpsertIncidentMutationOptions = Apollo.BaseMutationOptions<
+  UpsertIncidentMutation,
+  UpsertIncidentMutationVariables
+>;
+export const UpsertIncidentCategoryDocument = gql`
+  mutation upsertIncidentCategory($input: UpsertIncidentCategoriesInput!) {
+    upsertIncidentCategory(input: $input) {
+      message
+      incidentCategory {
+        id
+      }
+    }
+  }
+`;
+export type UpsertIncidentCategoryMutationFn = Apollo.MutationFunction<
+  UpsertIncidentCategoryMutation,
+  UpsertIncidentCategoryMutationVariables
+>;
+
+/**
+ * __useUpsertIncidentCategoryMutation__
+ *
+ * To run a mutation, you first call `useUpsertIncidentCategoryMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpsertIncidentCategoryMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [upsertIncidentCategoryMutation, { data, loading, error }] = useUpsertIncidentCategoryMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useUpsertIncidentCategoryMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    UpsertIncidentCategoryMutation,
+    UpsertIncidentCategoryMutationVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<
+    UpsertIncidentCategoryMutation,
+    UpsertIncidentCategoryMutationVariables
+  >(UpsertIncidentCategoryDocument, options);
+}
+export type UpsertIncidentCategoryMutationHookResult = ReturnType<
+  typeof useUpsertIncidentCategoryMutation
+>;
+export type UpsertIncidentCategoryMutationResult =
+  Apollo.MutationResult<UpsertIncidentCategoryMutation>;
+export type UpsertIncidentCategoryMutationOptions = Apollo.BaseMutationOptions<
+  UpsertIncidentCategoryMutation,
+  UpsertIncidentCategoryMutationVariables
+>;
 export const UpsertLocationDocument = gql`
   mutation upsertLocation($input: UpsertLocationInput!) {
     upsertLocation(input: $input) {
@@ -1185,6 +1630,113 @@ export type UpsertLocationMutationResult =
 export type UpsertLocationMutationOptions = Apollo.BaseMutationOptions<
   UpsertLocationMutation,
   UpsertLocationMutationVariables
+>;
+export const UpsertLocationReservationDocument = gql`
+  mutation upsertLocationReservation($input: UpsertLocationReservationInput!) {
+    upsertLocationReservation(input: $input) {
+      message
+      locationReservation {
+        id
+      }
+    }
+  }
+`;
+export type UpsertLocationReservationMutationFn = Apollo.MutationFunction<
+  UpsertLocationReservationMutation,
+  UpsertLocationReservationMutationVariables
+>;
+
+/**
+ * __useUpsertLocationReservationMutation__
+ *
+ * To run a mutation, you first call `useUpsertLocationReservationMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpsertLocationReservationMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [upsertLocationReservationMutation, { data, loading, error }] = useUpsertLocationReservationMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useUpsertLocationReservationMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    UpsertLocationReservationMutation,
+    UpsertLocationReservationMutationVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<
+    UpsertLocationReservationMutation,
+    UpsertLocationReservationMutationVariables
+  >(UpsertLocationReservationDocument, options);
+}
+export type UpsertLocationReservationMutationHookResult = ReturnType<
+  typeof useUpsertLocationReservationMutation
+>;
+export type UpsertLocationReservationMutationResult =
+  Apollo.MutationResult<UpsertLocationReservationMutation>;
+export type UpsertLocationReservationMutationOptions =
+  Apollo.BaseMutationOptions<
+    UpsertLocationReservationMutation,
+    UpsertLocationReservationMutationVariables
+  >;
+export const UpsertPaymentDocument = gql`
+  mutation upsertPayment($input: UpsertPaymentInput!) {
+    upsertPayment(input: $input) {
+      message
+      payment {
+        id
+      }
+    }
+  }
+`;
+export type UpsertPaymentMutationFn = Apollo.MutationFunction<
+  UpsertPaymentMutation,
+  UpsertPaymentMutationVariables
+>;
+
+/**
+ * __useUpsertPaymentMutation__
+ *
+ * To run a mutation, you first call `useUpsertPaymentMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpsertPaymentMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [upsertPaymentMutation, { data, loading, error }] = useUpsertPaymentMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useUpsertPaymentMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    UpsertPaymentMutation,
+    UpsertPaymentMutationVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<
+    UpsertPaymentMutation,
+    UpsertPaymentMutationVariables
+  >(UpsertPaymentDocument, options);
+}
+export type UpsertPaymentMutationHookResult = ReturnType<
+  typeof useUpsertPaymentMutation
+>;
+export type UpsertPaymentMutationResult =
+  Apollo.MutationResult<UpsertPaymentMutation>;
+export type UpsertPaymentMutationOptions = Apollo.BaseMutationOptions<
+  UpsertPaymentMutation,
+  UpsertPaymentMutationVariables
 >;
 export const UpsertRoomDocument = gql`
   mutation upsertRoom($input: UpsertRoomInput!) {
@@ -1611,6 +2163,296 @@ export function refetchGetEquipmentsQuery(
 ) {
   return { query: GetEquipmentsDocument, variables: variables };
 }
+export const GetIncidentDocument = gql`
+  query getIncident($id: Float!) {
+    getIncident(id: $id) {
+      message
+      incident {
+        id
+        title
+        description
+        fromCustomer
+        dueDate
+        priority
+        images
+        reportImages
+        reportMessage
+        status
+        employeeId
+        employee {
+          id
+          name
+          email
+          avatar
+        }
+        reporterId
+        reporter {
+          id
+          name
+          email
+          avatar
+        }
+        roomId
+        room {
+          id
+          name
+          floor
+          thumbnail
+        }
+        incidentCategoryId
+        incidentCategory {
+          id
+          name
+          description
+        }
+        locationId
+        location {
+          name
+          address
+          thumbnail
+        }
+        createdAt
+      }
+    }
+  }
+`;
+
+/**
+ * __useGetIncidentQuery__
+ *
+ * To run a query within a React component, call `useGetIncidentQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetIncidentQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetIncidentQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useGetIncidentQuery(
+  baseOptions: Apollo.QueryHookOptions<
+    GetIncidentQuery,
+    GetIncidentQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<GetIncidentQuery, GetIncidentQueryVariables>(
+    GetIncidentDocument,
+    options,
+  );
+}
+export function useGetIncidentLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    GetIncidentQuery,
+    GetIncidentQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<GetIncidentQuery, GetIncidentQueryVariables>(
+    GetIncidentDocument,
+    options,
+  );
+}
+export type GetIncidentQueryHookResult = ReturnType<typeof useGetIncidentQuery>;
+export type GetIncidentLazyQueryHookResult = ReturnType<
+  typeof useGetIncidentLazyQuery
+>;
+export type GetIncidentQueryResult = Apollo.QueryResult<
+  GetIncidentQuery,
+  GetIncidentQueryVariables
+>;
+export function refetchGetIncidentQuery(variables: GetIncidentQueryVariables) {
+  return { query: GetIncidentDocument, variables: variables };
+}
+export const GetIncidentCategoriesDocument = gql`
+  query getIncidentCategories($input: GetIncidentCategoriesInput!) {
+    getIncidentCategories(input: $input) {
+      page
+      total
+      totalPages
+      message
+      items {
+        id
+        name
+        description
+        icon
+        createdAt
+      }
+    }
+  }
+`;
+
+/**
+ * __useGetIncidentCategoriesQuery__
+ *
+ * To run a query within a React component, call `useGetIncidentCategoriesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetIncidentCategoriesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetIncidentCategoriesQuery({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useGetIncidentCategoriesQuery(
+  baseOptions: Apollo.QueryHookOptions<
+    GetIncidentCategoriesQuery,
+    GetIncidentCategoriesQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<
+    GetIncidentCategoriesQuery,
+    GetIncidentCategoriesQueryVariables
+  >(GetIncidentCategoriesDocument, options);
+}
+export function useGetIncidentCategoriesLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    GetIncidentCategoriesQuery,
+    GetIncidentCategoriesQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<
+    GetIncidentCategoriesQuery,
+    GetIncidentCategoriesQueryVariables
+  >(GetIncidentCategoriesDocument, options);
+}
+export type GetIncidentCategoriesQueryHookResult = ReturnType<
+  typeof useGetIncidentCategoriesQuery
+>;
+export type GetIncidentCategoriesLazyQueryHookResult = ReturnType<
+  typeof useGetIncidentCategoriesLazyQuery
+>;
+export type GetIncidentCategoriesQueryResult = Apollo.QueryResult<
+  GetIncidentCategoriesQuery,
+  GetIncidentCategoriesQueryVariables
+>;
+export function refetchGetIncidentCategoriesQuery(
+  variables: GetIncidentCategoriesQueryVariables,
+) {
+  return { query: GetIncidentCategoriesDocument, variables: variables };
+}
+export const GetIncidentsDocument = gql`
+  query getIncidents($input: GetIncidentsInput!) {
+    getIncidents(input: $input) {
+      page
+      total
+      totalPages
+      message
+      items {
+        id
+        title
+        description
+        fromCustomer
+        dueDate
+        priority
+        images
+        reportImages
+        reportMessage
+        status
+        employeeId
+        employee {
+          id
+          name
+          email
+          avatar
+        }
+        reporterId
+        reporter {
+          id
+          name
+          email
+          avatar
+        }
+        roomId
+        room {
+          id
+          name
+          floor
+          thumbnail
+        }
+        incidentCategoryId
+        incidentCategory {
+          id
+          name
+          description
+        }
+        locationId
+        location {
+          name
+          address
+          thumbnail
+        }
+        createdAt
+      }
+    }
+  }
+`;
+
+/**
+ * __useGetIncidentsQuery__
+ *
+ * To run a query within a React component, call `useGetIncidentsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetIncidentsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetIncidentsQuery({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useGetIncidentsQuery(
+  baseOptions: Apollo.QueryHookOptions<
+    GetIncidentsQuery,
+    GetIncidentsQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<GetIncidentsQuery, GetIncidentsQueryVariables>(
+    GetIncidentsDocument,
+    options,
+  );
+}
+export function useGetIncidentsLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    GetIncidentsQuery,
+    GetIncidentsQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<GetIncidentsQuery, GetIncidentsQueryVariables>(
+    GetIncidentsDocument,
+    options,
+  );
+}
+export type GetIncidentsQueryHookResult = ReturnType<
+  typeof useGetIncidentsQuery
+>;
+export type GetIncidentsLazyQueryHookResult = ReturnType<
+  typeof useGetIncidentsLazyQuery
+>;
+export type GetIncidentsQueryResult = Apollo.QueryResult<
+  GetIncidentsQuery,
+  GetIncidentsQueryVariables
+>;
+export function refetchGetIncidentsQuery(
+  variables: GetIncidentsQueryVariables,
+) {
+  return { query: GetIncidentsDocument, variables: variables };
+}
 export const GetLocationDocument = gql`
   query getLocation($id: Float!) {
     getLocation(id: $id) {
@@ -1696,6 +2538,175 @@ export type GetLocationQueryResult = Apollo.QueryResult<
 export function refetchGetLocationQuery(variables: GetLocationQueryVariables) {
   return { query: GetLocationDocument, variables: variables };
 }
+export const GetLocationReservationDocument = gql`
+  query getLocationReservation($id: Float!) {
+    getLocationReservation(id: $id) {
+      message
+      locationReservation {
+        id
+        totalCalculatedPrice
+        status
+        totalReceivedPrice
+        startDate
+        createdById
+        createdBy {
+          name
+          avatar
+          email
+        }
+        locationId
+        location {
+          name
+          images
+        }
+        createdAt
+        updatedAt
+      }
+    }
+  }
+`;
+
+/**
+ * __useGetLocationReservationQuery__
+ *
+ * To run a query within a React component, call `useGetLocationReservationQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetLocationReservationQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetLocationReservationQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useGetLocationReservationQuery(
+  baseOptions: Apollo.QueryHookOptions<
+    GetLocationReservationQuery,
+    GetLocationReservationQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<
+    GetLocationReservationQuery,
+    GetLocationReservationQueryVariables
+  >(GetLocationReservationDocument, options);
+}
+export function useGetLocationReservationLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    GetLocationReservationQuery,
+    GetLocationReservationQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<
+    GetLocationReservationQuery,
+    GetLocationReservationQueryVariables
+  >(GetLocationReservationDocument, options);
+}
+export type GetLocationReservationQueryHookResult = ReturnType<
+  typeof useGetLocationReservationQuery
+>;
+export type GetLocationReservationLazyQueryHookResult = ReturnType<
+  typeof useGetLocationReservationLazyQuery
+>;
+export type GetLocationReservationQueryResult = Apollo.QueryResult<
+  GetLocationReservationQuery,
+  GetLocationReservationQueryVariables
+>;
+export function refetchGetLocationReservationQuery(
+  variables: GetLocationReservationQueryVariables,
+) {
+  return { query: GetLocationReservationDocument, variables: variables };
+}
+export const GetLocationReservationsDocument = gql`
+  query getLocationReservations($input: GetLocationReservationsInput!) {
+    getLocationReservations(input: $input) {
+      page
+      total
+      totalPages
+      message
+      items {
+        id
+        totalCalculatedPrice
+        status
+        totalReceivedPrice
+        startDate
+        createdById
+        createdBy {
+          name
+          avatar
+          email
+        }
+        locationId
+        location {
+          name
+          images
+        }
+        createdAt
+        updatedAt
+      }
+    }
+  }
+`;
+
+/**
+ * __useGetLocationReservationsQuery__
+ *
+ * To run a query within a React component, call `useGetLocationReservationsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetLocationReservationsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetLocationReservationsQuery({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useGetLocationReservationsQuery(
+  baseOptions: Apollo.QueryHookOptions<
+    GetLocationReservationsQuery,
+    GetLocationReservationsQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<
+    GetLocationReservationsQuery,
+    GetLocationReservationsQueryVariables
+  >(GetLocationReservationsDocument, options);
+}
+export function useGetLocationReservationsLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    GetLocationReservationsQuery,
+    GetLocationReservationsQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<
+    GetLocationReservationsQuery,
+    GetLocationReservationsQueryVariables
+  >(GetLocationReservationsDocument, options);
+}
+export type GetLocationReservationsQueryHookResult = ReturnType<
+  typeof useGetLocationReservationsQuery
+>;
+export type GetLocationReservationsLazyQueryHookResult = ReturnType<
+  typeof useGetLocationReservationsLazyQuery
+>;
+export type GetLocationReservationsQueryResult = Apollo.QueryResult<
+  GetLocationReservationsQuery,
+  GetLocationReservationsQueryVariables
+>;
+export function refetchGetLocationReservationsQuery(
+  variables: GetLocationReservationsQueryVariables,
+) {
+  return { query: GetLocationReservationsDocument, variables: variables };
+}
 export const GetLocationServicesDocument = gql`
   query getLocationServices($input: GetLocationServicesInput!) {
     getLocationServices(input: $input) {
@@ -1770,6 +2781,195 @@ export function refetchGetLocationServicesQuery(
 ) {
   return { query: GetLocationServicesDocument, variables: variables };
 }
+export const GetPaymentDocument = gql`
+  query getPayment($id: Float!) {
+    getPayment(id: $id) {
+      message
+      payment {
+        id
+        totalPrice
+        electricCounter
+        waterPrice
+        discount
+        discountType
+        status
+        prePaidFee
+        extraFee
+        users {
+          name
+          id
+          email
+          avatar
+        }
+        roomId
+        room {
+          name
+          floor
+          basePrice
+          thumbnail
+        }
+        locationReservationId
+        locationReservation {
+          totalCalculatedPrice
+          totalReceivedPrice
+        }
+        locationId
+        location {
+          name
+          electricCounterPrice
+        }
+      }
+    }
+  }
+`;
+
+/**
+ * __useGetPaymentQuery__
+ *
+ * To run a query within a React component, call `useGetPaymentQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetPaymentQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetPaymentQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useGetPaymentQuery(
+  baseOptions: Apollo.QueryHookOptions<
+    GetPaymentQuery,
+    GetPaymentQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<GetPaymentQuery, GetPaymentQueryVariables>(
+    GetPaymentDocument,
+    options,
+  );
+}
+export function useGetPaymentLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    GetPaymentQuery,
+    GetPaymentQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<GetPaymentQuery, GetPaymentQueryVariables>(
+    GetPaymentDocument,
+    options,
+  );
+}
+export type GetPaymentQueryHookResult = ReturnType<typeof useGetPaymentQuery>;
+export type GetPaymentLazyQueryHookResult = ReturnType<
+  typeof useGetPaymentLazyQuery
+>;
+export type GetPaymentQueryResult = Apollo.QueryResult<
+  GetPaymentQuery,
+  GetPaymentQueryVariables
+>;
+export function refetchGetPaymentQuery(variables: GetPaymentQueryVariables) {
+  return { query: GetPaymentDocument, variables: variables };
+}
+export const GetPaymentsDocument = gql`
+  query getPayments($input: GetPaymentsInput!) {
+    getPayments(input: $input) {
+      page
+      total
+      totalPages
+      message
+      items {
+        id
+        totalPrice
+        electricCounter
+        waterPrice
+        discount
+        discountType
+        status
+        prePaidFee
+        extraFee
+        users {
+          name
+          id
+          email
+          avatar
+        }
+        roomId
+        room {
+          name
+          floor
+          thumbnail
+          basePrice
+        }
+        locationReservationId
+        locationReservation {
+          totalCalculatedPrice
+          totalReceivedPrice
+        }
+        locationId
+        location {
+          name
+          electricCounterPrice
+        }
+      }
+    }
+  }
+`;
+
+/**
+ * __useGetPaymentsQuery__
+ *
+ * To run a query within a React component, call `useGetPaymentsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetPaymentsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetPaymentsQuery({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useGetPaymentsQuery(
+  baseOptions: Apollo.QueryHookOptions<
+    GetPaymentsQuery,
+    GetPaymentsQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<GetPaymentsQuery, GetPaymentsQueryVariables>(
+    GetPaymentsDocument,
+    options,
+  );
+}
+export function useGetPaymentsLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    GetPaymentsQuery,
+    GetPaymentsQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<GetPaymentsQuery, GetPaymentsQueryVariables>(
+    GetPaymentsDocument,
+    options,
+  );
+}
+export type GetPaymentsQueryHookResult = ReturnType<typeof useGetPaymentsQuery>;
+export type GetPaymentsLazyQueryHookResult = ReturnType<
+  typeof useGetPaymentsLazyQuery
+>;
+export type GetPaymentsQueryResult = Apollo.QueryResult<
+  GetPaymentsQuery,
+  GetPaymentsQueryVariables
+>;
+export function refetchGetPaymentsQuery(variables: GetPaymentsQueryVariables) {
+  return { query: GetPaymentsDocument, variables: variables };
+}
 export const GetRoomDocument = gql`
   query getRoom($id: Float!) {
     getRoom(id: $id) {
@@ -1786,7 +2986,7 @@ export const GetRoomDocument = gql`
         location {
           name
         }
-        user {
+        users {
           name
           email
           avatar
@@ -1871,7 +3071,7 @@ export const GetRoomsDocument = gql`
         basePrice
         locationId
         floor
-        user {
+        users {
           name
           email
           avatar
@@ -2243,12 +3443,50 @@ export type UpsertEquipmentMutation = {
   };
 };
 
+export type UpsertIncidentMutationVariables = Exact<{
+  input: UpsertIncidentInput;
+}>;
+
+export type UpsertIncidentMutation = {
+  upsertIncident: { message?: string | null; incident?: { id: string } | null };
+};
+
+export type UpsertIncidentCategoryMutationVariables = Exact<{
+  input: UpsertIncidentCategoriesInput;
+}>;
+
+export type UpsertIncidentCategoryMutation = {
+  upsertIncidentCategory: {
+    message?: string | null;
+    incidentCategory?: { id: string } | null;
+  };
+};
+
 export type UpsertLocationMutationVariables = Exact<{
   input: UpsertLocationInput;
 }>;
 
 export type UpsertLocationMutation = {
   upsertLocation: { message?: string | null; location?: { id: string } | null };
+};
+
+export type UpsertLocationReservationMutationVariables = Exact<{
+  input: UpsertLocationReservationInput;
+}>;
+
+export type UpsertLocationReservationMutation = {
+  upsertLocationReservation: {
+    message?: string | null;
+    locationReservation?: { id: string } | null;
+  };
+};
+
+export type UpsertPaymentMutationVariables = Exact<{
+  input: UpsertPaymentInput;
+}>;
+
+export type UpsertPaymentMutation = {
+  upsertPayment: { message?: string | null; payment?: { id: string } | null };
 };
 
 export type UpsertRoomMutationVariables = Exact<{
@@ -2361,6 +3599,133 @@ export type GetEquipmentsQuery = {
   };
 };
 
+export type GetIncidentQueryVariables = Exact<{
+  id: Scalars['Float'];
+}>;
+
+export type GetIncidentQuery = {
+  getIncident: {
+    message?: string | null;
+    incident?: {
+      id: string;
+      title: string;
+      description?: string | null;
+      fromCustomer?: boolean | null;
+      dueDate?: any | null;
+      priority?: IncidentPriority | null;
+      images?: string | null;
+      reportImages?: string | null;
+      reportMessage?: string | null;
+      status?: IncidentStatus | null;
+      employeeId?: number | null;
+      reporterId: number;
+      roomId: number;
+      incidentCategoryId: number;
+      locationId: number;
+      createdAt: any;
+      employee?: {
+        id: string;
+        name: string;
+        email: string;
+        avatar?: string | null;
+      } | null;
+      reporter: {
+        id: string;
+        name: string;
+        email: string;
+        avatar?: string | null;
+      };
+      room: {
+        id: string;
+        name?: string | null;
+        floor?: number | null;
+        thumbnail?: string | null;
+      };
+      incidentCategory: {
+        id: string;
+        name: string;
+        description?: string | null;
+      };
+      location: { name: string; address: string; thumbnail?: string | null };
+    } | null;
+  };
+};
+
+export type GetIncidentCategoriesQueryVariables = Exact<{
+  input: GetIncidentCategoriesInput;
+}>;
+
+export type GetIncidentCategoriesQuery = {
+  getIncidentCategories: {
+    page?: number | null;
+    total?: number | null;
+    totalPages?: number | null;
+    message?: string | null;
+    items: Array<{
+      id: string;
+      name: string;
+      description?: string | null;
+      icon?: string | null;
+      createdAt: any;
+    }>;
+  };
+};
+
+export type GetIncidentsQueryVariables = Exact<{
+  input: GetIncidentsInput;
+}>;
+
+export type GetIncidentsQuery = {
+  getIncidents: {
+    page?: number | null;
+    total?: number | null;
+    totalPages?: number | null;
+    message?: string | null;
+    items: Array<{
+      id: string;
+      title: string;
+      description?: string | null;
+      fromCustomer?: boolean | null;
+      dueDate?: any | null;
+      priority?: IncidentPriority | null;
+      images?: string | null;
+      reportImages?: string | null;
+      reportMessage?: string | null;
+      status?: IncidentStatus | null;
+      employeeId?: number | null;
+      reporterId: number;
+      roomId: number;
+      incidentCategoryId: number;
+      locationId: number;
+      createdAt: any;
+      employee?: {
+        id: string;
+        name: string;
+        email: string;
+        avatar?: string | null;
+      } | null;
+      reporter: {
+        id: string;
+        name: string;
+        email: string;
+        avatar?: string | null;
+      };
+      room: {
+        id: string;
+        name?: string | null;
+        floor?: number | null;
+        thumbnail?: string | null;
+      };
+      incidentCategory: {
+        id: string;
+        name: string;
+        description?: string | null;
+      };
+      location: { name: string; address: string; thumbnail?: string | null };
+    }>;
+  };
+};
+
 export type GetLocationQueryVariables = Exact<{
   id: Scalars['Float'];
 }>;
@@ -2397,6 +3762,55 @@ export type GetLocationQuery = {
   };
 };
 
+export type GetLocationReservationQueryVariables = Exact<{
+  id: Scalars['Float'];
+}>;
+
+export type GetLocationReservationQuery = {
+  getLocationReservation: {
+    message?: string | null;
+    locationReservation?: {
+      id: string;
+      totalCalculatedPrice: number;
+      status: string;
+      totalReceivedPrice: number;
+      startDate: any;
+      createdById: number;
+      locationId: number;
+      createdAt: any;
+      updatedAt: any;
+      createdBy: { name: string; avatar?: string | null; email: string };
+      location: { name: string; images?: string | null };
+    } | null;
+  };
+};
+
+export type GetLocationReservationsQueryVariables = Exact<{
+  input: GetLocationReservationsInput;
+}>;
+
+export type GetLocationReservationsQuery = {
+  getLocationReservations: {
+    page?: number | null;
+    total?: number | null;
+    totalPages?: number | null;
+    message?: string | null;
+    items: Array<{
+      id: string;
+      totalCalculatedPrice: number;
+      status: string;
+      totalReceivedPrice: number;
+      startDate: any;
+      createdById: number;
+      locationId: number;
+      createdAt: any;
+      updatedAt: any;
+      createdBy: { name: string; avatar?: string | null; email: string };
+      location: { name: string; images?: string | null };
+    }>;
+  };
+};
+
 export type GetLocationServicesQueryVariables = Exact<{
   input: GetLocationServicesInput;
 }>;
@@ -2414,6 +3828,91 @@ export type GetLocationServicesQuery = {
       isActive: boolean;
       createdAt: any;
       updatedAt: any;
+    }>;
+  };
+};
+
+export type GetPaymentQueryVariables = Exact<{
+  id: Scalars['Float'];
+}>;
+
+export type GetPaymentQuery = {
+  getPayment: {
+    message?: string | null;
+    payment?: {
+      id: string;
+      totalPrice?: number | null;
+      electricCounter?: number | null;
+      waterPrice?: number | null;
+      discount?: number | null;
+      discountType?: DiscountType | null;
+      status: PaymentStatus;
+      prePaidFee?: number | null;
+      extraFee?: number | null;
+      roomId: number;
+      locationReservationId: number;
+      locationId: number;
+      users?: Array<{
+        name: string;
+        id: string;
+        email: string;
+        avatar?: string | null;
+      }> | null;
+      room: {
+        name?: string | null;
+        floor?: number | null;
+        basePrice: number;
+        thumbnail?: string | null;
+      };
+      locationReservation: {
+        totalCalculatedPrice: number;
+        totalReceivedPrice: number;
+      };
+      location: { name: string; electricCounterPrice?: number | null };
+    } | null;
+  };
+};
+
+export type GetPaymentsQueryVariables = Exact<{
+  input: GetPaymentsInput;
+}>;
+
+export type GetPaymentsQuery = {
+  getPayments: {
+    page?: number | null;
+    total?: number | null;
+    totalPages?: number | null;
+    message?: string | null;
+    items: Array<{
+      id: string;
+      totalPrice?: number | null;
+      electricCounter?: number | null;
+      waterPrice?: number | null;
+      discount?: number | null;
+      discountType?: DiscountType | null;
+      status: PaymentStatus;
+      prePaidFee?: number | null;
+      extraFee?: number | null;
+      roomId: number;
+      locationReservationId: number;
+      locationId: number;
+      users?: Array<{
+        name: string;
+        id: string;
+        email: string;
+        avatar?: string | null;
+      }> | null;
+      room: {
+        name?: string | null;
+        floor?: number | null;
+        thumbnail?: string | null;
+        basePrice: number;
+      };
+      locationReservation: {
+        totalCalculatedPrice: number;
+        totalReceivedPrice: number;
+      };
+      location: { name: string; electricCounterPrice?: number | null };
     }>;
   };
 };
@@ -2438,7 +3937,11 @@ export type GetRoomQuery = {
       createdAt: any;
       updatedAt: any;
       location?: { name: string } | null;
-      user?: { name: string; email: string; avatar?: string | null } | null;
+      users?: Array<{
+        name: string;
+        email: string;
+        avatar?: string | null;
+      }> | null;
       equipments?: Array<{
         id: string;
         roomId: number;
@@ -2473,7 +3976,11 @@ export type GetRoomsQuery = {
       floor?: number | null;
       createdAt: any;
       updatedAt: any;
-      user?: { name: string; email: string; avatar?: string | null } | null;
+      users?: Array<{
+        name: string;
+        email: string;
+        avatar?: string | null;
+      }> | null;
     }>;
   };
 };
