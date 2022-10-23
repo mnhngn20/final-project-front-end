@@ -2,6 +2,7 @@ import { AddSVG, CalendarSVG } from '#/assets/svgs';
 import { Incident } from '#/generated/schemas';
 import Avatar from '#/shared/components/commons/Avatar';
 import Gallery from '#/shared/components/commons/Gallery';
+import IncidentStatusSelector from '#/shared/components/selectors/IncidentStatusSelector';
 import { formatDate } from '#/shared/utils/date';
 import { DeepPartial } from '#/shared/utils/type';
 import { Divider, Empty, Tooltip, Typography } from 'antd';
@@ -53,6 +54,13 @@ export default function IncidentEmployee({
       </div>
       <Divider />
       <div className="flex flex-col gap-4">
+        <Typography className="mb-4 flex items-center gap-4 text-base font-semibold">
+          Incident Status
+          <IncidentStatusSelector
+            className="w-[15rem]"
+            placeholder="Select Incident Status"
+          />
+        </Typography>
         <Typography className="text-base font-semibold">
           Reported Message From Employee
         </Typography>
