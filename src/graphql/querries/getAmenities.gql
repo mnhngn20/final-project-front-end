@@ -8,6 +8,7 @@ query getAmenities($input: GetAmenitiesInput!) {
       id
       name
       description
+      image
       isActive
       amenityTypeId
       amenityType {

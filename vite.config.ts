@@ -33,7 +33,7 @@ export default ({ mode }) => {
   process.env = { ...process.env, ...loadEnv(mode, process.cwd()) };
   return defineConfig({
     server: {
-      port: 3000,
+      port: 3001,
     },
     plugins: [
       htmlPlugin(process.env),

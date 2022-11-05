@@ -1,11 +1,17 @@
 import { AddSVG, CalendarSVG } from '#/assets/svgs';
-import { Incident } from '#/generated/schemas';
+import {
+  Incident,
+  refetchGetIncidentQuery,
+  useUpdateIncidentForEmployeeMutation,
+} from '#/generated/schemas';
 import Avatar from '#/shared/components/commons/Avatar';
 import Gallery from '#/shared/components/commons/Gallery';
-import IncidentStatusSelector from '#/shared/components/selectors/IncidentStatusSelector';
 import { formatDate } from '#/shared/utils/date';
+import { showError } from '#/shared/utils/notification';
 import { DeepPartial } from '#/shared/utils/type';
 import { Divider, Empty, Tooltip, Typography } from 'antd';
+import { useParams } from 'react-router-dom';
+import IncidentStatusSelector from './IncidentStatusSelector';
 
 interface IncidentEmployeeProps {
   incident?: DeepPartial<Incident>;
@@ -16,6 +22,12 @@ export default function IncidentEmployee({
   incident,
   setEditModalVisible,
 }: IncidentEmployeeProps) {
+  const { id } = useParams();
+  const [updateIncident] = useUpdateIncidentForEmployeeMutation({
+    onError: showError,
+    refetchQueries: [refetchGetIncidentQuery({ id: Number(id) })],
+  });
+
   return (
     <div className="col-span-1 rounded-xl bg-[white] p-4">
       <div className="flex flex-wrap items-center justify-between gap-4">
@@ -57,15 +69,24 @@ export default function IncidentEmployee({
         <Typography className="mb-4 flex items-center gap-4 text-base font-semibold">
           Incident Status
           <IncidentStatusSelector
-            className="w-[15rem]"
-            placeholder="Select Incident Status"
+            value={incident?.status}
+            onChange={status =>
+              updateIncident({
+                variables: {
+                  input: {
+                    id: Number(id),
+                    status,
+                  },
+                },
+              })
+            }
           />
         </Typography>
         <Typography className="text-base font-semibold">
           Reported Message From Employee
         </Typography>
         {incident?.reportMessage ? (
-          <Typography>{incident?.reportImages}</Typography>
+          <Typography>{incident?.reportMessage}</Typography>
         ) : (
           <Empty
             description={

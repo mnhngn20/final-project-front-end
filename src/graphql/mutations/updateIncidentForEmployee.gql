@@ -1,0 +1,8 @@
+mutation updateIncidentForEmployee($input: UpdateIncidentForEmployeeInput!) {
+  updateIncidentForEmployee(input: $input) {
+    message
+    incident {
+      id
+    }
+  }
+}

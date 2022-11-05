@@ -41,3 +41,4 @@ export { ReactComponent as ReceiptFilledSVG } from './receipt-filled.svg';
 export { ReactComponent as WarningFilledSVG } from './warning-filled.svg';
 export { ReactComponent as FlagOutlineSVG } from './flag-outline.svg';
 export { ReactComponent as CalendarFilledSVG } from './calendar-filled.svg';
+export { ReactComponent as TickCircleFilledSVG } from './tick-circle-filled.svg';

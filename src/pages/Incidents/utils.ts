@@ -1,8 +1,6 @@
 import { IncidentStatus, IncidentPriority } from '#/generated/schemas';
 
-export const getIncidentPriorityColor = (
-  priority?: IncidentPriority | null,
-) => {
+export const getIncidentPriorityColor = (priority?: string | null) => {
   switch (priority) {
     case IncidentPriority.High:
       return 'text-alert';
@@ -16,21 +14,21 @@ export const getIncidentPriorityColor = (
       return 'text-grey-secondary-400';
   }
 };
-export const getIncidentStatusColor = (status?: IncidentStatus | null) => {
+export const getIncidentStatusColor = (status?: string | null) => {
   switch (status) {
     case IncidentStatus.Cancel:
-      return 'text-[white] bg-alert';
+      return 'text-alert bg-alert-light';
     case IncidentStatus.Done:
-      return 'text-[white] bg-success';
+      return 'text-success bg-success-light';
     case IncidentStatus.InProgress:
-      return 'text-[white] bg-info';
+      return 'text-info bg-info-light';
     case IncidentStatus.ToDo:
-      return 'text-[white] bg-grey-secondary-400';
+      return 'text-[white] bg-grey-secondary-300';
     default:
-      return 'text-[white] bg-alert';
+      return 'text-alert bg-alert-light';
   }
 };
-export const getIncidentStatus = (status?: IncidentStatus | null) => {
+export const getIncidentStatus = (status?: string | null) => {
   switch (status) {
     case IncidentStatus.Cancel:
       return 'Cancel';

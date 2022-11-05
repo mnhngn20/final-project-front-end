@@ -1,16 +1,18 @@
-import { CalendarFilledSVG, EditSVG, FlagOutlineSVG } from '#/assets/svgs';
-import { Incident } from '#/generated/schemas';
+import { CalendarFilledSVG, EditSVG } from '#/assets/svgs';
+import {
+  Incident,
+  refetchGetIncidentQuery,
+  useUpdateIncidentForEmployeeMutation,
+} from '#/generated/schemas';
 import Avatar from '#/shared/components/commons/Avatar';
 import Gallery from '#/shared/components/commons/Gallery';
-import CustomTag from '#/shared/components/commons/Tag';
 import { formatDate } from '#/shared/utils/date';
+import { showError } from '#/shared/utils/notification';
 import { DeepPartial } from '#/shared/utils/type';
 import { Divider, Tooltip, Typography } from 'antd';
-import {
-  getIncidentPriorityColor,
-  getIncidentStatus,
-  getIncidentStatusColor,
-} from '../utils';
+import { useParams } from 'react-router-dom';
+import IncidentPrioritySelector from './IncidentPrioritySelector';
+import IncidentStatusSelector from './IncidentStatusSelector';
 
 interface IncidentDetailProps {
   incident?: DeepPartial<Incident>;
@@ -40,25 +42,41 @@ export default function IncidentDetail({
   incident,
   setEditModalVisible,
 }: IncidentDetailProps) {
+  const { id } = useParams();
+  const [updateIncident] = useUpdateIncidentForEmployeeMutation({
+    onError: showError,
+    refetchQueries: [refetchGetIncidentQuery({ id: Number(id) })],
+  });
+
   return (
-    <div className="col-span-1 rounded-xl bg-[white] p-4">
-      <div className="flex flex-wrap justify-between gap-4">
+    <div className="col-span-1 items-center rounded-xl bg-[white] p-4">
+      <div className="flex flex-wrap items-center justify-between gap-4 p-[5px]">
         <div className="flex items-center gap-4">
-          <CustomTag
-            content={getIncidentStatus(incident?.status)}
-            className={`h-min border-none ${getIncidentStatusColor(
-              incident?.status,
-            )}`}
+          <IncidentStatusSelector
+            value={incident?.status}
+            onChange={status =>
+              updateIncident({
+                variables: {
+                  input: {
+                    id: Number(id),
+                    status,
+                  },
+                },
+              })
+            }
           />
           <Divider type="vertical" />
-          <div
-            className={`${getIncidentPriorityColor(
-              incident?.priority,
-            )} flex items-center gap-2`}
-          >
-            <FlagOutlineSVG width={16} height={16} />
-            {incident?.priority}
-          </div>
+          <IncidentPrioritySelector
+            value={incident?.priority}
+            onChange={priority =>
+              incident?.status &&
+              updateIncident({
+                variables: {
+                  input: { id: Number(id), priority, status: incident?.status },
+                },
+              })
+            }
+          />
         </div>
         <div className="flex items-center gap-4">
           <Tooltip

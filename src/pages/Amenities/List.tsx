@@ -1,4 +1,4 @@
-import { Button, Table, Switch, Typography } from 'antd';
+import { Button, Table, Switch, Typography, Image } from 'antd';
 import { useState, useMemo } from 'react';
 import AmenityForm from './Form';
 import Filters from './Filters';
@@ -21,6 +21,7 @@ import { AddSVG, EditSVG } from '#/assets/svgs';
 import PaginationPanel from '#/shared/components/commons/PaginationPanel';
 import { useReactiveVar } from '@apollo/client';
 import { userVar } from '#/graphql/cache';
+import DefaultImage from '#/assets/images/default.png';
 
 export type GetAmenitiesFilter<T = string> = {
   amenityTypeId?: number;
@@ -106,6 +107,21 @@ function List() {
         dataIndex: 'id',
         key: 'id',
         render: formatId,
+      },
+      {
+        title: 'Icon',
+        dataIndex: 'image',
+        key: 'image',
+        render(icon?: string) {
+          return (
+            <Image
+              src={icon ?? DefaultImage}
+              width={100}
+              height={100}
+              preview={false}
+            />
+          );
+        },
       },
       {
         title: 'Amenity Name',

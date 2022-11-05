@@ -478,6 +478,7 @@ export type Mutation = {
   resetPasswordConfirm: ResetPasswordResponse;
   updateAmenityStatus: AmenityResponse;
   updateEquipmentStatus: EquipmentResponse;
+  updateIncidentForEmployee: IncidentResponse;
   updateLocationStatus: LocationResponse;
   updateMe: UserResponse;
   updatePaymentStatus: PaymentResponse;
@@ -532,6 +533,10 @@ export type MutationUpdateAmenityStatusArgs = {
 
 export type MutationUpdateEquipmentStatusArgs = {
   input: UpdateEquipmentStatusInput;
+};
+
+export type MutationUpdateIncidentForEmployeeArgs = {
+  input: UpdateIncidentForEmployeeInput;
 };
 
 export type MutationUpdateLocationStatusArgs = {
@@ -822,6 +827,15 @@ export type UpdateAmenityStatusInput = {
 export type UpdateEquipmentStatusInput = {
   id: Scalars['Float'];
   isActive?: InputMaybe<Scalars['Boolean']>;
+};
+
+export type UpdateIncidentForEmployeeInput = {
+  employeeId?: InputMaybe<Scalars['Float']>;
+  id: Scalars['Float'];
+  priority?: InputMaybe<Scalars['String']>;
+  reportImages?: InputMaybe<Scalars['String']>;
+  reportMessage?: InputMaybe<Scalars['String']>;
+  status: IncidentStatus;
 };
 
 export type UpdateLocationStatusInput = {
@@ -1263,6 +1277,60 @@ export type UpdateEquipmentStatusMutationOptions = Apollo.BaseMutationOptions<
   UpdateEquipmentStatusMutation,
   UpdateEquipmentStatusMutationVariables
 >;
+export const UpdateIncidentForEmployeeDocument = gql`
+  mutation updateIncidentForEmployee($input: UpdateIncidentForEmployeeInput!) {
+    updateIncidentForEmployee(input: $input) {
+      message
+      incident {
+        id
+      }
+    }
+  }
+`;
+export type UpdateIncidentForEmployeeMutationFn = Apollo.MutationFunction<
+  UpdateIncidentForEmployeeMutation,
+  UpdateIncidentForEmployeeMutationVariables
+>;
+
+/**
+ * __useUpdateIncidentForEmployeeMutation__
+ *
+ * To run a mutation, you first call `useUpdateIncidentForEmployeeMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateIncidentForEmployeeMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateIncidentForEmployeeMutation, { data, loading, error }] = useUpdateIncidentForEmployeeMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useUpdateIncidentForEmployeeMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    UpdateIncidentForEmployeeMutation,
+    UpdateIncidentForEmployeeMutationVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<
+    UpdateIncidentForEmployeeMutation,
+    UpdateIncidentForEmployeeMutationVariables
+  >(UpdateIncidentForEmployeeDocument, options);
+}
+export type UpdateIncidentForEmployeeMutationHookResult = ReturnType<
+  typeof useUpdateIncidentForEmployeeMutation
+>;
+export type UpdateIncidentForEmployeeMutationResult =
+  Apollo.MutationResult<UpdateIncidentForEmployeeMutation>;
+export type UpdateIncidentForEmployeeMutationOptions =
+  Apollo.BaseMutationOptions<
+    UpdateIncidentForEmployeeMutation,
+    UpdateIncidentForEmployeeMutationVariables
+  >;
 export const UpdateMeDocument = gql`
   mutation updateMe($input: UpdateMeInput!) {
     updateMe(input: $input) {
@@ -1850,6 +1918,7 @@ export const GetAmenitiesDocument = gql`
         id
         name
         description
+        image
         isActive
         amenityTypeId
         amenityType {
@@ -3408,6 +3477,17 @@ export type UpdateEquipmentStatusMutation = {
   };
 };
 
+export type UpdateIncidentForEmployeeMutationVariables = Exact<{
+  input: UpdateIncidentForEmployeeInput;
+}>;
+
+export type UpdateIncidentForEmployeeMutation = {
+  updateIncidentForEmployee: {
+    message?: string | null;
+    incident?: { id: string } | null;
+  };
+};
+
 export type UpdateMeMutationVariables = Exact<{
   input: UpdateMeInput;
 }>;
@@ -3517,6 +3597,7 @@ export type GetAmenitiesQuery = {
       id: string;
       name: string;
       description?: string | null;
+      image?: string | null;
       isActive: boolean;
       amenityTypeId: number;
       locationId: number;
