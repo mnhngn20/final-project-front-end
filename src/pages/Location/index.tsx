@@ -65,7 +65,7 @@ function Detail() {
     <>
       <DetailLayout
         loading={loading}
-        title="Location Detail"
+        title="Manage Location"
         mainContent={<SideContent location={location ?? {}} />}
         sideContent={<MainContent location={location ?? {}} />}
         onEdit={() => setEditModalVisible(true)}

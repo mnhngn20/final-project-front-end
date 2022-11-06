@@ -1,0 +1,3 @@
+mutation readNotification($id: Float!) {
+  readNotification(id: $id)
+}

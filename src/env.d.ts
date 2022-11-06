@@ -9,5 +9,12 @@ interface ImportMeta {
     VITE_APP_PUBLIC_GOOGLE_API_KEY: string;
     VITE_CLOUDINARY_UPLOAD_PRESET: string;
     VITE_CLOUDINARY_UPLOAD_URL: string;
+    VITE_STRIPE_CLIENT_ID: string;
+    VITE_STRIPE_REDIRECT_URL: string;
+    VITE_FIREBASE_APP_ID: string;
+    VITE_FIREBASE_API_KEY: string;
+    VITE_FIREBASE_MESSAGING_SENDER_ID: string;
+    VITE_FIREBASE_MEASUREMENT_ID: string;
+    VITE_VAPID_KEY: string;
   };
 }

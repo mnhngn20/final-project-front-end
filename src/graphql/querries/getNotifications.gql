@@ -1,0 +1,18 @@
+query getNotifications($input: GetNotificationsInput!) {
+  getNotifications(input: $input) {
+    page
+    total
+    totalPages
+    message
+    items {
+      id
+      content
+      title
+      dataId
+      isRead
+      image
+      type
+      userId
+    }
+  }
+}

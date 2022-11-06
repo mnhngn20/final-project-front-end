@@ -96,6 +96,11 @@ export type ContactInformation = {
   updatedAt: Scalars['DateTime'];
 };
 
+export type CreateInstallationInput = {
+  firebaseToken: Scalars['String'];
+  userId: Scalars['Float'];
+};
+
 export type CreateUserInput = {
   address?: InputMaybe<Scalars['String']>;
   avatar?: InputMaybe<Scalars['String']>;
@@ -227,6 +232,21 @@ export type GetLocationsInput = {
   page?: InputMaybe<Scalars['Float']>;
 };
 
+export type GetMyNotificationStatusResponse = {
+  message: Scalars['String'];
+  total: Scalars['Float'];
+};
+
+export type GetNotificationsInput = {
+  isAdminOnly?: InputMaybe<Scalars['Boolean']>;
+  limit?: InputMaybe<Scalars['Float']>;
+  locationId?: InputMaybe<Scalars['Float']>;
+  orderBy?: InputMaybe<OrderBy>;
+  page?: InputMaybe<Scalars['Float']>;
+  type?: InputMaybe<NotificationType>;
+  userId?: InputMaybe<Scalars['Float']>;
+};
+
 export type GetPaymentsInput = {
   limit?: InputMaybe<Scalars['Float']>;
   locationId?: InputMaybe<Scalars['Float']>;
@@ -281,6 +301,7 @@ export type IResponse = {
 };
 
 export type Incident = {
+  completedDate?: Maybe<Scalars['DateTime']>;
   createdAt: Scalars['DateTime'];
   description?: Maybe<Scalars['String']>;
   dueDate?: Maybe<Scalars['DateTime']>;
@@ -381,9 +402,11 @@ export type Location = {
   long?: Maybe<Scalars['Float']>;
   minPrice?: Maybe<Scalars['Float']>;
   name: Scalars['String'];
+  notification: Array<Notification>;
   numOfFloor?: Maybe<Scalars['Float']>;
   payments?: Maybe<Array<Payment>>;
   rooms?: Maybe<Array<Room>>;
+  stripeAccountId?: Maybe<Scalars['String']>;
   thumbnail?: Maybe<Scalars['String']>;
   updatedAt: Scalars['DateTime'];
   users?: Maybe<Array<User>>;
@@ -468,11 +491,14 @@ export type LoginResponse = IResponse & {
 };
 
 export type Mutation = {
+  authorizeCode: Scalars['String'];
   changePassword: Scalars['String'];
   changeUserStatus: Scalars['String'];
+  createInstallation: Scalars['String'];
   createUser: UserResponse;
   getAccessToken: LoginResponse;
   login: LoginResponse;
+  readNotification: Scalars['String'];
   register: UserResponse;
   resetPassword: ResetPasswordResponse;
   resetPasswordConfirm: ResetPasswordResponse;
@@ -495,12 +521,20 @@ export type Mutation = {
   upsertRoom: RoomResponse;
 };
 
+export type MutationAuthorizeCodeArgs = {
+  code: Scalars['String'];
+};
+
 export type MutationChangePasswordArgs = {
   input: ChangePasswordInput;
 };
 
 export type MutationChangeUserStatusArgs = {
   input: ChangeUserStatusInput;
+};
+
+export type MutationCreateInstallationArgs = {
+  input: CreateInstallationInput;
 };
 
 export type MutationCreateUserArgs = {
@@ -513,6 +547,10 @@ export type MutationGetAccessTokenArgs = {
 
 export type MutationLoginArgs = {
   input: RegisterLoginInput;
+};
+
+export type MutationReadNotificationArgs = {
+  id: Scalars['Float'];
 };
 
 export type MutationRegisterArgs = {
@@ -595,6 +633,38 @@ export type MutationUpsertRoomArgs = {
   input: UpsertRoomInput;
 };
 
+export enum NotificationType {
+  Announcement = 'Announcement',
+  Incident = 'Incident',
+  Other = 'Other',
+  Payment = 'Payment',
+}
+
+export type Notification = {
+  content?: Maybe<Scalars['String']>;
+  createdAt: Scalars['DateTime'];
+  dataId?: Maybe<Scalars['Float']>;
+  id: Scalars['ID'];
+  image?: Maybe<Scalars['String']>;
+  isAdminOnly?: Maybe<Scalars['Boolean']>;
+  isRead?: Maybe<Scalars['Boolean']>;
+  location?: Maybe<Location>;
+  locationId?: Maybe<Scalars['Float']>;
+  title?: Maybe<Scalars['String']>;
+  type?: Maybe<Scalars['String']>;
+  updatedAt: Scalars['DateTime'];
+  user: User;
+  userId: Scalars['Float'];
+};
+
+export type NotificationListResponse = ListResponse & {
+  items: Array<Notification>;
+  message?: Maybe<Scalars['String']>;
+  page?: Maybe<Scalars['Float']>;
+  total?: Maybe<Scalars['Float']>;
+  totalPages?: Maybe<Scalars['Float']>;
+};
+
 export enum OrderBy {
   Asc = 'ASC',
   Desc = 'DESC',
@@ -658,6 +728,8 @@ export type Query = {
   getLocationService: LocationServiceResponse;
   getLocationServices: LocationServiceListResponse;
   getLocations: LocationListResponse;
+  getMyNotificationStatus: GetMyNotificationStatusResponse;
+  getNotifications: NotificationListResponse;
   getPayment: PaymentResponse;
   getPayments: PaymentListResponse;
   getRoom: RoomResponse;
@@ -729,6 +801,10 @@ export type QueryGetLocationServicesArgs = {
 
 export type QueryGetLocationsArgs = {
   input: GetLocationsInput;
+};
+
+export type QueryGetNotificationsArgs = {
+  input: GetNotificationsInput;
 };
 
 export type QueryGetPaymentArgs = {
@@ -985,6 +1061,7 @@ export type User = {
   dateOfBirth: Scalars['DateTime'];
   email: Scalars['String'];
   employeeIncidents?: Maybe<Array<Incident>>;
+  firebaseToken?: Maybe<Scalars['String']>;
   id: Scalars['ID'];
   identityNumber?: Maybe<Scalars['String']>;
   isActive?: Maybe<Scalars['Boolean']>;
@@ -992,6 +1069,7 @@ export type User = {
   locationId?: Maybe<Scalars['Float']>;
   locationReservations?: Maybe<Array<LocationReservation>>;
   name: Scalars['String'];
+  notification?: Maybe<Array<Notification>>;
   payments?: Maybe<Array<Payment>>;
   phoneNumber?: Maybe<Scalars['String']>;
   reportIncidents?: Maybe<Array<Incident>>;
@@ -1006,6 +1084,102 @@ export type UserResponse = IResponse & {
   user?: Maybe<User>;
 };
 
+export const AuthorizeCodeDocument = gql`
+  mutation authorizeCode($code: String!) {
+    authorizeCode(code: $code)
+  }
+`;
+export type AuthorizeCodeMutationFn = Apollo.MutationFunction<
+  AuthorizeCodeMutation,
+  AuthorizeCodeMutationVariables
+>;
+
+/**
+ * __useAuthorizeCodeMutation__
+ *
+ * To run a mutation, you first call `useAuthorizeCodeMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useAuthorizeCodeMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [authorizeCodeMutation, { data, loading, error }] = useAuthorizeCodeMutation({
+ *   variables: {
+ *      code: // value for 'code'
+ *   },
+ * });
+ */
+export function useAuthorizeCodeMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    AuthorizeCodeMutation,
+    AuthorizeCodeMutationVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<
+    AuthorizeCodeMutation,
+    AuthorizeCodeMutationVariables
+  >(AuthorizeCodeDocument, options);
+}
+export type AuthorizeCodeMutationHookResult = ReturnType<
+  typeof useAuthorizeCodeMutation
+>;
+export type AuthorizeCodeMutationResult =
+  Apollo.MutationResult<AuthorizeCodeMutation>;
+export type AuthorizeCodeMutationOptions = Apollo.BaseMutationOptions<
+  AuthorizeCodeMutation,
+  AuthorizeCodeMutationVariables
+>;
+export const CreateInstallationDocument = gql`
+  mutation createInstallation($input: CreateInstallationInput!) {
+    createInstallation(input: $input)
+  }
+`;
+export type CreateInstallationMutationFn = Apollo.MutationFunction<
+  CreateInstallationMutation,
+  CreateInstallationMutationVariables
+>;
+
+/**
+ * __useCreateInstallationMutation__
+ *
+ * To run a mutation, you first call `useCreateInstallationMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateInstallationMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createInstallationMutation, { data, loading, error }] = useCreateInstallationMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useCreateInstallationMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    CreateInstallationMutation,
+    CreateInstallationMutationVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<
+    CreateInstallationMutation,
+    CreateInstallationMutationVariables
+  >(CreateInstallationDocument, options);
+}
+export type CreateInstallationMutationHookResult = ReturnType<
+  typeof useCreateInstallationMutation
+>;
+export type CreateInstallationMutationResult =
+  Apollo.MutationResult<CreateInstallationMutation>;
+export type CreateInstallationMutationOptions = Apollo.BaseMutationOptions<
+  CreateInstallationMutation,
+  CreateInstallationMutationVariables
+>;
 export const CreateUserDocument = gql`
   mutation createUser($input: CreateUserInput!) {
     createUser(input: $input) {
@@ -1123,6 +1297,54 @@ export type LoginMutationResult = Apollo.MutationResult<LoginMutation>;
 export type LoginMutationOptions = Apollo.BaseMutationOptions<
   LoginMutation,
   LoginMutationVariables
+>;
+export const ReadNotificationDocument = gql`
+  mutation readNotification($id: Float!) {
+    readNotification(id: $id)
+  }
+`;
+export type ReadNotificationMutationFn = Apollo.MutationFunction<
+  ReadNotificationMutation,
+  ReadNotificationMutationVariables
+>;
+
+/**
+ * __useReadNotificationMutation__
+ *
+ * To run a mutation, you first call `useReadNotificationMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useReadNotificationMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [readNotificationMutation, { data, loading, error }] = useReadNotificationMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useReadNotificationMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    ReadNotificationMutation,
+    ReadNotificationMutationVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<
+    ReadNotificationMutation,
+    ReadNotificationMutationVariables
+  >(ReadNotificationDocument, options);
+}
+export type ReadNotificationMutationHookResult = ReturnType<
+  typeof useReadNotificationMutation
+>;
+export type ReadNotificationMutationResult =
+  Apollo.MutationResult<ReadNotificationMutation>;
+export type ReadNotificationMutationOptions = Apollo.BaseMutationOptions<
+  ReadNotificationMutation,
+  ReadNotificationMutationVariables
 >;
 export const RegisterDocument = gql`
   mutation register($input: RegisterLoginInput!) {
@@ -2850,6 +3072,145 @@ export function refetchGetLocationServicesQuery(
 ) {
   return { query: GetLocationServicesDocument, variables: variables };
 }
+export const GetMyNotificationStatusDocument = gql`
+  query getMyNotificationStatus {
+    getMyNotificationStatus {
+      message
+      total
+    }
+  }
+`;
+
+/**
+ * __useGetMyNotificationStatusQuery__
+ *
+ * To run a query within a React component, call `useGetMyNotificationStatusQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetMyNotificationStatusQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetMyNotificationStatusQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetMyNotificationStatusQuery(
+  baseOptions?: Apollo.QueryHookOptions<
+    GetMyNotificationStatusQuery,
+    GetMyNotificationStatusQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<
+    GetMyNotificationStatusQuery,
+    GetMyNotificationStatusQueryVariables
+  >(GetMyNotificationStatusDocument, options);
+}
+export function useGetMyNotificationStatusLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    GetMyNotificationStatusQuery,
+    GetMyNotificationStatusQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<
+    GetMyNotificationStatusQuery,
+    GetMyNotificationStatusQueryVariables
+  >(GetMyNotificationStatusDocument, options);
+}
+export type GetMyNotificationStatusQueryHookResult = ReturnType<
+  typeof useGetMyNotificationStatusQuery
+>;
+export type GetMyNotificationStatusLazyQueryHookResult = ReturnType<
+  typeof useGetMyNotificationStatusLazyQuery
+>;
+export type GetMyNotificationStatusQueryResult = Apollo.QueryResult<
+  GetMyNotificationStatusQuery,
+  GetMyNotificationStatusQueryVariables
+>;
+export function refetchGetMyNotificationStatusQuery(
+  variables?: GetMyNotificationStatusQueryVariables,
+) {
+  return { query: GetMyNotificationStatusDocument, variables: variables };
+}
+export const GetNotificationsDocument = gql`
+  query getNotifications($input: GetNotificationsInput!) {
+    getNotifications(input: $input) {
+      page
+      total
+      totalPages
+      message
+      items {
+        id
+        content
+        title
+        dataId
+        isRead
+        image
+        type
+        userId
+      }
+    }
+  }
+`;
+
+/**
+ * __useGetNotificationsQuery__
+ *
+ * To run a query within a React component, call `useGetNotificationsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetNotificationsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetNotificationsQuery({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useGetNotificationsQuery(
+  baseOptions: Apollo.QueryHookOptions<
+    GetNotificationsQuery,
+    GetNotificationsQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<GetNotificationsQuery, GetNotificationsQueryVariables>(
+    GetNotificationsDocument,
+    options,
+  );
+}
+export function useGetNotificationsLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    GetNotificationsQuery,
+    GetNotificationsQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<
+    GetNotificationsQuery,
+    GetNotificationsQueryVariables
+  >(GetNotificationsDocument, options);
+}
+export type GetNotificationsQueryHookResult = ReturnType<
+  typeof useGetNotificationsQuery
+>;
+export type GetNotificationsLazyQueryHookResult = ReturnType<
+  typeof useGetNotificationsLazyQuery
+>;
+export type GetNotificationsQueryResult = Apollo.QueryResult<
+  GetNotificationsQuery,
+  GetNotificationsQueryVariables
+>;
+export function refetchGetNotificationsQuery(
+  variables: GetNotificationsQueryVariables,
+) {
+  return { query: GetNotificationsDocument, variables: variables };
+}
 export const GetPaymentDocument = gql`
   query getPayment($id: Float!) {
     getPayment(id: $id) {
@@ -3373,6 +3734,7 @@ export const MeDocument = gql`
         locationId
         location {
           name
+          stripeAccountId
         }
         roomId
         room {
@@ -3416,6 +3778,18 @@ export type MeQueryResult = Apollo.QueryResult<MeQuery, MeQueryVariables>;
 export function refetchMeQuery(variables?: MeQueryVariables) {
   return { query: MeDocument, variables: variables };
 }
+export type AuthorizeCodeMutationVariables = Exact<{
+  code: Scalars['String'];
+}>;
+
+export type AuthorizeCodeMutation = { authorizeCode: string };
+
+export type CreateInstallationMutationVariables = Exact<{
+  input: CreateInstallationInput;
+}>;
+
+export type CreateInstallationMutation = { createInstallation: string };
+
 export type CreateUserMutationVariables = Exact<{
   input: CreateUserInput;
 }>;
@@ -3448,6 +3822,12 @@ export type LoginMutation = {
     } | null;
   };
 };
+
+export type ReadNotificationMutationVariables = Exact<{
+  id: Scalars['Float'];
+}>;
+
+export type ReadNotificationMutation = { readNotification: string };
 
 export type RegisterMutationVariables = Exact<{
   input: RegisterLoginInput;
@@ -3913,6 +4293,37 @@ export type GetLocationServicesQuery = {
   };
 };
 
+export type GetMyNotificationStatusQueryVariables = Exact<{
+  [key: string]: never;
+}>;
+
+export type GetMyNotificationStatusQuery = {
+  getMyNotificationStatus: { message: string; total: number };
+};
+
+export type GetNotificationsQueryVariables = Exact<{
+  input: GetNotificationsInput;
+}>;
+
+export type GetNotificationsQuery = {
+  getNotifications: {
+    page?: number | null;
+    total?: number | null;
+    totalPages?: number | null;
+    message?: string | null;
+    items: Array<{
+      id: string;
+      content?: string | null;
+      title?: string | null;
+      dataId?: number | null;
+      isRead?: boolean | null;
+      image?: string | null;
+      type?: string | null;
+      userId: number;
+    }>;
+  };
+};
+
 export type GetPaymentQueryVariables = Exact<{
   id: Scalars['Float'];
 }>;
@@ -4141,7 +4552,7 @@ export type MeQuery = {
       isActive?: boolean | null;
       locationId?: number | null;
       roomId?: number | null;
-      location?: { name: string } | null;
+      location?: { name: string; stripeAccountId?: string | null } | null;
       room?: { name?: string | null } | null;
     } | null;
   };

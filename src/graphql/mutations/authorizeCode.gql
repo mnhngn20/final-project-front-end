@@ -1,0 +1,3 @@
+mutation authorizeCode($code: String!) {
+  authorizeCode(code: $code)
+}

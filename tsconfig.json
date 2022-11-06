@@ -27,7 +27,7 @@
       "#/src/*": ["./src/*"]
     }
   },
-  "include": ["./src", "./tests"],
+  "include": ["./src", "./tests", "public/firebase-messaging-sw.js"],
   "exclude": ["node_modules", "**/*.spec.ts"],
   "type": ["@testing-library/jest-dom"]
 }

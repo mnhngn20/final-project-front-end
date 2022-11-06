@@ -2,7 +2,7 @@ import Icon from '@ant-design/icons';
 import ProLayout, { ProLayoutProps } from '@ant-design/pro-layout';
 import { Route } from '@ant-design/pro-layout/es/typings';
 import { Alert } from 'antd';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import RightContentHeader from './RightContentHeader';
 import Logo from '#/assets/images/logo.png';
@@ -10,7 +10,6 @@ import { appConfig } from '#/configs/config';
 import {
   BuildingFilledSVG,
   CustomerSVG,
-  DashboardSVG,
   DevicesFilledSVG,
   HouseSVG,
   LampFilledSVG,
@@ -20,11 +19,17 @@ import {
 import { User } from '#/generated/schemas';
 import { MenuSidebarItem } from '../commons/MenuSideBarItem';
 import { DeepPartial } from '#/shared/utils/type';
+import useWatchFirebaseMessaging from '#/shared/hooks/useWatchFirebaseMessaging';
+import { useReactiveVar } from '@apollo/client';
+import { userVar } from '#/graphql/cache';
+import { getToken } from '#/shared/utils/token';
 
 interface Props {
   logout: () => void;
   user: DeepPartial<User>;
 }
+
+let firebaseInitialized = false;
 
 function PrivateLayout({
   children,
@@ -39,14 +44,18 @@ function PrivateLayout({
     layout: 'mix',
     title: appConfig.title,
   };
+  const currentUser = useReactiveVar(userVar);
+  const { watchFirebaseInstallation } = useWatchFirebaseMessaging();
+
+  useEffect(() => {
+    if (!!getToken() && currentUser?.id && !firebaseInitialized) {
+      watchFirebaseInstallation();
+      firebaseInitialized = true;
+    }
+  }, [watchFirebaseInstallation, currentUser?.id]);
 
   const ROUTES: Route = {
     routes: [
-      {
-        icon: <Icon component={DashboardSVG} />,
-        name: 'Dashboard',
-        path: '/',
-      },
       {
         icon: <Icon component={BuildingFilledSVG} />,
         name: 'My Location',

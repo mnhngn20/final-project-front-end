@@ -1,0 +1,3 @@
+mutation createInstallation($input: CreateInstallationInput!) {
+  createInstallation(input: $input)
+}

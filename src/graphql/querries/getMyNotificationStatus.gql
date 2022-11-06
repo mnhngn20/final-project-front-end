@@ -1,0 +1,6 @@
+query getMyNotificationStatus {
+  getMyNotificationStatus {
+    message
+    total
+  }
+}

@@ -53,7 +53,6 @@ export default function IncidentStatusSelector({
               }
               onClick={() => {
                 onChange?.(status as IncidentStatus);
-                setSelectedStatus(status);
                 setVisible(false);
               }}
             />

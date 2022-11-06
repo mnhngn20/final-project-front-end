@@ -15,6 +15,7 @@ query me {
       locationId
       location {
         name
+        stripeAccountId
       }
       roomId
       room {

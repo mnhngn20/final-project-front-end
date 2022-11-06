@@ -4,6 +4,7 @@ import useTypeSafeTranslation from '#/shared/hooks/useTypeSafeTranslation';
 import DefaultImage from '#/assets/images/logo.png';
 import { DeepPartial } from '#/shared/utils/type';
 import { User } from '#/generated/schemas';
+import Notification from './Notification';
 
 interface Props {
   logout: () => void;
@@ -27,6 +28,7 @@ function RightContentHeader({ logout, user }: Props) {
 
   return (
     <div className="flex items-center justify-between gap-4">
+      <Notification />
       <div className="flex">
         <Dropdown overlay={menu}>
           <div className="flex items-center">
