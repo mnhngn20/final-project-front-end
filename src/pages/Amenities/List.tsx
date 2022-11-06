@@ -53,7 +53,7 @@ function List() {
     },
     fetchPolicy: 'network-only',
   });
-  const users = data?.getAmenities?.items ?? [];
+  const amenities = data?.getAmenities?.items ?? [];
 
   const [updateAmenityStatus, { loading: updateAmenityStatusLoading }] =
     useUpdateAmenityStatusMutation({
@@ -207,7 +207,7 @@ function List() {
         </div>
         <Table
           rowKey="id"
-          dataSource={users as unknown as DeepPartial<Amenity>[]}
+          dataSource={amenities as unknown as DeepPartial<Amenity>[]}
           columns={COLUMNS}
           scroll={{ x: 'max-content' }}
           loading={
