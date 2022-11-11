@@ -1,4 +1,4 @@
-import { Button, Table, Typography } from 'antd';
+import { Button, Table, Typography, Popconfirm } from 'antd';
 import { useState, useMemo } from 'react';
 import LocationReservationForm from './Form';
 import Filters from './Filters';
@@ -9,13 +9,14 @@ import {
   useGetLocationReservationsQuery,
   useUpsertLocationReservationMutation,
   UpsertLocationReservationInput,
+  useDeleteLocationReservationMutation,
 } from '#/generated/schemas';
 import { FormModal } from '#/shared/components/commons/FormModal';
 import { useTable } from '#/shared/hooks/useTable';
 import { Link, useNavigate } from 'react-router-dom';
 import { DeepPartial } from '#/shared/utils/type';
 import { showError, showSuccess } from '#/shared/utils/notification';
-import { AddSVG, EyeSVG } from '#/assets/svgs';
+import { AddSVG, EyeSVG, TrashOutlineSVG } from '#/assets/svgs';
 import PaginationPanel from '#/shared/components/commons/PaginationPanel';
 import { useReactiveVar } from '@apollo/client';
 import { userVar } from '#/graphql/cache';
@@ -72,6 +73,14 @@ function List() {
       navigate(
         `/location-reservations/${data?.upsertLocationReservation?.locationReservation?.id}`,
       );
+      refetch();
+    },
+    onError: showError,
+  });
+
+  const [deleteLocationReservation] = useDeleteLocationReservationMutation({
+    onCompleted() {
+      showSuccess('Successfully deleted Location Reservation!');
       refetch();
     },
     onError: showError,
@@ -170,12 +179,28 @@ function List() {
               <Link to={`/location-reservations/${record?.id}`}>
                 <EyeSVG width={24} height={24} />
               </Link>
+              <Popconfirm
+                title="Are you sure to delete this record?"
+                onConfirm={() =>
+                  deleteLocationReservation({
+                    variables: {
+                      id: Number(record?.id),
+                    },
+                  })
+                }
+              >
+                <TrashOutlineSVG
+                  className="text-error"
+                  width={24}
+                  height={24}
+                />
+              </Popconfirm>
             </div>
           );
         },
       },
     ],
-    [],
+    [deleteLocationReservation],
   );
 
   return (

@@ -1,0 +1,11 @@
+mutation changeLocationReservationStatus(
+  $input: ChangeLocationReservationStatusInput!
+) {
+  changeLocationReservationStatus(input: $input) {
+    message
+    locationReservation {
+      id
+      status
+    }
+  }
+}

@@ -74,6 +74,11 @@ export type AmenityTypeResponse = IResponse & {
   message?: Maybe<Scalars['String']>;
 };
 
+export type ChangeLocationReservationStatusInput = {
+  locationReservationId: Scalars['Float'];
+  status: Scalars['String'];
+};
+
 export type ChangePasswordInput = {
   oldPassword: Scalars['String'];
   password: Scalars['String'];
@@ -248,6 +253,7 @@ export type GetNotificationsInput = {
 };
 
 export type GetPaymentsInput = {
+  floor?: InputMaybe<Scalars['Float']>;
   limit?: InputMaybe<Scalars['Float']>;
   locationId?: InputMaybe<Scalars['Float']>;
   locationReservationId?: InputMaybe<Scalars['Float']>;
@@ -363,6 +369,7 @@ export type IncidentResponse = IResponse & {
 };
 
 export enum LocationReservationStatus {
+  Completed = 'Completed',
   Draft = 'Draft',
   Published = 'Published',
 }
@@ -492,12 +499,15 @@ export type LoginResponse = IResponse & {
 
 export type Mutation = {
   authorizeCode: Scalars['String'];
+  changeLocationReservationStatus: LocationReservationResponse;
   changePassword: Scalars['String'];
   changeUserStatus: Scalars['String'];
   createInstallation: Scalars['String'];
   createUser: UserResponse;
+  deleteLocationReservation: Scalars['String'];
   getAccessToken: LoginResponse;
   login: LoginResponse;
+  manuallyPay: PaymentResponse;
   readNotification: Scalars['String'];
   register: UserResponse;
   resetPassword: ResetPasswordResponse;
@@ -525,6 +535,10 @@ export type MutationAuthorizeCodeArgs = {
   code: Scalars['String'];
 };
 
+export type MutationChangeLocationReservationStatusArgs = {
+  input: ChangeLocationReservationStatusInput;
+};
+
 export type MutationChangePasswordArgs = {
   input: ChangePasswordInput;
 };
@@ -541,12 +555,20 @@ export type MutationCreateUserArgs = {
   input: CreateUserInput;
 };
 
+export type MutationDeleteLocationReservationArgs = {
+  id: Scalars['Float'];
+};
+
 export type MutationGetAccessTokenArgs = {
   input: GetAccessTokenInput;
 };
 
 export type MutationLoginArgs = {
   input: RegisterLoginInput;
+};
+
+export type MutationManuallyPayArgs = {
+  id: Scalars['Float'];
 };
 
 export type MutationReadNotificationArgs = {
@@ -1040,6 +1062,7 @@ export type UpsertPaymentInput = {
   prePaidFee?: InputMaybe<Scalars['Float']>;
   roomId: Scalars['Float'];
   status?: InputMaybe<PaymentStatus>;
+  userIds?: InputMaybe<Array<Scalars['Float']>>;
   waterPrice?: InputMaybe<Scalars['Float']>;
 };
 
@@ -1132,6 +1155,63 @@ export type AuthorizeCodeMutationOptions = Apollo.BaseMutationOptions<
   AuthorizeCodeMutation,
   AuthorizeCodeMutationVariables
 >;
+export const ChangeLocationReservationStatusDocument = gql`
+  mutation changeLocationReservationStatus(
+    $input: ChangeLocationReservationStatusInput!
+  ) {
+    changeLocationReservationStatus(input: $input) {
+      message
+      locationReservation {
+        id
+        status
+      }
+    }
+  }
+`;
+export type ChangeLocationReservationStatusMutationFn = Apollo.MutationFunction<
+  ChangeLocationReservationStatusMutation,
+  ChangeLocationReservationStatusMutationVariables
+>;
+
+/**
+ * __useChangeLocationReservationStatusMutation__
+ *
+ * To run a mutation, you first call `useChangeLocationReservationStatusMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useChangeLocationReservationStatusMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [changeLocationReservationStatusMutation, { data, loading, error }] = useChangeLocationReservationStatusMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useChangeLocationReservationStatusMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    ChangeLocationReservationStatusMutation,
+    ChangeLocationReservationStatusMutationVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<
+    ChangeLocationReservationStatusMutation,
+    ChangeLocationReservationStatusMutationVariables
+  >(ChangeLocationReservationStatusDocument, options);
+}
+export type ChangeLocationReservationStatusMutationHookResult = ReturnType<
+  typeof useChangeLocationReservationStatusMutation
+>;
+export type ChangeLocationReservationStatusMutationResult =
+  Apollo.MutationResult<ChangeLocationReservationStatusMutation>;
+export type ChangeLocationReservationStatusMutationOptions =
+  Apollo.BaseMutationOptions<
+    ChangeLocationReservationStatusMutation,
+    ChangeLocationReservationStatusMutationVariables
+  >;
 export const CreateInstallationDocument = gql`
   mutation createInstallation($input: CreateInstallationInput!) {
     createInstallation(input: $input)
@@ -1233,6 +1313,55 @@ export type CreateUserMutationOptions = Apollo.BaseMutationOptions<
   CreateUserMutation,
   CreateUserMutationVariables
 >;
+export const DeleteLocationReservationDocument = gql`
+  mutation deleteLocationReservation($id: Float!) {
+    deleteLocationReservation(id: $id)
+  }
+`;
+export type DeleteLocationReservationMutationFn = Apollo.MutationFunction<
+  DeleteLocationReservationMutation,
+  DeleteLocationReservationMutationVariables
+>;
+
+/**
+ * __useDeleteLocationReservationMutation__
+ *
+ * To run a mutation, you first call `useDeleteLocationReservationMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteLocationReservationMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteLocationReservationMutation, { data, loading, error }] = useDeleteLocationReservationMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useDeleteLocationReservationMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    DeleteLocationReservationMutation,
+    DeleteLocationReservationMutationVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<
+    DeleteLocationReservationMutation,
+    DeleteLocationReservationMutationVariables
+  >(DeleteLocationReservationDocument, options);
+}
+export type DeleteLocationReservationMutationHookResult = ReturnType<
+  typeof useDeleteLocationReservationMutation
+>;
+export type DeleteLocationReservationMutationResult =
+  Apollo.MutationResult<DeleteLocationReservationMutation>;
+export type DeleteLocationReservationMutationOptions =
+  Apollo.BaseMutationOptions<
+    DeleteLocationReservationMutation,
+    DeleteLocationReservationMutationVariables
+  >;
 export const LoginDocument = gql`
   mutation login($input: RegisterLoginInput!) {
     login(input: $input) {
@@ -1297,6 +1426,60 @@ export type LoginMutationResult = Apollo.MutationResult<LoginMutation>;
 export type LoginMutationOptions = Apollo.BaseMutationOptions<
   LoginMutation,
   LoginMutationVariables
+>;
+export const ManuallyPayDocument = gql`
+  mutation manuallyPay($id: Float!) {
+    manuallyPay(id: $id) {
+      message
+      payment {
+        id
+        status
+      }
+    }
+  }
+`;
+export type ManuallyPayMutationFn = Apollo.MutationFunction<
+  ManuallyPayMutation,
+  ManuallyPayMutationVariables
+>;
+
+/**
+ * __useManuallyPayMutation__
+ *
+ * To run a mutation, you first call `useManuallyPayMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useManuallyPayMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [manuallyPayMutation, { data, loading, error }] = useManuallyPayMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useManuallyPayMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    ManuallyPayMutation,
+    ManuallyPayMutationVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<ManuallyPayMutation, ManuallyPayMutationVariables>(
+    ManuallyPayDocument,
+    options,
+  );
+}
+export type ManuallyPayMutationHookResult = ReturnType<
+  typeof useManuallyPayMutation
+>;
+export type ManuallyPayMutationResult =
+  Apollo.MutationResult<ManuallyPayMutation>;
+export type ManuallyPayMutationOptions = Apollo.BaseMutationOptions<
+  ManuallyPayMutation,
+  ManuallyPayMutationVariables
 >;
 export const ReadNotificationDocument = gql`
   mutation readNotification($id: Float!) {
@@ -3344,6 +3527,7 @@ export const GetPaymentsDocument = gql`
           name
           electricCounterPrice
         }
+        createdAt
       }
     }
   }
@@ -3735,6 +3919,8 @@ export const MeDocument = gql`
         location {
           name
           stripeAccountId
+          numOfFloor
+          electricCounterPrice
         }
         roomId
         room {
@@ -3784,6 +3970,17 @@ export type AuthorizeCodeMutationVariables = Exact<{
 
 export type AuthorizeCodeMutation = { authorizeCode: string };
 
+export type ChangeLocationReservationStatusMutationVariables = Exact<{
+  input: ChangeLocationReservationStatusInput;
+}>;
+
+export type ChangeLocationReservationStatusMutation = {
+  changeLocationReservationStatus: {
+    message?: string | null;
+    locationReservation?: { id: string; status: string } | null;
+  };
+};
+
 export type CreateInstallationMutationVariables = Exact<{
   input: CreateInstallationInput;
 }>;
@@ -3796,6 +3993,14 @@ export type CreateUserMutationVariables = Exact<{
 
 export type CreateUserMutation = {
   createUser: { message?: string | null; user?: { id: string } | null };
+};
+
+export type DeleteLocationReservationMutationVariables = Exact<{
+  id: Scalars['Float'];
+}>;
+
+export type DeleteLocationReservationMutation = {
+  deleteLocationReservation: string;
 };
 
 export type LoginMutationVariables = Exact<{
@@ -3820,6 +4025,17 @@ export type LoginMutation = {
       locationId?: number | null;
       location?: { id: string; name: string } | null;
     } | null;
+  };
+};
+
+export type ManuallyPayMutationVariables = Exact<{
+  id: Scalars['Float'];
+}>;
+
+export type ManuallyPayMutation = {
+  manuallyPay: {
+    message?: string | null;
+    payment?: { id: string; status: PaymentStatus } | null;
   };
 };
 
@@ -4388,6 +4604,7 @@ export type GetPaymentsQuery = {
       roomId: number;
       locationReservationId: number;
       locationId: number;
+      createdAt: any;
       users?: Array<{
         name: string;
         id: string;
@@ -4552,7 +4769,12 @@ export type MeQuery = {
       isActive?: boolean | null;
       locationId?: number | null;
       roomId?: number | null;
-      location?: { name: string; stripeAccountId?: string | null } | null;
+      location?: {
+        name: string;
+        stripeAccountId?: string | null;
+        numOfFloor?: number | null;
+        electricCounterPrice?: number | null;
+      } | null;
       room?: { name?: string | null } | null;
     } | null;
   };

@@ -1,46 +1,91 @@
-import { Form, InputNumber } from 'antd';
+import { Form, InputNumber, Typography } from 'antd';
 import { useReactiveVar } from '@apollo/client';
 import { userVar } from '#/graphql/cache';
-import { DiscountType, RoomStatus } from '#/generated/schemas';
+import { DiscountType, RoomStatus, User, UserRole } from '#/generated/schemas';
 import RoomSelector from '#/shared/components/selectors/RoomSelector';
 import DiscountTypeSelector from '#/shared/components/selectors/DiscountTypeSelector';
+import {
+  CoinFilledSVG,
+  DiscountFilledSVG,
+  DropFilledSVG,
+  FlashFilledSVG,
+} from '#/assets/svgs';
+import UserSelector from '#/shared/components/selectors/UserSelector';
+import { SelectedPayment } from '../LocationReservations/Detail/PaymentRecords';
 
-function PaymentForm() {
+interface PaymentFormProps {
+  initialValues?: SelectedPayment;
+}
+
+function PaymentForm({ initialValues }: PaymentFormProps) {
   const currentUser = useReactiveVar(userVar);
 
   return (
     <>
       <Form.Item label="Room" name="roomId" rules={[{ required: true }]}>
         <RoomSelector
-          disabled
+          disabled={!!initialValues?.id}
           variables={{
             input: {
               locationId: Number(currentUser?.locationId),
               status: RoomStatus.Owned,
             },
           }}
+          placeholder="Select Room"
         />
       </Form.Item>
+      {initialValues?.id && (
+        <Form.Item name="userIds" label="Payers">
+          <UserSelector
+            variables={{
+              input: {
+                role: UserRole.Customer,
+                locationId: Number(currentUser?.locationId),
+              },
+            }}
+            placeholder="Select payment payers"
+            mode="multiple"
+            initValues={
+              initialValues?.users?.[0]
+                ? ([...initialValues?.users] as User[])
+                : []
+            }
+          />
+        </Form.Item>
+      )}
       <Form.Item name="electricCounter" label="Electric Counter">
-        <InputNumber placeholder="Enter electric counter" className="w-full" />
+        <InputNumber
+          prefix={
+            <FlashFilledSVG width={24} height={24} className="text-warning" />
+          }
+          placeholder="Enter electric counter"
+          className="w-full"
+        />
       </Form.Item>
+      <Typography className="text-xs italic text-grey-secondary-300">
+        (*) Your location currently charge{' '}
+        {(currentUser?.location?.electricCounterPrice ?? 0)?.toLocaleString()}$
+        per electric counter
+      </Typography>
       <Form.Item name="waterPrice" label="Water Price">
         <InputNumber
-          prefix="$"
+          prefix={
+            <DropFilledSVG width={24} height={24} className="text-info" />
+          }
           placeholder="Enter water price"
           className="w-full"
         />
       </Form.Item>
       <Form.Item name="extraFee" label="Extra Fee">
         <InputNumber
-          prefix="$"
+          prefix={<CoinFilledSVG width={24} height={24} />}
           placeholder="Enter extra fee"
           className="w-full"
         />
       </Form.Item>
       <Form.Item name="prePaidFee" label="Pre-Paid Fee">
         <InputNumber
-          prefix="$"
+          prefix={<CoinFilledSVG width={24} height={24} />}
           placeholder="Enter amount of pre-paid fee"
           className="w-full"
         />
@@ -49,15 +94,26 @@ function PaymentForm() {
         <DiscountTypeSelector
           placeholder="Select discount type"
           className="w-full"
+          allowClear
         />
       </Form.Item>
       <Form.Item noStyle shouldUpdate>
         {({ getFieldValue }) => (
-          <Form.Item name="discount" label="Extra Fee">
+          <Form.Item
+            name="discount"
+            label={`Discount Amount (in ${
+              getFieldValue('discountType') === DiscountType.PercentageDiscount
+                ? '%'
+                : '$'
+            })`}
+          >
             <InputNumber
               prefix={
-                getFieldValue('discountType') ===
-                  DiscountType.PercentageDiscount && '%'
+                <DiscountFilledSVG
+                  width={24}
+                  height={24}
+                  className="text-success"
+                />
               }
               placeholder="Enter discount amount"
               className="w-full"

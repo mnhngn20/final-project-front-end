@@ -1,6 +1,9 @@
 import { EditSVG } from '#/assets/svgs';
 import {
+  LocationReservationStatus,
+  refetchGetLocationReservationQuery,
   UpsertLocationReservationInput,
+  useChangeLocationReservationStatusMutation,
   useGetLocationReservationQuery,
   useUpsertLocationReservationMutation,
 } from '#/generated/schemas';
@@ -9,13 +12,13 @@ import CustomTag from '#/shared/components/commons/CustomTag';
 import { FormModal } from '#/shared/components/commons/FormModal';
 import { showError, showSuccess } from '#/shared/utils/notification';
 import { PageContainer } from '@ant-design/pro-layout';
-import { Typography } from 'antd';
+import { Button, Typography } from 'antd';
 import dayjs from 'dayjs';
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import LocationReservationForm from '../Form';
 import { getLocationReservationStatusColor } from '../utils';
-import PaymentRecords from './PaymentRecords';
+import PaymentRecords, { PaymentRecordsRef } from './PaymentRecords';
 
 function DisplayItem({
   name,
@@ -37,6 +40,7 @@ function DisplayItem({
 function Detail() {
   const { id } = useParams();
   const [editInfoModalVisible, setEditInfoModalVisible] = useState(false);
+  const paymentRecordsRef = useRef<PaymentRecordsRef>(null);
 
   const { data, refetch } = useGetLocationReservationQuery({
     variables: {
@@ -59,6 +63,21 @@ function Detail() {
     onError: showError,
   });
 
+  const [changeLocationReservationStatus, { loading }] =
+    useChangeLocationReservationStatusMutation({
+      onCompleted(data) {
+        paymentRecordsRef?.current?.refetchPayment();
+        showSuccess(
+          data?.changeLocationReservationStatus?.locationReservation?.status ===
+            LocationReservationStatus.Published
+            ? 'Published Location Reservation'
+            : 'Saved Location Reservation as draft',
+        );
+      },
+      onError: showError,
+      refetchQueries: [refetchGetLocationReservationQuery({ id: Number(id) })],
+    });
+
   const onSubmit = ({
     createdById,
     locationId,
@@ -75,6 +94,20 @@ function Detail() {
         },
       },
     });
+  };
+
+  const onChangeLocationReservationStatus = (
+    status: LocationReservationStatus,
+  ) => {
+    locationReservation?.id &&
+      changeLocationReservationStatus({
+        variables: {
+          input: {
+            status,
+            locationReservationId: Number(locationReservation?.id),
+          },
+        },
+      });
   };
 
   return (
@@ -150,7 +183,45 @@ function Detail() {
               />
             </div>
           </div>
-          <PaymentRecords locationReservation={locationReservation} />
+          <PaymentRecords
+            ref={paymentRecordsRef}
+            locationReservation={locationReservation}
+          />
+
+          {locationReservation?.status !==
+            LocationReservationStatus?.Completed && (
+            <div className="flex items-center justify-end gap-2">
+              <Button
+                loading={loading}
+                onClick={() =>
+                  onChangeLocationReservationStatus(
+                    LocationReservationStatus.Draft,
+                  )
+                }
+                disabled={
+                  locationReservation?.status ===
+                  LocationReservationStatus.Published
+                }
+              >
+                Save as Draft
+              </Button>
+              <Button
+                type="primary"
+                loading={loading}
+                onClick={() =>
+                  onChangeLocationReservationStatus(
+                    LocationReservationStatus.Published,
+                  )
+                }
+                disabled={
+                  locationReservation?.status ===
+                  LocationReservationStatus.Published
+                }
+              >
+                Save and Publish
+              </Button>
+            </div>
+          )}
         </div>
       </PageContainer>
       <FormModal<UpsertLocationReservationInput>

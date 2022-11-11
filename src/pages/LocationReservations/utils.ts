@@ -1,11 +1,14 @@
+import { DiscountType } from './../../generated/schemas';
 import { LocationReservationStatus, PaymentStatus } from '#/generated/schemas';
 
 export const getLocationReservationStatusColor = (status?: string) => {
   switch (status) {
     case LocationReservationStatus.Published:
-      return 'bg-success text-[white]';
-    case LocationReservationStatus.Draft:
       return 'bg-alert text-[white]';
+    case LocationReservationStatus.Draft:
+      return 'bg-grey-secondary-300 text-[white]';
+    case LocationReservationStatus.Completed:
+      return 'bg-success text-[white]';
     default:
       return 'bg-grey-secondary-300 text-[black]';
   }
@@ -16,7 +19,7 @@ export const getPaymentStatusColor = (status?: string) => {
     case PaymentStatus.Paid:
       return 'bg-success text-[white]';
     case PaymentStatus.Unpaid:
-      return 'bg-alert text-[white]';
+      return 'bg-grey-secondary-300 text-[white]';
     case PaymentStatus.Canceled:
       return 'bg-error text-[white]';
     case PaymentStatus.MissingLivingPrice:
@@ -37,5 +40,15 @@ export const getPaymentStatusTitle = (status?: string) => {
       return 'Missing Living Price';
     default:
       return 'Canceled';
+  }
+};
+export const getPaymentDiscountTypeTitle = (type?: string) => {
+  switch (type) {
+    case DiscountType.FixedCashDiscount:
+      return 'Fixed Cash Discount';
+    case DiscountType.PercentageDiscount:
+      return 'Percentage Discount';
+    default:
+      return 'Percentage Discount';
   }
 };

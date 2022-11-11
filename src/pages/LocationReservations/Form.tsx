@@ -33,7 +33,10 @@ function LocationReservationForm() {
         label="Start Date Of Total Reservation"
         rules={[{ required: true }]}
       >
-        <DatePicker placeholder="Select start date" className="w-full" />
+        <DatePicker.MonthPicker
+          placeholder="Select start date"
+          className="w-full"
+        />
       </Form.Item>
     </>
   );

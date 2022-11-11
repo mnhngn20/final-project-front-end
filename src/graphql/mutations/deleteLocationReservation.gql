@@ -1,0 +1,3 @@
+mutation deleteLocationReservation($id: Float!) {
+  deleteLocationReservation(id: $id)
+}
