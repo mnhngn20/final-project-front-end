@@ -14,11 +14,13 @@ query getLocation($id: Float!) {
       income
       isActive
       createdAt
+      minPrice
       locationServices {
         id
         name
         description
       }
+      totalRevenue
       contactInformations {
         address
         name

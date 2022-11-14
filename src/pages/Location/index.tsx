@@ -24,6 +24,7 @@ function Detail() {
     },
     skip: !currentUser?.locationId,
     onError: showError,
+    fetchPolicy: 'network-only',
   });
   const location = data?.getLocation?.location;
 

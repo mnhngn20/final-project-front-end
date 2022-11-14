@@ -4,6 +4,7 @@ import {
   LocationReservationStatus,
   Payment,
   refetchGetLocationReservationQuery,
+  refetchMeQuery,
   UpsertPaymentInput,
   useGetPaymentsQuery,
   useManuallyPayMutation,
@@ -93,7 +94,10 @@ const PaymentRecords = forwardRef<PaymentRecordsRef, PaymentRecordsProps>(
         refetch();
       },
       onError: showError,
-      refetchQueries: [refetchGetLocationReservationQuery({ id: Number(id) })],
+      refetchQueries: [
+        refetchGetLocationReservationQuery({ id: Number(id) }),
+        refetchMeQuery(),
+      ],
     });
 
     return (

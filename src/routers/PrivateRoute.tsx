@@ -7,6 +7,7 @@ import { userVar } from '#/graphql/cache';
 import { showError } from '#/shared/utils/notification';
 import { Button, Modal, Typography } from 'antd';
 import { StripeFilledSVG, StripeLogoSVG } from '#/assets/svgs';
+import { useRef } from 'react';
 
 const Customers = loadable(import('#/pages/Customers'));
 const CustomerDetail = loadable(import('#/pages/Customers/Detail'));
@@ -28,13 +29,16 @@ const ConnectingStripe = loadable(import('#/pages/Stripe/ConnectingStripe'));
 function PrivateRoute() {
   const { pathname } = useLocation();
   const navigate = useNavigate();
+  const stripeChecked = useRef(false);
 
   const { data } = useMeQuery({
     onCompleted(data) {
       if (
         !data?.me?.user?.location?.stripeAccountId &&
-        !pathname.includes('stripe-connect')
+        !pathname.includes('stripe-connect') &&
+        !stripeChecked.current
       ) {
+        stripeChecked.current = true;
         Modal.warning({
           centered: true,
           closable: true,
@@ -87,7 +91,6 @@ function PrivateRoute() {
           ),
         });
       }
-
       userVar(data?.me?.user ?? {});
     },
     onError(error) {
@@ -193,9 +196,7 @@ function PrivateRoute() {
     { element: <Location />, path: '/' },
   ]);
 
-  return pathname?.split('/')?.[1] === 'funeral-plan' ? (
-    routes
-  ) : (
+  return (
     <PrivateLayout user={data?.me?.user ?? {}} logout={logout}>
       {routes}
     </PrivateLayout>

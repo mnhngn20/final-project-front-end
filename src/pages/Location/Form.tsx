@@ -71,6 +71,18 @@ function LocationForm({ initialValues }: Props) {
         </Form.Item>
       </Col>
       <Col span={12}>
+        <Form.Item
+          name="minPrice"
+          label="Location Average Price"
+          rules={[{ required: true }]}
+        >
+          <InputNumber
+            placeholder="Enter location average price"
+            className="w-full"
+          />
+        </Form.Item>
+      </Col>
+      <Col span={24}>
         <Form.Item name="locationServiceIds" label="Services">
           <LocationServiceSelector
             mode="multiple"

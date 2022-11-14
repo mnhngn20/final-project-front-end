@@ -15,6 +15,7 @@ import {
   SmsSVG,
   StarSVG,
   UserOutlineSVG,
+  SquareDollarOutlineSVG,
 } from '#/assets/svgs';
 import { formatDate } from '#/shared/utils/date';
 
@@ -77,6 +78,11 @@ function SideContent({ location }: SideContentProps) {
             icon={NoteSVG}
             toolTip="Description"
             value={location?.description}
+          />
+          <DetailItem
+            icon={SquareDollarOutlineSVG}
+            toolTip="Total Revenue"
+            value={(location?.totalRevenue ?? 0).toLocaleString()}
           />
         </div>
         <div className="flex flex-col gap-4">

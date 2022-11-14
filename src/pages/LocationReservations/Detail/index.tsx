@@ -200,7 +200,7 @@ function Detail() {
                 }
                 disabled={
                   locationReservation?.status ===
-                  LocationReservationStatus.Published
+                  LocationReservationStatus.Draft
                 }
               >
                 Save as Draft

@@ -106,6 +106,12 @@ export type CreateInstallationInput = {
   userId: Scalars['Float'];
 };
 
+export type CreateStripeCheckoutInput = {
+  cancelUrl: Scalars['String'];
+  paymentId: Scalars['Float'];
+  successUrl: Scalars['String'];
+};
+
 export type CreateUserInput = {
   address?: InputMaybe<Scalars['String']>;
   avatar?: InputMaybe<Scalars['String']>;
@@ -232,8 +238,10 @@ export type GetLocationsInput = {
   limit?: InputMaybe<Scalars['Float']>;
   locationServiceIds?: InputMaybe<Array<Scalars['Float']>>;
   long?: InputMaybe<Scalars['Float']>;
+  maxPrice?: InputMaybe<Scalars['Float']>;
+  minPrice?: InputMaybe<Scalars['Float']>;
   name?: InputMaybe<Scalars['String']>;
-  orderBy?: InputMaybe<OrderBy>;
+  orderBy?: InputMaybe<Scalars['String']>;
   page?: InputMaybe<Scalars['Float']>;
 };
 
@@ -415,6 +423,7 @@ export type Location = {
   rooms?: Maybe<Array<Room>>;
   stripeAccountId?: Maybe<Scalars['String']>;
   thumbnail?: Maybe<Scalars['String']>;
+  totalRevenue?: Maybe<Scalars['Float']>;
   updatedAt: Scalars['DateTime'];
   users?: Maybe<Array<User>>;
 };
@@ -503,6 +512,7 @@ export type Mutation = {
   changePassword: Scalars['String'];
   changeUserStatus: Scalars['String'];
   createInstallation: Scalars['String'];
+  createStripeCheckoutSession: StripeResponse;
   createUser: UserResponse;
   deleteLocationReservation: Scalars['String'];
   getAccessToken: LoginResponse;
@@ -549,6 +559,10 @@ export type MutationChangeUserStatusArgs = {
 
 export type MutationCreateInstallationArgs = {
   input: CreateInstallationInput;
+};
+
+export type MutationCreateStripeCheckoutSessionArgs = {
+  input: CreateStripeCheckoutInput;
 };
 
 export type MutationCreateUserArgs = {
@@ -909,6 +923,11 @@ export type RoomListResponse = ListResponse & {
 export type RoomResponse = IResponse & {
   message?: Maybe<Scalars['String']>;
   room?: Maybe<Room>;
+};
+
+export type StripeResponse = IResponse & {
+  message?: Maybe<Scalars['String']>;
+  url: Scalars['String'];
 };
 
 export enum UserRole {
@@ -2944,11 +2963,13 @@ export const GetLocationDocument = gql`
         income
         isActive
         createdAt
+        minPrice
         locationServices {
           id
           name
           description
         }
+        totalRevenue
         contactInformations {
           address
           name
@@ -4423,6 +4444,8 @@ export type GetLocationQuery = {
       income: number;
       isActive: boolean;
       createdAt: any;
+      minPrice?: number | null;
+      totalRevenue?: number | null;
       locationServices: Array<{
         id: string;
         name: string;
