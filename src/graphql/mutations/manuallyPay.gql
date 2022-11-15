@@ -1,5 +1,5 @@
-mutation ($id: Float!) {
-  (id: $id) {
+mutation manuallyPay($id: Float!) {
+  manuallyPay(id: $id) {
     message
     payment {
       id

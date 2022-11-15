@@ -22,6 +22,9 @@ function RoomForm() {
         <InputNumber
           placeholder="Enter room base price ($)"
           className="w-full"
+          formatter={value =>
+            `${Number(value)?.toLocaleString()?.toString() ?? ''} VND`
+          }
         />
       </Form.Item>
       <Form.Item name="description" label="Description">

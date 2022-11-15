@@ -13,6 +13,7 @@ query getNotifications($input: GetNotificationsInput!) {
       image
       type
       userId
+      createdAt
     }
   }
 }

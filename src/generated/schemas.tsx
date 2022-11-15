@@ -3355,6 +3355,7 @@ export const GetNotificationsDocument = gql`
         image
         type
         userId
+        createdAt
       }
     }
   }
@@ -4559,6 +4560,7 @@ export type GetNotificationsQuery = {
       image?: string | null;
       type?: string | null;
       userId: number;
+      createdAt: any;
     }>;
   };
 };

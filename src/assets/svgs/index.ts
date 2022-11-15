@@ -53,3 +53,5 @@ export { ReactComponent as ClockFilledSVG } from './clock-filled.svg';
 export { ReactComponent as MathFilledSVG } from './math-filled.svg';
 export { ReactComponent as CardOutlineSVG } from './card-outline.svg';
 export { ReactComponent as TrashOutlineSVG } from './trash-outline.svg';
+export { ReactComponent as MoneyTimeFilledSVG } from './money-time-filled.svg';
+export { ReactComponent as ExtraCoinFilledSVG } from './extra-coin-filled.svg';

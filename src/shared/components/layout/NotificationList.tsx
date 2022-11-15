@@ -18,6 +18,7 @@ import {
   getNotificationIcon,
   getNotificationUrl,
 } from '#/shared/utils/notification';
+import { formatDate } from '#/shared/utils/date';
 
 export default function NotificationList() {
   const navigate = useNavigate();
@@ -81,6 +82,9 @@ export default function NotificationList() {
               <div className="flex flex-col">
                 <div className="font-medium">{notification?.title}</div>
                 <div className="text-xs">{notification?.content}</div>
+              </div>
+              <div>
+                {formatDate(notification.createdAt, 'hh:mm A DD MMM YYYY')}
               </div>
             </div>
           ))

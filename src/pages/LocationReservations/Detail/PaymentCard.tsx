@@ -11,9 +11,10 @@ import {
   UsersSVG,
   DiscountFilledSVG,
   CoinFilledSVG,
-  MathFilledSVG,
   ClockFilledSVG,
   CardOutlineSVG,
+  MoneyTimeFilledSVG,
+  ExtraCoinFilledSVG,
 } from '#/assets/svgs';
 import { formatDate } from '#/shared/utils/date';
 
@@ -39,9 +40,7 @@ function DisplayItem({
     <Tooltip title={name}>
       <div className={`flex cursor-pointer items-center gap-2 ${className}`}>
         <Typography className="col-span-1">{icon ?? name}</Typography>
-        <Typography className="col-span-1 font-semibold">
-          {value ?? 'N/A'}
-        </Typography>
+        <Typography className="col-span-1">{value ?? 'N/A'}</Typography>
       </div>
     </Tooltip>
   );
@@ -81,7 +80,7 @@ export default function PaymentCard({
           <div className="grid grid-cols-4 gap-x-10 gap-y-4">
             <DisplayItem
               name="Base Price"
-              value={`${payment?.room?.basePrice?.toLocaleString()} $`}
+              value={`${payment?.room?.basePrice?.toLocaleString()} VND`}
               icon={
                 <CoinFilledSVG
                   width={24}
@@ -103,7 +102,7 @@ export default function PaymentCard({
             />
             <DisplayItem
               name="Water Price"
-              value={`${payment?.waterPrice?.toLocaleString()} $`}
+              value={`${payment?.waterPrice?.toLocaleString()} VND`}
               icon={
                 <DropFilledSVG width={24} height={24} className="text-info" />
               }
@@ -119,19 +118,43 @@ export default function PaymentCard({
                 <DiscountFilledSVG
                   width={24}
                   height={24}
+                  className="text-primary-color"
+                />
+              }
+            />
+            <DisplayItem
+              className="col-span-1"
+              name="Extra Fee"
+              value={`${payment?.extraFee?.toLocaleString()} VND`}
+              icon={
+                <ExtraCoinFilledSVG
+                  width={24}
+                  height={24}
+                  className="text-error"
+                />
+              }
+            />
+            <DisplayItem
+              className="col-span-1"
+              name="Pre-paid Fee"
+              value={`${payment?.prePaidFee?.toLocaleString()} VND`}
+              icon={
+                <MoneyTimeFilledSVG
+                  width={24}
+                  height={24}
                   className="text-success"
                 />
               }
             />
             <DisplayItem
-              className="col-span-3"
+              className="col-span-1"
               name="Created At"
               value={formatDate(payment?.createdAt, 'hh:mm A DD/MM/YYYY ')}
               icon={
                 <ClockFilledSVG
                   width={24}
                   height={24}
-                  className="text-primary-color"
+                  className="text-grey-secondary-300"
                 />
               }
             />
@@ -144,16 +167,10 @@ export default function PaymentCard({
               }
             />
             <DisplayItem
-              className="col-span-4"
+              className="col-span-4 text-base"
               name="Final Calculated Price"
-              value={`${payment?.totalPrice?.toLocaleString()} $`}
-              icon={
-                <MathFilledSVG
-                  width={24}
-                  height={24}
-                  className="text-success"
-                />
-              }
+              value={`${payment?.totalPrice?.toLocaleString()} VND`}
+              icon={<Typography className="font-bold">Total Price</Typography>}
             />
           </div>
         </div>

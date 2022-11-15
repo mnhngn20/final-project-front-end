@@ -17,7 +17,13 @@ function Filter({ onFilter }: Props) {
       </Col>
       <Col xl={6} xs={12}>
         <Form.Item name="minBasePrice">
-          <InputNumber placeholder="Search by min price" className="w-full" />
+          <InputNumber
+            placeholder="Search by min price"
+            className="w-full"
+            formatter={value =>
+              `${Number(value)?.toLocaleString()?.toString() ?? ''} VND`
+            }
+          />
         </Form.Item>
       </Col>
       <Col xl={6} xs={12}>
