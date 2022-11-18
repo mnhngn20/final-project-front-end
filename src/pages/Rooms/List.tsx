@@ -34,6 +34,7 @@ export type GetRoomsFilter = {
   maxBasePrice?: number;
   status?: RoomStatus;
   floor?: number;
+  capacity?: number;
 };
 
 function List() {
@@ -78,6 +79,7 @@ function List() {
     minBasePrice,
     status,
     floor,
+    capacity,
   }: GetRoomsFilter) => {
     const newFilter = {
       ...(name && { name }),
@@ -85,6 +87,7 @@ function List() {
       ...(maxBasePrice && { maxBasePrice: Number(maxBasePrice) }),
       ...(minBasePrice && { minBasePrice: Number(minBasePrice) }),
       ...(floor && { floor }),
+      ...(capacity && { capacity }),
     };
     setCurrentPage(1);
     setFilters(newFilter);
@@ -97,6 +100,7 @@ function List() {
     name,
     thumbnail,
     floor,
+    capacity,
   }: UpsertRoomInput) => {
     upsertRoom({
       variables: {
@@ -106,6 +110,7 @@ function List() {
           images,
           name,
           thumbnail,
+          capacity,
           floor: Number(floor),
           ...(selectedItem?.id && {
             id: Number(selectedItem?.id),
@@ -142,12 +147,7 @@ function List() {
         title: 'Room Name',
         dataIndex: 'name',
         key: 'name',
-      },
-      {
-        title: 'Created Date',
-        dataIndex: 'createdAt',
-        key: 'createdAt',
-        render: (date: Date) => formatDate(date),
+        render: (name?: string) => `Room ${name}`,
       },
       {
         title: 'Status',
@@ -166,12 +166,32 @@ function List() {
         title: 'Description',
         dataIndex: 'description',
         key: 'description',
+        render: (description?: string) => description ?? 'N/A',
       },
       {
         title: 'Base Price',
         dataIndex: 'basePrice',
         key: 'basePrice',
-        render: (basePrice?: number) => `$ ${basePrice}`,
+        render: (basePrice?: number) =>
+          `${basePrice?.toLocaleString() ?? 0} VND`,
+      },
+      {
+        title: 'Capacity',
+        dataIndex: 'capacity',
+        key: 'capacity',
+        render: (capacity?: number) => `${capacity ?? 0} person/people`,
+      },
+      {
+        title: 'Created Date',
+        dataIndex: 'createdAt',
+        key: 'createdAt',
+        render: (date: Date) => formatDate(date, 'hh:mm A, DD MMMM YYYY'),
+      },
+      {
+        title: 'Updated Date',
+        dataIndex: 'updatedAt',
+        key: 'updatedAt',
+        render: (date: Date) => formatDate(date, 'hh:mm A, DD MMMM YYYY'),
       },
       {
         title: '',

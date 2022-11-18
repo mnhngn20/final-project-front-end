@@ -27,6 +27,7 @@ function IncidentForm({ initialValues }: Props) {
             },
           }}
           initValues={initialValues?.room ? [initialValues?.room] : []}
+          disabled={!!initialValues?.fromCustomer}
         />
       </Form.Item>
       <Form.Item
@@ -42,10 +43,13 @@ function IncidentForm({ initialValues }: Props) {
               locationId: Number(currentUser?.locationId),
             },
           }}
+          disabled={!!initialValues?.fromCustomer}
         />
       </Form.Item>
       <Form.Item name="fromCustomer" valuePropName="checked">
-        <Checkbox>Reported By Customer</Checkbox>
+        <Checkbox disabled={!!initialValues?.fromCustomer}>
+          Reported By Customer
+        </Checkbox>
       </Form.Item>
       <Divider />
       <Form.Item
@@ -60,53 +64,76 @@ function IncidentForm({ initialValues }: Props) {
               ? [initialValues?.incidentCategory]
               : []
           }
+          disabled={!!initialValues?.fromCustomer}
         />
-      </Form.Item>
-      <Form.Item name="priority" label="Priority" rules={[{ required: true }]}>
-        <IncidentPrioritySelector placeholder="Select incident priority" />
       </Form.Item>
       <Form.Item
         name="title"
         label="Priority Title"
         rules={[{ required: true, whitespace: true }]}
       >
-        <Input placeholder="Enter priority title" />
+        <Input
+          placeholder="Enter priority title"
+          disabled={!!initialValues?.fromCustomer}
+        />
+      </Form.Item>
+      <Form.Item name="dueDate" label="Due Date">
+        <DatePicker
+          disabled={!!initialValues?.fromCustomer}
+          placeholder="Select due date"
+          className="w-full"
+        />
       </Form.Item>
       <Form.Item
         name="description"
         label="Priority Description"
         rules={[{ whitespace: true }]}
       >
-        <Input.TextArea rows={3} placeholder="Enter priority description" />
-      </Form.Item>
-      <Form.Item name="images" label="Images Attached" valuePropName="srcList">
-        <UploadImages />
-      </Form.Item>
-      <Divider />
-      <Form.Item name="employeeId" label="Employee In Charge">
-        <UserSelector
-          placeholder="Select employee to in charge"
-          variables={{
-            input: {
-              role: UserRole.Admin,
-              locationId: Number(currentUser?.locationId),
-            },
-          }}
+        <Input.TextArea
+          rows={3}
+          placeholder="Enter priority description"
+          disabled={!!initialValues?.fromCustomer}
         />
       </Form.Item>
-      <Form.Item name="dueDate" label="Due Date">
-        <DatePicker placeholder="Select due date" className="w-full" />
+      <Form.Item name="images" label="Images Attached" valuePropName="srcList">
+        <UploadImages disabled={!!initialValues?.fromCustomer} />
       </Form.Item>
-      <Form.Item name="reportMessage" label="Report Message">
-        <Input.TextArea placeholder="Enter report message" className="w-full" />
-      </Form.Item>
-      <Form.Item
-        name="reportImages"
-        label="Report Images"
-        valuePropName="srcList"
-      >
-        <UploadImages />
-      </Form.Item>
+      {initialValues?.id && (
+        <>
+          <Divider />
+          <Form.Item
+            name="priority"
+            label="Priority"
+            rules={[{ required: true }]}
+          >
+            <IncidentPrioritySelector placeholder="Select incident priority" />
+          </Form.Item>
+          <Form.Item name="employeeId" label="Employee In Charge">
+            <UserSelector
+              placeholder="Select employee to in charge"
+              variables={{
+                input: {
+                  role: UserRole.Admin,
+                  locationId: Number(currentUser?.locationId),
+                },
+              }}
+            />
+          </Form.Item>
+          <Form.Item name="reportMessage" label="Report Message">
+            <Input.TextArea
+              placeholder="Enter report message"
+              className="w-full"
+            />
+          </Form.Item>
+          <Form.Item
+            name="reportImages"
+            label="Report Images"
+            valuePropName="srcList"
+          >
+            <UploadImages />
+          </Form.Item>
+        </>
+      )}
     </>
   );
 }

@@ -5,7 +5,6 @@ import { DiscountType, RoomStatus, User, UserRole } from '#/generated/schemas';
 import RoomSelector from '#/shared/components/selectors/RoomSelector';
 import DiscountTypeSelector from '#/shared/components/selectors/DiscountTypeSelector';
 import {
-  CoinFilledSVG,
   DiscountFilledSVG,
   DropFilledSVG,
   FlashFilledSVG,
@@ -60,7 +59,7 @@ function PaymentForm({ initialValues }: PaymentFormProps) {
           prefix={
             <FlashFilledSVG width={24} height={24} className="text-warning" />
           }
-          formatter={value => `${value} counter`}
+          formatter={value => (!value ? '' : `${value} counter`)}
           placeholder="Enter electric counter"
           className="w-full"
         />
@@ -76,7 +75,9 @@ function PaymentForm({ initialValues }: PaymentFormProps) {
             <DropFilledSVG width={24} height={24} className="text-info" />
           }
           formatter={value =>
-            `${Number(value)?.toLocaleString()?.toString() ?? ''} VND`
+            !value
+              ? ''
+              : `${Number(value)?.toLocaleString()?.toString() ?? ''} VND`
           }
           placeholder="Enter water price"
           className="w-full"
@@ -90,7 +91,9 @@ function PaymentForm({ initialValues }: PaymentFormProps) {
           placeholder="Enter extra fee"
           className="w-full"
           formatter={value =>
-            `${Number(value)?.toLocaleString()?.toString() ?? ''} VND`
+            !value
+              ? ''
+              : `${Number(value)?.toLocaleString()?.toString() ?? ''} VND`
           }
         />
       </Form.Item>
@@ -106,7 +109,9 @@ function PaymentForm({ initialValues }: PaymentFormProps) {
           placeholder="Enter amount of pre-paid fee"
           className="w-full"
           formatter={value =>
-            `${Number(value)?.toLocaleString()?.toString() ?? ''} VND`
+            !value
+              ? ''
+              : `${Number(value)?.toLocaleString()?.toString() ?? ''} VND`
           }
         />
       </Form.Item>
@@ -138,12 +143,14 @@ function PaymentForm({ initialValues }: PaymentFormProps) {
               placeholder="Enter discount amount"
               className="w-full"
               formatter={value =>
-                `${Number(value)?.toLocaleString()?.toString() ?? ''} ${
-                  getFieldValue('discountType') ===
-                  DiscountType.PercentageDiscount
-                    ? '%'
-                    : 'VND'
-                }`
+                !value
+                  ? ''
+                  : `${Number(value)?.toLocaleString()?.toString() ?? ''} ${
+                      getFieldValue('discountType') ===
+                      DiscountType.PercentageDiscount
+                        ? '%'
+                        : 'VND'
+                    }`
               }
             />
           </Form.Item>

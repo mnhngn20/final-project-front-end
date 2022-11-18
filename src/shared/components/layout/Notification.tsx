@@ -21,7 +21,7 @@ export default function Notification() {
       content={<NotificationList />}
     >
       <div>
-        <div className="cursor-pointer rounded-full bg-grey-secondary-200 p-2 text-[white]">
+        <div className="cursor-pointer rounded-full bg-grey-primary p-2 text-grey-secondary-300">
           <NotificationSVG width={24} height={24} />
         </div>
         {!!unreadNotifications && (

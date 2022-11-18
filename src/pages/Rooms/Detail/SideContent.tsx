@@ -44,27 +44,32 @@ function SideContent({ room }: SideContentProps) {
           <DetailItem
             icon={LocationSVG}
             toolTip="Room location"
-            value={room?.location?.name}
+            value={`Room ${room?.location?.name}`}
           />
           <DetailItem
             icon={BuildingOutlineSVG}
             toolTip="Room floor"
-            value={room?.floor}
+            value={`Floor ${room?.floor}`}
           />
           <DetailItem
             icon={CalendarSVG}
             toolTip="Created at"
-            value={formatDate(room?.createdAt)}
+            value={formatDate(room?.createdAt, 'hh:mm A, DD MMMM YYYY')}
+          />
+          <DetailItem
+            icon={CalendarSVG}
+            toolTip="Updated at"
+            value={formatDate(room?.updatedAt, 'hh:mm A, DD MMMM YYYY')}
           />
           <DetailItem
             icon={DevicesOutlineSVG}
             toolTip="Number of equipment"
-            value={room?.equipments?.length ?? 0}
+            value={`${room?.equipments?.length ?? 0} Equipment(s)`}
           />
           <DetailItem
             icon={SquareDollarOutlineSVG}
             toolTip="Base Price"
-            value={room?.basePrice?.toLocaleString()}
+            value={`${room?.basePrice?.toLocaleString() ?? 0} VND`}
           />
           <DetailItem
             icon={NoteSVG}

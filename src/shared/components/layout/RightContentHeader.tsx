@@ -1,7 +1,7 @@
 import { Avatar, Dropdown, Menu } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import useTypeSafeTranslation from '#/shared/hooks/useTypeSafeTranslation';
-import DefaultImage from '#/assets/images/logo.png';
+import DefaultImage from '#/assets/images/avatar.png';
 import { DeepPartial } from '#/shared/utils/type';
 import { User } from '#/generated/schemas';
 import Notification from './Notification';

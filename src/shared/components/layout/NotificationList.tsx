@@ -53,7 +53,7 @@ export default function NotificationList() {
 
   return (
     <div
-      className="flex max-h-[30rem] w-[20rem] flex-col overflow-y-auto"
+      className="flex max-h-[30rem] flex-col overflow-y-auto"
       onScroll={loadMore}
     >
       <div>
@@ -61,8 +61,10 @@ export default function NotificationList() {
           notifications?.map(notification => (
             <div
               key={notification?.id}
-              className={`flex cursor-pointer items-center gap-2 border-b border-grey-light p-4 hover:bg-grey-light ${
-                notification?.isRead === false ? 'bg-grey-light' : ''
+              className={`relative grid w-min cursor-pointer grid-cols-12 items-center gap-8 border-b border-grey-light p-4 hover:bg-grey-light ${
+                notification?.isRead === false
+                  ? 'bg-grey-light-200 font-bold after:absolute after:right-0 after:mr-1 after:h-1 after:w-1 after:rounded-full after:bg-[black] hover:bg-grey-light-200'
+                  : ''
               }`}
               onClick={() => {
                 readNotification({
@@ -78,13 +80,16 @@ export default function NotificationList() {
                 );
               }}
             >
-              {getNotificationIcon(notification?.type)}
-              <div className="flex flex-col">
-                <div className="font-medium">{notification?.title}</div>
+              <div className="col-span-2 flex justify-center">
+                {getNotificationIcon(notification?.type)}
+              </div>
+              <div className="col-span-7 flex flex-col">
+                <div className="font-semibold">{notification?.title}</div>
                 <div className="text-xs">{notification?.content}</div>
               </div>
-              <div>
-                {formatDate(notification.createdAt, 'hh:mm A DD MMM YYYY')}
+              <div className="col-span-3 flex flex-col items-end justify-center text-xs">
+                <span>{formatDate(notification.createdAt, 'hh:mm')}</span>
+                <span>{formatDate(notification.createdAt, 'DD-M-YYYY')}</span>
               </div>
             </div>
           ))

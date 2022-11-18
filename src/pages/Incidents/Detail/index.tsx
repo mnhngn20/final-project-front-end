@@ -85,7 +85,7 @@ function Detail() {
       <FormModal<UpsertIncidentInput>
         loading={upsertIncidentLoading}
         onSubmit={onSubmit}
-        name="User"
+        name="Incident"
         onClose={() => setEditModalVisible(false)}
         selectedItem={
           editModalVisible

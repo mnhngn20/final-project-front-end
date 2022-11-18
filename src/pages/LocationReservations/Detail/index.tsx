@@ -117,7 +117,7 @@ function Detail() {
           <div className="flex flex-col gap-4 rounded-xl bg-[white] p-4">
             <div className="flex justify-between">
               <Typography className="mb-4 text-lg font-bold">
-                Location Reservation Information
+                Reservation Information
               </Typography>
               <EditSVG
                 width={24}
@@ -144,15 +144,17 @@ function Detail() {
               />
               <DisplayItem
                 name="Total Calculated Price"
-                value={`${locationReservation?.totalCalculatedPrice?.toLocaleString()} $`}
+                value={`${locationReservation?.totalCalculatedPrice?.toLocaleString()} VND`}
               />
               <DisplayItem
                 name="Total Received Price"
-                value={`${locationReservation?.totalReceivedPrice?.toLocaleString()} $`}
+                value={`${locationReservation?.totalReceivedPrice?.toLocaleString()} VND`}
               />
               <DisplayItem
                 name="Start Month"
-                value={dayjs(locationReservation?.startDate)?.format('MM/YYYY')}
+                value={dayjs(locationReservation?.startDate)?.format(
+                  'MMM YYYY',
+                )}
               />
               <DisplayItem
                 name="Employee In Charge"
@@ -178,7 +180,13 @@ function Detail() {
               <DisplayItem
                 name="Created Date"
                 value={dayjs(locationReservation?.startDate)?.format(
-                  'DD/MM/YYYY hh:mm:A',
+                  'hh:mm A, DD/MM/YYYY',
+                )}
+              />
+              <DisplayItem
+                name="Updated Date"
+                value={dayjs(locationReservation?.startDate)?.format(
+                  'hh:mm A, DD/MM/YYYY',
                 )}
               />
             </div>

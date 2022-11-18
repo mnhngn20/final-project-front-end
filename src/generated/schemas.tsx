@@ -273,6 +273,7 @@ export type GetPaymentsInput = {
 };
 
 export type GetRoomsInput = {
+  capacity?: InputMaybe<Scalars['Float']>;
   floor?: InputMaybe<Scalars['Float']>;
   limit?: InputMaybe<Scalars['Float']>;
   locationId?: InputMaybe<Scalars['Float']>;
@@ -307,6 +308,7 @@ export enum IncidentStatus {
   Cancel = 'Cancel',
   Done = 'Done',
   InProgress = 'InProgress',
+  Overdue = 'Overdue',
   ToDo = 'ToDo',
 }
 
@@ -2886,6 +2888,7 @@ export const GetIncidentsDocument = gql`
           thumbnail
         }
         createdAt
+        updatedAt
       }
     }
   }
@@ -3550,6 +3553,7 @@ export const GetPaymentsDocument = gql`
           electricCounterPrice
         }
         createdAt
+        updatedAt
       }
     }
   }
@@ -3618,6 +3622,7 @@ export const GetRoomDocument = gql`
         images
         thumbnail
         status
+        capacity
         basePrice
         location {
           name
@@ -3707,6 +3712,7 @@ export const GetRoomsDocument = gql`
         basePrice
         locationId
         floor
+        capacity
         users {
           name
           email
@@ -3869,6 +3875,7 @@ export const GetUsersDocument = gql`
         }
         roomId
         createdAt
+        updatedAt
       }
     }
   }
@@ -4397,6 +4404,7 @@ export type GetIncidentsQuery = {
       incidentCategoryId: number;
       locationId: number;
       createdAt: any;
+      updatedAt: any;
       employee?: {
         id: string;
         name: string;
@@ -4630,6 +4638,7 @@ export type GetPaymentsQuery = {
       locationReservationId: number;
       locationId: number;
       createdAt: any;
+      updatedAt: any;
       users?: Array<{
         name: string;
         id: string;
@@ -4666,6 +4675,7 @@ export type GetRoomQuery = {
       images?: string | null;
       thumbnail?: string | null;
       status: RoomStatus;
+      capacity?: number | null;
       basePrice: number;
       floor?: number | null;
       createdAt: any;
@@ -4708,6 +4718,7 @@ export type GetRoomsQuery = {
       status: RoomStatus;
       basePrice: number;
       floor?: number | null;
+      capacity?: number | null;
       createdAt: any;
       updatedAt: any;
       users?: Array<{
@@ -4770,6 +4781,7 @@ export type GetUsersQuery = {
       locationId?: number | null;
       roomId?: number | null;
       createdAt: any;
+      updatedAt: any;
       location?: { id: string } | null;
       room?: { name?: string | null } | null;
     }>;

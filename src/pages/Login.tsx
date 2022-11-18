@@ -92,12 +92,6 @@ function Login() {
           </Form.Item>
         </div>
       </Form>
-      <div className="flex flex-col px-20">
-        <div className="mt-4 flex justify-center text-base">
-          <p className="mr-4">{t('signIn.noAccount')}</p>
-          <Link to="/signup">{t('button.signUp')}</Link>
-        </div>
-      </div>
     </AuthLayout>
   );
 }

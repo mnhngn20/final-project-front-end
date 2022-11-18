@@ -129,20 +129,9 @@ function List() {
         key: 'name',
       },
       {
-        title: 'AmenityType',
+        title: 'Amenity Type',
         dataIndex: ['amenityType', 'name'],
         key: 'amenityType',
-      },
-      {
-        title: 'Description',
-        dataIndex: 'description',
-        key: 'description',
-      },
-      {
-        title: 'Created At',
-        dataIndex: 'createdAt',
-        key: 'createdAt',
-        render: (createdAt: string) => formatDate(createdAt),
       },
       {
         title: 'Status',
@@ -163,6 +152,25 @@ function List() {
             }
           />
         ),
+      },
+      {
+        title: 'Description',
+        dataIndex: 'description',
+        key: 'description',
+      },
+      {
+        title: 'Created At',
+        dataIndex: 'createdAt',
+        key: 'createdAt',
+        render: (createdAt: string) =>
+          formatDate(createdAt, 'hh:mm A, DD MMMM YYYY'),
+      },
+      {
+        title: 'Updated At',
+        dataIndex: 'updatedAt',
+        key: 'updatedAt',
+        render: (updatedAt: string) =>
+          formatDate(updatedAt, 'hh:mm A, DD MMMM YYYY'),
       },
       {
         title: '',

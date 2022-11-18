@@ -49,6 +49,7 @@ query getIncidents($input: GetIncidentsInput!) {
         thumbnail
       }
       createdAt
+      updatedAt
     }
   }
 }

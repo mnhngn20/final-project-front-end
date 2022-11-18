@@ -80,7 +80,9 @@ function LocationForm({ initialValues }: Props) {
             placeholder="Enter location average price"
             className="w-full"
             formatter={value =>
-              `${Number(value)?.toLocaleString()?.toString() ?? ''} VND`
+              !value
+                ? ''
+                : `${Number(value)?.toLocaleString()?.toString() ?? ''} VND`
             }
           />
         </Form.Item>

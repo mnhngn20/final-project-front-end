@@ -30,7 +30,7 @@ export default function IncidentPrioritySelector({
       placement="bottom"
       visible={visible}
       content={
-        <div className="flex flex-col gap-2">
+        <div className="flex flex-col gap-2 p-2">
           <div
             className="flex cursor-pointer justify-end text-xs"
             onClick={() => setVisible(false)}

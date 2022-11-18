@@ -15,6 +15,18 @@ function RoomForm() {
         <Input type="text" placeholder="Enter room floor" />
       </Form.Item>
       <Form.Item
+        name="capacity"
+        label="Room Capacity"
+        rules={[{ required: true }]}
+      >
+        <InputNumber
+          type="text"
+          placeholder="Enter room capacity"
+          className="w-full"
+          formatter={value => (!value ? '' : `${value} person/people`)}
+        />
+      </Form.Item>
+      <Form.Item
         name="basePrice"
         label="Room Base Price"
         rules={[{ required: true }]}
@@ -23,7 +35,9 @@ function RoomForm() {
           placeholder="Enter room base price ($)"
           className="w-full"
           formatter={value =>
-            `${Number(value)?.toLocaleString()?.toString() ?? ''} VND`
+            !value
+              ? ''
+              : `${Number(value)?.toLocaleString()?.toString() ?? ''} VND`
           }
         />
       </Form.Item>

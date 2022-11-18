@@ -21,19 +21,44 @@ function Filter({ onFilter }: Props) {
             placeholder="Search by min price"
             className="w-full"
             formatter={value =>
-              `${Number(value)?.toLocaleString()?.toString() ?? ''} VND`
+              !value
+                ? ''
+                : `${Number(value)?.toLocaleString()?.toString() ?? ''} VND`
             }
           />
         </Form.Item>
       </Col>
       <Col xl={6} xs={12}>
         <Form.Item name="maxBasePrice">
-          <Input placeholder="Search by max price" className="w-full" />
+          <InputNumber
+            placeholder="Search by max price"
+            className="w-full"
+            formatter={value =>
+              !value
+                ? ''
+                : `${Number(value)?.toLocaleString()?.toString() ?? ''} VND`
+            }
+          />
         </Form.Item>
       </Col>
       <Col xl={6} xs={12}>
         <Form.Item name="floor">
           <InputNumber className="w-full" placeholder="Search by floor" />
+        </Form.Item>
+      </Col>
+      <Col xl={6} xs={12}>
+        <Form.Item name="capacity">
+          <InputNumber
+            className="w-full"
+            placeholder="Search by capacity"
+            formatter={value =>
+              !value
+                ? ''
+                : `${
+                    Number(value)?.toLocaleString()?.toString() ?? ''
+                  } person/people`
+            }
+          />
         </Form.Item>
       </Col>
       <Col xl={6} xs={12}>

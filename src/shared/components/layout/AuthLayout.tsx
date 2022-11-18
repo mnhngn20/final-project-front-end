@@ -1,33 +1,34 @@
 import { Image, Typography } from 'antd';
 import { ReactNode } from 'react';
-import AuthImage from '#/assets/images/auth-image.png';
+import AuthImage from '#/assets/images/auth-image.jpg';
 import LogoFull from '#/assets/images/logo-full.png';
-import useTypeSafeTranslation from '#/shared/hooks/useTypeSafeTranslation';
 
 interface Props {
   children: ReactNode;
 }
 
 function AuthLayout({ children }: Props) {
-  const { t } = useTypeSafeTranslation();
-
   return (
     <div className="grid grid-cols-2">
-      <div className="flex flex-col justify-between bg-grey-light p-28 lg:hidden">
-        <Image className="w-auto" preview={false} src={LogoFull} />
+      <div className="flex flex-col justify-between gap-4 bg-grey-light p-28 lg:hidden">
+        <div className="flex justify-center">
+          <Image width={400} preview={false} src={LogoFull} />
+        </div>
         <div className="flex items-center justify-center">
           <Image
-            className="w-auto rounded-full"
+            className=" rounded-full"
             preview={false}
             src={AuthImage}
+            width={350}
+            height={350}
           />
         </div>
         <div className="flex flex-col items-center justify-center gap-3">
           <Typography className="text-gradient text-4xl">
-            {t('signIn.funeralPlan')}
+            Apartment Manage System
           </Typography>
           <Typography className="text-center text-base text-grey-secondary-300">
-            {t('signIn.description')}
+            Fast & Secured & Convenience
           </Typography>
         </div>
       </div>

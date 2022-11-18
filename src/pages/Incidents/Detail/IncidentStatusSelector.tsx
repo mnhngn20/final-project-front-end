@@ -9,11 +9,13 @@ import { getIncidentStatus, getIncidentStatusColor } from '../utils';
 interface IncidentStatusSelectorProps {
   value?: IncidentStatus | null;
   onChange?: (status: IncidentStatus) => void;
+  disabled?: boolean;
 }
 
 export default function IncidentStatusSelector({
   value,
   onChange,
+  disabled,
 }: IncidentStatusSelectorProps) {
   const [selectedStatus, setSelectedStatus] = useState<string | undefined>(
     undefined,
@@ -29,9 +31,9 @@ export default function IncidentStatusSelector({
   return (
     <Popover
       placement="bottom"
-      visible={visible}
+      visible={visible && !disabled}
       content={
-        <div className="flex flex-col gap-2">
+        <div className="flex flex-col gap-2 p-2">
           <div
             className="flex cursor-pointer justify-end text-xs"
             onClick={() => setVisible(false)}
@@ -44,7 +46,7 @@ export default function IncidentStatusSelector({
               content={getIncidentStatus(status)}
               className={`${getIncidentStatusColor(
                 status,
-              )} cursor-pointer hover:opacity-90`}
+              )} w-full cursor-pointer hover:opacity-90`}
               key={status}
               icon={
                 status === selectedStatus && (
@@ -65,7 +67,7 @@ export default function IncidentStatusSelector({
           content={selectedStatus ? getIncidentStatus(selectedStatus) : 'N/A'}
           className={`${getIncidentStatusColor(
             selectedStatus,
-          )} cursor-pointer font-bold`}
+          )} cursor-pointer font-bold ${disabled ? 'cursor-not-allowed' : ''}`}
         />
       </div>
     </Popover>

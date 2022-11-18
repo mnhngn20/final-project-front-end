@@ -152,17 +152,6 @@ function List({ roomId }: ListProps) {
         key: 'roomName',
       },
       {
-        title: 'Created Date',
-        dataIndex: 'createdAt',
-        key: 'createdAt',
-        render: (date: Date) => formatDate(date),
-      },
-      {
-        title: 'Description',
-        dataIndex: 'description',
-        key: 'description',
-      },
-      {
         title: 'Status',
         dataIndex: 'isActive',
         key: 'isActive',
@@ -183,6 +172,23 @@ function List({ roomId }: ListProps) {
             />
           );
         },
+      },
+      {
+        title: 'Description',
+        dataIndex: 'description',
+        key: 'description',
+      },
+      {
+        title: 'Created Date',
+        dataIndex: 'createdAt',
+        key: 'createdAt',
+        render: (date: Date) => formatDate(date, 'hh:mm A, DD MMMM YYYY'),
+      },
+      {
+        title: 'Updated Date',
+        dataIndex: 'updatedAt',
+        key: 'updatedAt',
+        render: (date: Date) => formatDate(date, 'hh:mm A, DD MMMM YYYY'),
       },
       {
         title: '',

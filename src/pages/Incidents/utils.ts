@@ -24,6 +24,8 @@ export const getIncidentStatusColor = (status?: string | null) => {
       return 'text-info bg-info-light';
     case IncidentStatus.ToDo:
       return 'text-[white] bg-grey-secondary-300';
+    case IncidentStatus.Overdue:
+      return 'text-[white] bg-error';
     default:
       return 'text-alert bg-alert-light';
   }
@@ -38,6 +40,8 @@ export const getIncidentStatus = (status?: string | null) => {
       return 'In Progress';
     case IncidentStatus.ToDo:
       return 'To Do';
+    case IncidentStatus.Overdue:
+      return 'Overdue';
     default:
       return 'Cancel';
   }

@@ -38,6 +38,7 @@ query getPayments($input: GetPaymentsInput!) {
         electricCounterPrice
       }
       createdAt
+      updatedAt
     }
   }
 }

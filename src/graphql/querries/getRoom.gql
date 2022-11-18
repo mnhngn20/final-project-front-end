@@ -9,6 +9,7 @@ query getRoom($id: Float!) {
       images
       thumbnail
       status
+      capacity
       basePrice
       location {
         name

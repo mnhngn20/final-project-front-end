@@ -1,6 +1,7 @@
 import { AddSVG, CalendarSVG } from '#/assets/svgs';
 import {
   Incident,
+  IncidentStatus,
   refetchGetIncidentQuery,
   useUpdateIncidentForEmployeeMutation,
 } from '#/generated/schemas';
@@ -48,21 +49,18 @@ export default function IncidentEmployee({
             )}
           </Typography>
         </span>
-        <span onClick={() => setEditModalVisible?.(true)}>
-          {incident?.dueDate ? (
-            <Tooltip title="Due Date" placement="bottom">
-              <Typography className="flex cursor-pointer items-center gap-2 text-success">
-                <CalendarSVG width={24} height={24} />
-                {formatDate(incident?.dueDate, 'MM/DD/YYYY hh:mm A')}
-              </Typography>
-            </Tooltip>
-          ) : (
-            <Typography className="flex cursor-pointer items-center gap-2 text-info">
-              <CalendarSVG width={24} height={24} />
-              Add Due Date
-            </Typography>
-          )}
-        </span>
+        <Tooltip title="Due Date" placement="bottom">
+          <Typography
+            className={`flex cursor-pointer items-center gap-2 ${
+              incident?.status === IncidentStatus.Overdue
+                ? 'text-error'
+                : 'text-success'
+            }`}
+          >
+            <CalendarSVG width={24} height={24} />
+            {formatDate(incident?.dueDate, 'MM/DD/YYYY hh:mm A')}
+          </Typography>
+        </Tooltip>
       </div>
       <Divider />
       <div className="flex flex-col gap-4">
@@ -70,6 +68,7 @@ export default function IncidentEmployee({
           Incident Status
           <IncidentStatusSelector
             value={incident?.status}
+            disabled={incident?.status === IncidentStatus.Overdue}
             onChange={status =>
               updateIncident({
                 variables: {

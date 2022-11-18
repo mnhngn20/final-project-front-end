@@ -172,6 +172,7 @@ function List({ roomId }: ListProps) {
         title: 'Room',
         dataIndex: ['room', 'name'],
         key: 'roomName',
+        render: (name: string) => `Room ${name}`,
       },
       {
         title: 'Priority',
@@ -216,7 +217,21 @@ function List({ roomId }: ListProps) {
         title: 'Due Date',
         dataIndex: 'dueDate',
         key: 'dueDate',
-        render: (dueDate: Date) => formatDate(dueDate),
+        render: (dueDate: Date) => formatDate(dueDate, 'hh:mm A, DD MMM YYYY'),
+      },
+      {
+        title: 'Created Date',
+        dataIndex: 'createdAt',
+        key: 'createdAt',
+        render: (createdAt: Date) =>
+          formatDate(createdAt, 'hh:mm A, DD MMM YYYY'),
+      },
+      {
+        title: 'Updated Date',
+        dataIndex: 'updatedAt',
+        key: 'updatedAt',
+        render: (updatedAt: Date) =>
+          formatDate(updatedAt, 'hh:mm A, DD MMM YYYY'),
       },
       {
         title: '',

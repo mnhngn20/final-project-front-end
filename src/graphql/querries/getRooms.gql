@@ -15,6 +15,7 @@ query getRooms($input: GetRoomsInput!) {
       basePrice
       locationId
       floor
+      capacity
       users {
         name
         email

@@ -24,6 +24,7 @@ query getUsers($input: GetUsersInput!) {
       }
       roomId
       createdAt
+      updatedAt
     }
   }
 }

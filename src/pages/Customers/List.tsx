@@ -173,11 +173,13 @@ function List({ roomId }: ListProps) {
         title: 'Phone',
         dataIndex: 'phoneNumber',
         key: 'phoneNumber',
+        render: (phoneNumber?: string) => phoneNumber ?? 'N/A',
       },
       {
         title: 'Card ID',
         dataIndex: 'identityNumber',
         key: 'identityNumber',
+        render: (identityNumber?: string) => identityNumber ?? 'N/A',
       },
       {
         title: 'Role',
@@ -190,6 +192,20 @@ function List({ roomId }: ListProps) {
         dataIndex: ['room', 'name'],
         key: 'roomName',
         render: (roomName?: string) => roomName ?? 'N/A',
+      },
+      {
+        title: 'Created Date',
+        dataIndex: 'createdAt',
+        key: 'createdAt',
+        render: (createdAt?: string) =>
+          dayjs(createdAt).format('hh:mm A, DD MMM YYYY'),
+      },
+      {
+        title: 'Updated Date',
+        dataIndex: 'updatedAt',
+        key: 'updatedAt',
+        render: (updatedAt?: string) =>
+          dayjs(updatedAt).format('hh:mm A, DD MMM YYYY'),
       },
       {
         title: 'Status',

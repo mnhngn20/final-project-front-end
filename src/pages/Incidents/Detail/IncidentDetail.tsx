@@ -12,7 +12,6 @@ import { DeepPartial } from '#/shared/utils/type';
 import { Divider, Tooltip, Typography } from 'antd';
 import { useParams } from 'react-router-dom';
 import IncidentPrioritySelector from './IncidentPrioritySelector';
-import IncidentStatusSelector from './IncidentStatusSelector';
 
 interface IncidentDetailProps {
   incident?: DeepPartial<Incident>;
@@ -52,20 +51,6 @@ export default function IncidentDetail({
     <div className="col-span-1 items-center rounded-xl bg-[white] p-4">
       <div className="flex flex-wrap items-center justify-between gap-4 p-[5px]">
         <div className="flex items-center gap-4">
-          <IncidentStatusSelector
-            value={incident?.status}
-            onChange={status =>
-              updateIncident({
-                variables: {
-                  input: {
-                    id: Number(id),
-                    status,
-                  },
-                },
-              })
-            }
-          />
-          <Divider type="vertical" />
           <IncidentPrioritySelector
             value={incident?.priority}
             onChange={priority =>
@@ -119,7 +104,7 @@ export default function IncidentDetail({
             </div>
           }
         />
-        <DisplayItem name="Room" value={incident?.room?.name} />
+        <DisplayItem name="Room" value={`Room ${incident?.room?.name}`} />
         <DisplayItem
           name="Incident Type"
           value={incident?.incidentCategory?.name}

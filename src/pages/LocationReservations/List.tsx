@@ -24,6 +24,7 @@ import dayjs from 'dayjs';
 import { formatDisplayUser } from '#/shared/utils/format';
 import CustomTag from '#/shared/components/commons/CustomTag';
 import { getLocationReservationStatusColor } from './utils';
+import { formatDate } from '#/shared/utils/date';
 
 export type GetLocationReservationsFilter = {
   status?: LocationReservationStatus;
@@ -137,13 +138,13 @@ function List() {
         title: 'Total Calculated Price',
         dataIndex: 'totalCalculatedPrice',
         key: 'totalCalculatedPrice',
-        render: (price?: number) => (price ?? 0)?.toLocaleString(),
+        render: (price?: number) => `${(price ?? 0)?.toLocaleString()} VND`,
       },
       {
         title: 'Total Received Price',
         dataIndex: 'totalReceivedPrice',
         key: 'totalReceivedPrice',
-        render: (price?: number) => (price ?? 0)?.toLocaleString(),
+        render: (price?: number) => `${(price ?? 0)?.toLocaleString()} VND`,
       },
       {
         title: 'Start Month',
@@ -167,6 +168,20 @@ function List() {
             className={getLocationReservationStatusColor(status)}
           />
         ),
+      },
+      {
+        title: 'Created At',
+        dataIndex: 'createdAt',
+        key: 'createdAt',
+        render: (createdAt?: string) =>
+          formatDate(createdAt, 'hh:mm A, DD MMMM YYYY'),
+      },
+      {
+        title: 'Updated At',
+        dataIndex: 'updatedAt',
+        key: 'updatedAt',
+        render: (updatedAt?: string) =>
+          formatDate(updatedAt, 'hh:mm A, DD MMMM YYYY'),
       },
       {
         title: '',
