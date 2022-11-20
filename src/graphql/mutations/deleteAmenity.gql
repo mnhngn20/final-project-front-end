@@ -1,0 +1,3 @@
+mutation deleteAmenity($id: Float!) {
+  deleteAmenity(id: $id)
+}

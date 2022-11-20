@@ -15,10 +15,12 @@ query getEquipments($input: GetEquipmentsInput!) {
       room {
         id
         name
+        description
       }
       location {
         id
         name
+        description
       }
       createdAt
       updatedAt

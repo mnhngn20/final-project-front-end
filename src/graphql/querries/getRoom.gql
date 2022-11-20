@@ -12,9 +12,11 @@ query getRoom($id: Float!) {
       capacity
       basePrice
       location {
+        id
         name
       }
       users {
+        id
         name
         email
         avatar

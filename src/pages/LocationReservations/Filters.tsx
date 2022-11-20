@@ -25,6 +25,7 @@ function Filter({ onFilter }: Props) {
               input: {
                 locationId: Number(currentUser?.locationId),
                 role: UserRole.Admin,
+                isActive: true,
               },
             }}
           />

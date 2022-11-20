@@ -1,4 +1,4 @@
-import { Button, Table, Switch, Typography } from 'antd';
+import { Button, Table, Switch, Typography, Tooltip } from 'antd';
 import { useState, useMemo } from 'react';
 import dayjs, { Dayjs } from 'dayjs';
 import UserForm from './Form';
@@ -161,7 +161,8 @@ function List({ roomId }: ListProps) {
         title: 'Full Name',
         dataIndex: 'name',
         key: 'name',
-        render: (_, record: DeepPartial<User>) => formatDisplayUser(record),
+        render: (_: unknown, record: DeepPartial<User>) =>
+          formatDisplayUser(record),
       },
       {
         title: 'Date of Birth',
@@ -211,7 +212,11 @@ function List({ roomId }: ListProps) {
         title: 'Current Room',
         dataIndex: ['room', 'name'],
         key: 'roomName',
-        render: (roomName?: string) => roomName ?? 'N/A',
+        render: (roomName: string, { room }: DeepPartial<User>) => (
+          <Tooltip title={room?.description}>
+            {roomName ? `Room ${roomName}` : 'N/A'}
+          </Tooltip>
+        ),
       },
       {
         title: 'Created Date',
@@ -246,9 +251,9 @@ function List({ roomId }: ListProps) {
               <Link to={`/customers/${record?.id}`}>
                 <EyeSVG width={24} height={24} />
               </Link>
-              <Button type="link" onClick={onEdit}>
+              <span onClick={onEdit}>
                 <EditSVG width={24} height={24} />
-              </Button>
+              </span>
             </div>
           );
         },

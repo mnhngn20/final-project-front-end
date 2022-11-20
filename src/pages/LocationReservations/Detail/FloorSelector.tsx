@@ -1,12 +1,12 @@
 interface FloorSelectorProps {
   numOfFloor?: number;
   value?: number;
-  onChange?: (floor: number) => void;
+  onChange?: (floor?: number) => void;
 }
 
 export default function FloorSelector({
   numOfFloor = 1,
-  value = 1,
+  value,
   onChange,
 }: FloorSelectorProps) {
   const renderFloor = () => {
@@ -29,5 +29,17 @@ export default function FloorSelector({
     return floor;
   };
 
-  return <div className="flex items-center gap-4">{renderFloor()}</div>;
+  return (
+    <div className="flex items-center gap-2">
+      <div
+        className={`flex h-4 cursor-pointer items-center justify-center rounded-xl border border-grey-secondary-200 p-4 ${
+          !value ? 'border-primary-color bg-primary-color text-[white]' : ''
+        }`}
+        onClick={() => onChange?.(undefined)}
+      >
+        Show All
+      </div>
+      {renderFloor()}
+    </div>
+  );
 }

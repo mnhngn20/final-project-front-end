@@ -23,7 +23,7 @@ function RoomForm() {
           type="text"
           placeholder="Enter room capacity"
           className="w-full"
-          formatter={value => (!value ? '' : `${value} person/people`)}
+          addonAfter="Person/ People"
         />
       </Form.Item>
       <Form.Item
@@ -34,11 +34,8 @@ function RoomForm() {
         <InputNumber
           placeholder="Enter room base price ($)"
           className="w-full"
-          formatter={value =>
-            !value
-              ? ''
-              : `${Number(value)?.toLocaleString()?.toString() ?? ''} VND`
-          }
+          addonAfter="VND"
+          formatter={value => `${Number(value)?.toLocaleString()?.toString()}`}
         />
       </Form.Item>
       <Form.Item name="description" label="Description">

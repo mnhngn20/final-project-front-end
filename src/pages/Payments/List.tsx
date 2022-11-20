@@ -46,6 +46,7 @@ function List({ userId }: ListProps) {
         ...filters,
       },
     },
+    fetchPolicy: 'network-only',
   });
   const equipments = data?.getPayments?.items ?? [];
 

@@ -3,6 +3,7 @@ import {
   LocationReservation,
   LocationReservationStatus,
   Payment,
+  PaymentStatus,
   refetchGetLocationReservationQuery,
   refetchMeQuery,
   UpsertPaymentInput,
@@ -11,9 +12,10 @@ import {
   useUpsertPaymentMutation,
 } from '#/generated/schemas';
 import { userVar } from '#/graphql/cache';
-import PaymentForm from '#/pages/Payment/Form';
+import PaymentForm from '#/pages/Payments/Form';
 import { FormModal } from '#/shared/components/commons/FormModal';
 import PaginationPanel from '#/shared/components/commons/PaginationPanel';
+import PaymentStatusSelector from '#/shared/components/selectors/PaymentStatusSelector';
 import { showError, showSuccess } from '#/shared/utils/notification';
 import { DeepPartial } from '#/shared/utils/type';
 import { useReactiveVar } from '@apollo/client';
@@ -39,7 +41,8 @@ const PaymentRecords = forwardRef<PaymentRecordsRef, PaymentRecordsProps>(
   ({ locationReservation }, ref) => {
     const currentUser = useReactiveVar(userVar);
     const { id } = useParams();
-    const [floor, setFloor] = useState(1);
+    const [floor, setFloor] = useState<number | undefined>(1);
+    const [status, setStatus] = useState<PaymentStatus | undefined>(undefined);
     const [paymentCurrentPage, setPaymentCurrentPage] = useState(1);
     const [selectedItem, setSelectedItem] = useState<
       SelectedPayment | undefined
@@ -52,7 +55,10 @@ const PaymentRecords = forwardRef<PaymentRecordsRef, PaymentRecordsProps>(
           locationReservationId: Number(locationReservation?.id),
           limit: 5,
           page: paymentCurrentPage,
-          floor,
+          ...(floor && {
+            floor,
+          }),
+          ...(status && { status }),
         },
       },
       skip: !locationReservation?.id,
@@ -114,14 +120,26 @@ const PaymentRecords = forwardRef<PaymentRecordsRef, PaymentRecordsProps>(
               className="cursor-pointer hover:text-primary-color"
             />
           </div>
-          <div className="flex items-center gap-4">
-            <Typography>Select Floor</Typography>
-            <FloorSelector
-              value={floor}
-              onChange={setFloor}
-              numOfFloor={currentUser?.location?.numOfFloor ?? 1}
-            />
+          <div className="flex flex-wrap gap-8">
+            <div className="flex items-center gap-4">
+              <Typography>Select Floor</Typography>
+              <FloorSelector
+                value={floor}
+                onChange={setFloor}
+                numOfFloor={currentUser?.location?.numOfFloor ?? 1}
+              />
+            </div>
+            <div className="flex items-center gap-4">
+              <Typography>Filter by Status</Typography>
+              <PaymentStatusSelector
+                className="w-[20rem]"
+                allowClear
+                onChange={setStatus}
+                placeholder="Select Payment Status"
+              />
+            </div>
           </div>
+
           <Divider className="m-0" />
           <div className="">
             <div className="flex flex-col gap-4">

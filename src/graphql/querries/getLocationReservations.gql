@@ -12,6 +12,7 @@ query getLocationReservations($input: GetLocationReservationsInput!) {
       startDate
       createdById
       createdBy {
+        id
         name
         avatar
         email

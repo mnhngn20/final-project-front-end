@@ -4,6 +4,7 @@ import { User } from '#/generated/schemas';
 import { validateRegex } from '#/shared/utils/validation';
 import { DatePicker } from '#/shared/components/commons/DatePicker';
 import RoomSelector from '#/shared/components/selectors/RoomSelector';
+import dayjs from 'dayjs';
 
 interface Props {
   initialValues?: User;
@@ -80,6 +81,7 @@ function UserForm({ initialValues }: Props) {
           className="w-full"
           placeholder="Choose user birthday"
           format="DD/MM/YYYY"
+          disabledDate={current => current.valueOf() > dayjs().valueOf()}
         />
       </Form.Item>
       <Form.Item

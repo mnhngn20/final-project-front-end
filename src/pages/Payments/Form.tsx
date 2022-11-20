@@ -42,6 +42,7 @@ function PaymentForm({ initialValues }: PaymentFormProps) {
               input: {
                 role: UserRole.Customer,
                 locationId: Number(currentUser?.locationId),
+                isActive: true,
               },
             }}
             placeholder="Select payment payers"
@@ -59,7 +60,8 @@ function PaymentForm({ initialValues }: PaymentFormProps) {
           prefix={
             <FlashFilledSVG width={24} height={24} className="text-warning" />
           }
-          formatter={value => (!value ? '' : `${value} counter`)}
+          addonAfter="Electric Counter"
+          formatter={value => `${Number(value)?.toLocaleString()?.toString()}`}
           placeholder="Enter electric counter"
           className="w-full"
         />
@@ -74,11 +76,8 @@ function PaymentForm({ initialValues }: PaymentFormProps) {
           prefix={
             <DropFilledSVG width={24} height={24} className="text-info" />
           }
-          formatter={value =>
-            !value
-              ? ''
-              : `${Number(value)?.toLocaleString()?.toString() ?? ''} VND`
-          }
+          addonAfter="VND"
+          formatter={value => `${Number(value)?.toLocaleString()?.toString()}`}
           placeholder="Enter water price"
           className="w-full"
         />
@@ -88,13 +87,10 @@ function PaymentForm({ initialValues }: PaymentFormProps) {
           prefix={
             <ExtraCoinFilledSVG width={24} height={24} className="text-error" />
           }
+          addonAfter="VND"
+          formatter={value => `${Number(value)?.toLocaleString()?.toString()}`}
           placeholder="Enter extra fee"
           className="w-full"
-          formatter={value =>
-            !value
-              ? ''
-              : `${Number(value)?.toLocaleString()?.toString() ?? ''} VND`
-          }
         />
       </Form.Item>
       <Form.Item name="prePaidFee" label="Pre-Paid Fee">
@@ -108,11 +104,8 @@ function PaymentForm({ initialValues }: PaymentFormProps) {
           }
           placeholder="Enter amount of pre-paid fee"
           className="w-full"
-          formatter={value =>
-            !value
-              ? ''
-              : `${Number(value)?.toLocaleString()?.toString() ?? ''} VND`
-          }
+          addonAfter="VND"
+          formatter={value => `${Number(value)?.toLocaleString()?.toString()}`}
         />
       </Form.Item>
       <Form.Item name="discountType" label="Discount Type">
@@ -140,18 +133,17 @@ function PaymentForm({ initialValues }: PaymentFormProps) {
                   className="text-success"
                 />
               }
+              addonAfter={
+                getFieldValue('discountType') ===
+                DiscountType.PercentageDiscount
+                  ? '%'
+                  : 'VND'
+              }
+              formatter={value =>
+                `${Number(value)?.toLocaleString()?.toString()}`
+              }
               placeholder="Enter discount amount"
               className="w-full"
-              formatter={value =>
-                !value
-                  ? ''
-                  : `${Number(value)?.toLocaleString()?.toString() ?? ''} ${
-                      getFieldValue('discountType') ===
-                      DiscountType.PercentageDiscount
-                        ? '%'
-                        : 'VND'
-                    }`
-              }
             />
           </Form.Item>
         )}

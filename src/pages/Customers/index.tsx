@@ -3,7 +3,7 @@ import List from './List';
 
 export default function Customers() {
   return (
-    <PageLayout title="Manage Customer">
+    <PageLayout title="Manage Customers">
       <List />
     </PageLayout>
   );

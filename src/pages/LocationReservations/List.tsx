@@ -150,7 +150,7 @@ function List() {
         title: 'Start Month',
         dataIndex: 'startDate',
         key: 'startDate',
-        render: (startDate?: string) => dayjs(startDate)?.format('MM / YYYY'),
+        render: (startDate?: string) => dayjs(startDate)?.format('MMM YYYY'),
       },
       {
         title: 'In Charge Of',

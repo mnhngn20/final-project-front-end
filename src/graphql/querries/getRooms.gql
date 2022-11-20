@@ -17,6 +17,7 @@ query getRooms($input: GetRoomsInput!) {
       floor
       capacity
       users {
+        id
         name
         email
         avatar

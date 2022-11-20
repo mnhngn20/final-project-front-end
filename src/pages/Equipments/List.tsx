@@ -1,4 +1,4 @@
-import { Button, Switch, Table, Typography } from 'antd';
+import { Button, Switch, Table, Tooltip, Typography } from 'antd';
 import { useState, useMemo } from 'react';
 import { useReactiveVar } from '@apollo/client';
 import EquipmentForm from './Form';
@@ -11,6 +11,7 @@ import {
   useUpsertEquipmentMutation,
   UpsertEquipmentInput,
   useUpdateEquipmentStatusMutation,
+  useDeleteEquipmentMutation,
 } from '#/generated/schemas';
 import { userVar } from '#/graphql/cache';
 import { FormModal } from '#/shared/components/commons/FormModal';
@@ -21,7 +22,7 @@ import { formatId } from '#/shared/utils/format';
 import { formatDate } from '#/shared/utils/date';
 import Image from '#/shared/components/commons/Image';
 import { ColumnsType } from 'antd/lib/table';
-import { AddSVG, EditSVG } from '#/assets/svgs';
+import { AddSVG, EditSVG, TrashOutlineSVG } from '#/assets/svgs';
 import DefaultImage from '#/assets/images/default.png';
 import PaginationPanel from '#/shared/components/commons/PaginationPanel';
 
@@ -58,6 +59,7 @@ function List({ roomId }: ListProps) {
         ...filters,
       },
     },
+    fetchPolicy: 'network-only',
   });
   const equipments = data?.getEquipments?.items ?? [];
 
@@ -118,6 +120,15 @@ function List({ roomId }: ListProps) {
     });
   };
 
+  const [deleteEquipment, { loading: deleteEquipmentLoading }] =
+    useDeleteEquipmentMutation({
+      onCompleted() {
+        showSuccess('Delete equipment successfully!');
+        refetch();
+      },
+      onError: showError,
+    });
+
   const COLUMNS: ColumnsType<DeepPartial<Equipment>> = useMemo(
     () => [
       {
@@ -150,6 +161,9 @@ function List({ roomId }: ListProps) {
         title: 'Room Name',
         dataIndex: ['room', 'name'],
         key: 'roomName',
+        render: (roomName: string, { room }: DeepPartial<Equipment>) => (
+          <Tooltip title={room?.description}>{roomName ?? 'N/A'}</Tooltip>
+        ),
       },
       {
         title: 'Status',
@@ -177,6 +191,7 @@ function List({ roomId }: ListProps) {
         title: 'Description',
         dataIndex: 'description',
         key: 'description',
+        render: (description: string) => description ?? 'N/A',
       },
       {
         title: 'Created Date',
@@ -203,15 +218,27 @@ function List({ roomId }: ListProps) {
           };
           return (
             <div className="flex items-center justify-center gap-4 text-base text-primary-color">
-              <Button type="link" onClick={onEdit}>
+              <span onClick={onEdit}>
                 <EditSVG width={24} height={24} />
-              </Button>
+              </span>
+              <span
+                className="text-error"
+                onClick={() =>
+                  deleteEquipment({
+                    variables: {
+                      id: Number(record?.id),
+                    },
+                  })
+                }
+              >
+                <TrashOutlineSVG width={24} height={24} />
+              </span>
             </div>
           );
         },
       },
     ],
-    [updateEquipmentStatus],
+    [deleteEquipment, updateEquipmentStatus],
   );
 
   return (
@@ -236,7 +263,10 @@ function List({ roomId }: ListProps) {
           columns={COLUMNS}
           scroll={{ x: 'max-content' }}
           loading={
-            loading || upsertEquipmentLoading || updateEquipmentStatusLoading
+            loading ||
+            upsertEquipmentLoading ||
+            updateEquipmentStatusLoading ||
+            deleteEquipmentLoading
           }
           onChange={onChange}
           pagination={false}

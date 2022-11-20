@@ -1,4 +1,4 @@
-import { Button, Table, Typography } from 'antd';
+import { Button, Table, Tooltip, Typography } from 'antd';
 import { useState, useMemo } from 'react';
 import dayjs from 'dayjs';
 import IncidentForm from './Form';
@@ -172,7 +172,9 @@ function List({ roomId }: ListProps) {
         title: 'Room',
         dataIndex: ['room', 'name'],
         key: 'roomName',
-        render: (name: string) => `Room ${name}`,
+        render: (name: string, { room }: DeepPartial<Incident>) => (
+          <Tooltip title={room?.description}>{`Room ${name}`}</Tooltip>
+        ),
       },
       {
         title: 'Priority',

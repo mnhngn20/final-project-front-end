@@ -41,6 +41,7 @@ function IncidentForm({ initialValues }: Props) {
             input: {
               role: UserRole.Customer,
               locationId: Number(currentUser?.locationId),
+              isActive: true,
             },
           }}
           disabled={!!initialValues?.fromCustomer}
@@ -115,6 +116,7 @@ function IncidentForm({ initialValues }: Props) {
                 input: {
                   role: UserRole.Admin,
                   locationId: Number(currentUser?.locationId),
+                  isActive: true,
                 },
               }}
             />

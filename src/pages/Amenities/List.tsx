@@ -9,6 +9,7 @@ import {
   UpsertAmenityInput,
   useUpdateAmenityStatusMutation,
   useUpsertAmenityMutation,
+  useDeleteAmenityMutation,
 } from '#/generated/schemas';
 import { FormModal } from '#/shared/components/commons/FormModal';
 import { useTable } from '#/shared/hooks/useTable';
@@ -17,7 +18,7 @@ import { showError, showSuccess } from '#/shared/utils/notification';
 import { formatId } from '#/shared/utils/format';
 import { formatDate } from '#/shared/utils/date';
 import { ColumnsType } from 'antd/lib/table';
-import { AddSVG, EditSVG } from '#/assets/svgs';
+import { AddSVG, EditSVG, TrashOutlineSVG } from '#/assets/svgs';
 import PaginationPanel from '#/shared/components/commons/PaginationPanel';
 import { useReactiveVar } from '@apollo/client';
 import { userVar } from '#/graphql/cache';
@@ -99,6 +100,15 @@ function List() {
       },
     });
   };
+
+  const [deleteAmenity, { loading: deleteAmenityLoading }] =
+    useDeleteAmenityMutation({
+      onCompleted() {
+        showSuccess('Delete Amenity Successfully!');
+        refetch();
+      },
+      onError: showError,
+    });
 
   const COLUMNS: ColumnsType<DeepPartial<Amenity>> = useMemo(
     () => [
@@ -189,15 +199,27 @@ function List() {
           };
           return (
             <div className="flex items-center justify-center gap-4 text-base text-primary-color">
-              <Button type="link" onClick={onEdit}>
+              <span onClick={onEdit}>
                 <EditSVG width={24} height={24} />
-              </Button>
+              </span>
+              <span
+                className="text-error"
+                onClick={() =>
+                  deleteAmenity({
+                    variables: {
+                      id: Number(record?.id),
+                    },
+                  })
+                }
+              >
+                <TrashOutlineSVG width={24} height={24} />
+              </span>
             </div>
           );
         },
       },
     ],
-    [updateAmenityStatus],
+    [deleteAmenity, updateAmenityStatus],
   );
 
   return (
@@ -223,7 +245,10 @@ function List() {
           columns={COLUMNS}
           scroll={{ x: 'max-content' }}
           loading={
-            loading || upsertAmenityLoading || updateAmenityStatusLoading
+            loading ||
+            upsertAmenityLoading ||
+            updateAmenityStatusLoading ||
+            deleteAmenityLoading
           }
           onChange={onChange}
           pagination={false}

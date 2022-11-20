@@ -79,10 +79,9 @@ function LocationForm({ initialValues }: Props) {
           <InputNumber
             placeholder="Enter location average price"
             className="w-full"
+            addonAfter="VND"
             formatter={value =>
-              !value
-                ? ''
-                : `${Number(value)?.toLocaleString()?.toString() ?? ''} VND`
+              `${Number(value)?.toLocaleString()?.toString()}`
             }
           />
         </Form.Item>

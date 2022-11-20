@@ -517,7 +517,10 @@ export type Mutation = {
   createInstallation: Scalars['String'];
   createStripeCheckoutSession: StripeResponse;
   createUser: UserResponse;
+  deleteAmenity: Scalars['String'];
+  deleteEquipment: Scalars['String'];
   deleteLocationReservation: Scalars['String'];
+  deleteRoom: Scalars['String'];
   getAccessToken: LoginResponse;
   login: LoginResponse;
   manuallyPay: PaymentResponse;
@@ -572,7 +575,19 @@ export type MutationCreateUserArgs = {
   input: CreateUserInput;
 };
 
+export type MutationDeleteAmenityArgs = {
+  id: Scalars['Float'];
+};
+
+export type MutationDeleteEquipmentArgs = {
+  id: Scalars['Float'];
+};
+
 export type MutationDeleteLocationReservationArgs = {
+  id: Scalars['Float'];
+};
+
+export type MutationDeleteRoomArgs = {
   id: Scalars['Float'];
 };
 
@@ -1335,6 +1350,102 @@ export type CreateUserMutationOptions = Apollo.BaseMutationOptions<
   CreateUserMutation,
   CreateUserMutationVariables
 >;
+export const DeleteAmenityDocument = gql`
+  mutation deleteAmenity($id: Float!) {
+    deleteAmenity(id: $id)
+  }
+`;
+export type DeleteAmenityMutationFn = Apollo.MutationFunction<
+  DeleteAmenityMutation,
+  DeleteAmenityMutationVariables
+>;
+
+/**
+ * __useDeleteAmenityMutation__
+ *
+ * To run a mutation, you first call `useDeleteAmenityMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteAmenityMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteAmenityMutation, { data, loading, error }] = useDeleteAmenityMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useDeleteAmenityMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    DeleteAmenityMutation,
+    DeleteAmenityMutationVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<
+    DeleteAmenityMutation,
+    DeleteAmenityMutationVariables
+  >(DeleteAmenityDocument, options);
+}
+export type DeleteAmenityMutationHookResult = ReturnType<
+  typeof useDeleteAmenityMutation
+>;
+export type DeleteAmenityMutationResult =
+  Apollo.MutationResult<DeleteAmenityMutation>;
+export type DeleteAmenityMutationOptions = Apollo.BaseMutationOptions<
+  DeleteAmenityMutation,
+  DeleteAmenityMutationVariables
+>;
+export const DeleteEquipmentDocument = gql`
+  mutation deleteEquipment($id: Float!) {
+    deleteEquipment(id: $id)
+  }
+`;
+export type DeleteEquipmentMutationFn = Apollo.MutationFunction<
+  DeleteEquipmentMutation,
+  DeleteEquipmentMutationVariables
+>;
+
+/**
+ * __useDeleteEquipmentMutation__
+ *
+ * To run a mutation, you first call `useDeleteEquipmentMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteEquipmentMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteEquipmentMutation, { data, loading, error }] = useDeleteEquipmentMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useDeleteEquipmentMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    DeleteEquipmentMutation,
+    DeleteEquipmentMutationVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<
+    DeleteEquipmentMutation,
+    DeleteEquipmentMutationVariables
+  >(DeleteEquipmentDocument, options);
+}
+export type DeleteEquipmentMutationHookResult = ReturnType<
+  typeof useDeleteEquipmentMutation
+>;
+export type DeleteEquipmentMutationResult =
+  Apollo.MutationResult<DeleteEquipmentMutation>;
+export type DeleteEquipmentMutationOptions = Apollo.BaseMutationOptions<
+  DeleteEquipmentMutation,
+  DeleteEquipmentMutationVariables
+>;
 export const DeleteLocationReservationDocument = gql`
   mutation deleteLocationReservation($id: Float!) {
     deleteLocationReservation(id: $id)
@@ -1384,6 +1495,54 @@ export type DeleteLocationReservationMutationOptions =
     DeleteLocationReservationMutation,
     DeleteLocationReservationMutationVariables
   >;
+export const DeleteRoomDocument = gql`
+  mutation deleteRoom($id: Float!) {
+    deleteRoom(id: $id)
+  }
+`;
+export type DeleteRoomMutationFn = Apollo.MutationFunction<
+  DeleteRoomMutation,
+  DeleteRoomMutationVariables
+>;
+
+/**
+ * __useDeleteRoomMutation__
+ *
+ * To run a mutation, you first call `useDeleteRoomMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteRoomMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteRoomMutation, { data, loading, error }] = useDeleteRoomMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useDeleteRoomMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    DeleteRoomMutation,
+    DeleteRoomMutationVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<DeleteRoomMutation, DeleteRoomMutationVariables>(
+    DeleteRoomDocument,
+    options,
+  );
+}
+export type DeleteRoomMutationHookResult = ReturnType<
+  typeof useDeleteRoomMutation
+>;
+export type DeleteRoomMutationResult =
+  Apollo.MutationResult<DeleteRoomMutation>;
+export type DeleteRoomMutationOptions = Apollo.BaseMutationOptions<
+  DeleteRoomMutation,
+  DeleteRoomMutationVariables
+>;
 export const LoginDocument = gql`
   mutation login($input: RegisterLoginInput!) {
     login(input: $input) {
@@ -2592,10 +2751,12 @@ export const GetEquipmentsDocument = gql`
         room {
           id
           name
+          description
         }
         location {
           id
           name
+          description
         }
         createdAt
         updatedAt
@@ -2875,6 +3036,7 @@ export const GetIncidentsDocument = gql`
           name
           floor
           thumbnail
+          description
         }
         incidentCategoryId
         incidentCategory {
@@ -3049,6 +3211,7 @@ export const GetLocationReservationDocument = gql`
         startDate
         createdById
         createdBy {
+          id
           name
           avatar
           email
@@ -3135,6 +3298,7 @@ export const GetLocationReservationsDocument = gql`
         startDate
         createdById
         createdBy {
+          id
           name
           avatar
           email
@@ -3626,9 +3790,11 @@ export const GetRoomDocument = gql`
         capacity
         basePrice
         location {
+          id
           name
         }
         users {
+          id
           name
           email
           avatar
@@ -3715,6 +3881,7 @@ export const GetRoomsDocument = gql`
         floor
         capacity
         users {
+          id
           name
           email
           avatar
@@ -3873,6 +4040,7 @@ export const GetUsersDocument = gql`
         }
         room {
           name
+          description
         }
         roomId
         createdAt
@@ -4026,6 +4194,18 @@ export type CreateUserMutation = {
   createUser: { message?: string | null; user?: { id: string } | null };
 };
 
+export type DeleteAmenityMutationVariables = Exact<{
+  id: Scalars['Float'];
+}>;
+
+export type DeleteAmenityMutation = { deleteAmenity: string };
+
+export type DeleteEquipmentMutationVariables = Exact<{
+  id: Scalars['Float'];
+}>;
+
+export type DeleteEquipmentMutation = { deleteEquipment: string };
+
 export type DeleteLocationReservationMutationVariables = Exact<{
   id: Scalars['Float'];
 }>;
@@ -4033,6 +4213,12 @@ export type DeleteLocationReservationMutationVariables = Exact<{
 export type DeleteLocationReservationMutation = {
   deleteLocationReservation: string;
 };
+
+export type DeleteRoomMutationVariables = Exact<{
+  id: Scalars['Float'];
+}>;
+
+export type DeleteRoomMutation = { deleteRoom: string };
 
 export type LoginMutationVariables = Exact<{
   input: RegisterLoginInput;
@@ -4301,8 +4487,8 @@ export type GetEquipmentsQuery = {
       isActive: boolean;
       createdAt: any;
       updatedAt: any;
-      room: { id: string; name?: string | null };
-      location: { id: string; name: string };
+      room: { id: string; name?: string | null; description?: string | null };
+      location: { id: string; name: string; description?: string | null };
     }>;
   };
 };
@@ -4424,6 +4610,7 @@ export type GetIncidentsQuery = {
         name?: string | null;
         floor?: number | null;
         thumbnail?: string | null;
+        description?: string | null;
       };
       incidentCategory: {
         id: string;
@@ -4490,7 +4677,12 @@ export type GetLocationReservationQuery = {
       locationId: number;
       createdAt: any;
       updatedAt: any;
-      createdBy: { name: string; avatar?: string | null; email: string };
+      createdBy: {
+        id: string;
+        name: string;
+        avatar?: string | null;
+        email: string;
+      };
       location: { name: string; images?: string | null };
     } | null;
   };
@@ -4516,7 +4708,12 @@ export type GetLocationReservationsQuery = {
       locationId: number;
       createdAt: any;
       updatedAt: any;
-      createdBy: { name: string; avatar?: string | null; email: string };
+      createdBy: {
+        id: string;
+        name: string;
+        avatar?: string | null;
+        email: string;
+      };
       location: { name: string; images?: string | null };
     }>;
   };
@@ -4682,8 +4879,9 @@ export type GetRoomQuery = {
       floor?: number | null;
       createdAt: any;
       updatedAt: any;
-      location?: { name: string } | null;
+      location?: { id: string; name: string } | null;
       users?: Array<{
+        id: string;
         name: string;
         email: string;
         avatar?: string | null;
@@ -4724,6 +4922,7 @@ export type GetRoomsQuery = {
       createdAt: any;
       updatedAt: any;
       users?: Array<{
+        id: string;
         name: string;
         email: string;
         avatar?: string | null;
@@ -4785,7 +4984,7 @@ export type GetUsersQuery = {
       createdAt: any;
       updatedAt: any;
       location?: { id: string } | null;
-      room?: { name?: string | null } | null;
+      room?: { name?: string | null; description?: string | null } | null;
     }>;
   };
 };

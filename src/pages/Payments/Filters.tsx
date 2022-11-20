@@ -11,12 +11,12 @@ interface Props {
 function Filter({ onFilter }: Props) {
   return (
     <FilterWrapper<GetPaymentsFilter> onFilter={onFilter}>
-      <Col xl={6} xs={12}>
+      <Col xl={12} xs={24}>
         <Form.Item name="status">
           <PaymentStatusSelector />
         </Form.Item>
       </Col>
-      <Col xl={6} xs={12}>
+      <Col xl={12} xs={24}>
         <Form.Item name="locationReservationId">
           <LocationReservationSelector
             placeholder="Search by reservation"

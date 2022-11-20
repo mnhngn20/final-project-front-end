@@ -16,6 +16,12 @@ function RoomSelector({
       query={GetRoomsDocument}
       className="w-full"
       fetchPolicy="network-only"
+      convertDataToOptions={rooms =>
+        rooms.map(room => ({
+          label: `Room ${room?.name}`,
+          value: room?.id,
+        }))
+      }
       {...rest}
     />
   );

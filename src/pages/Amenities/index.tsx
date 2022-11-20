@@ -3,7 +3,7 @@ import List from './List';
 
 export default function Amenities() {
   return (
-    <PageLayout title="Manage Amenity">
+    <PageLayout title="Manage Amenities">
       <List />
     </PageLayout>
   );

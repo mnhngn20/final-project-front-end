@@ -9,6 +9,7 @@ query getLocationReservation($id: Float!) {
       startDate
       createdById
       createdBy {
+        id
         name
         avatar
         email

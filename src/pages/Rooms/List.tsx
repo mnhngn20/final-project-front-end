@@ -11,6 +11,7 @@ import {
   UpsertRoomInput,
   useGetRoomsQuery,
   RoomStatus,
+  useDeleteRoomMutation,
 } from '#/generated/schemas';
 import { userVar } from '#/graphql/cache';
 import { FormModal } from '#/shared/components/commons/FormModal';
@@ -22,7 +23,7 @@ import { formatId } from '#/shared/utils/format';
 import { formatDate } from '#/shared/utils/date';
 import Image from '#/shared/components/commons/Image';
 import { ColumnsType } from 'antd/lib/table';
-import { AddSVG, EditSVG, EyeSVG } from '#/assets/svgs';
+import { AddSVG, EditSVG, EyeSVG, TrashOutlineSVG } from '#/assets/svgs';
 import DefaultImage from '#/assets/images/default.png';
 import PaginationPanel from '#/shared/components/commons/PaginationPanel';
 import CustomTag from '#/shared/components/commons/CustomTag';
@@ -57,6 +58,7 @@ function List() {
         ...filters,
       },
     },
+    fetchPolicy: 'network-only',
   });
   const rooms = data?.getRooms?.items ?? [];
 
@@ -92,6 +94,14 @@ function List() {
     setCurrentPage(1);
     setFilters(newFilter);
   };
+
+  const [deleteRoom, { loading: deleteRoomLoading }] = useDeleteRoomMutation({
+    onCompleted() {
+      showSuccess('Delete room successfully!');
+      refetch();
+    },
+    onError: showError,
+  });
 
   const onSubmit = ({
     basePrice,
@@ -209,15 +219,27 @@ function List() {
               <Link to={`/rooms/${record?.id}`}>
                 <EyeSVG width={24} height={24} />
               </Link>
-              <Button type="link" onClick={onEdit}>
+              <span onClick={onEdit}>
                 <EditSVG width={24} height={24} />
-              </Button>
+              </span>
+              <span
+                className="text-error"
+                onClick={() =>
+                  deleteRoom({
+                    variables: {
+                      id: Number(record?.id),
+                    },
+                  })
+                }
+              >
+                <TrashOutlineSVG width={24} height={24} />
+              </span>
             </div>
           );
         },
       },
     ],
-    [],
+    [deleteRoom],
   );
 
   return (
@@ -239,7 +261,7 @@ function List() {
           dataSource={rooms as DeepPartial<Room>[]}
           columns={COLUMNS}
           scroll={{ x: 'max-content' }}
-          loading={loading || upsertRoomLoading}
+          loading={loading || upsertRoomLoading || deleteRoomLoading}
           onChange={onChange}
           pagination={false}
         />

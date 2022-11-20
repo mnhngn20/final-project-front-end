@@ -20,10 +20,9 @@ function Filter({ onFilter }: Props) {
           <InputNumber
             placeholder="Search by min price"
             className="w-full"
+            addonAfter="VND"
             formatter={value =>
-              !value
-                ? ''
-                : `${Number(value)?.toLocaleString()?.toString() ?? ''} VND`
+              `${Number(value)?.toLocaleString()?.toString()}`
             }
           />
         </Form.Item>
@@ -33,10 +32,9 @@ function Filter({ onFilter }: Props) {
           <InputNumber
             placeholder="Search by max price"
             className="w-full"
+            addonAfter="VND"
             formatter={value =>
-              !value
-                ? ''
-                : `${Number(value)?.toLocaleString()?.toString() ?? ''} VND`
+              `${Number(value)?.toLocaleString()?.toString()}`
             }
           />
         </Form.Item>
@@ -51,13 +49,7 @@ function Filter({ onFilter }: Props) {
           <InputNumber
             className="w-full"
             placeholder="Search by capacity"
-            formatter={value =>
-              !value
-                ? ''
-                : `${
-                    Number(value)?.toLocaleString()?.toString() ?? ''
-                  } person/people`
-            }
+            addonAfter="Person/ People"
           />
         </Form.Item>
       </Col>

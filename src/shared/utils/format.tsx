@@ -12,7 +12,7 @@ export const formatId = (id: number) => (
 );
 
 export const formatDisplayUser = (user: DeepPartial<User>) => (
-  <Link to={`/users/${user?.id}`}>
+  <Link to={`/customers/${user?.id}`}>
     <Info avatar={user?.avatar} fullName={user?.name} email={user?.email} />
   </Link>
 );

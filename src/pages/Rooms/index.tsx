@@ -3,7 +3,7 @@ import List from './List';
 
 export default function Rooms() {
   return (
-    <PageLayout title="Manage Room">
+    <PageLayout title="Manage Rooms">
       <List />
     </PageLayout>
   );

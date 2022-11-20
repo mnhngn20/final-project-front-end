@@ -15,7 +15,7 @@ import { PageContainer } from '@ant-design/pro-layout';
 import { Button, Typography } from 'antd';
 import dayjs from 'dayjs';
 import { useState, useRef } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import LocationReservationForm from '../Form';
 import { getLocationReservationStatusColor } from '../utils';
 import PaymentRecords, { PaymentRecordsRef } from './PaymentRecords';
@@ -23,12 +23,17 @@ import PaymentRecords, { PaymentRecordsRef } from './PaymentRecords';
 function DisplayItem({
   name,
   value,
+  onClick,
 }: {
   name: string;
   value?: string | number | JSX.Element;
+  onClick?: () => void;
 }) {
   return (
-    <div className="grid grid-cols-2 items-center gap-2 text-base">
+    <div
+      className="grid cursor-pointer grid-cols-2 items-center gap-2 text-base"
+      onClick={onClick}
+    >
       <Typography className="col-span-1 text-base">{name}</Typography>
       <Typography className="col-span-1 text-primary-color">
         {value ?? 'N/A'}
@@ -41,6 +46,7 @@ function Detail() {
   const { id } = useParams();
   const [editInfoModalVisible, setEditInfoModalVisible] = useState(false);
   const paymentRecordsRef = useRef<PaymentRecordsRef>(null);
+  const navigate = useNavigate();
 
   const { data, refetch } = useGetLocationReservationQuery({
     variables: {
@@ -176,17 +182,20 @@ function Detail() {
                     </div>
                   </div>
                 }
+                onClick={() =>
+                  navigate(`/customers/${locationReservation?.createdBy?.id}`)
+                }
               />
               <DisplayItem
                 name="Created Date"
                 value={dayjs(locationReservation?.startDate)?.format(
-                  'hh:mm A, DD/MM/YYYY',
+                  'hh:mm A, DD MMM YYYY',
                 )}
               />
               <DisplayItem
                 name="Updated Date"
                 value={dayjs(locationReservation?.startDate)?.format(
-                  'hh:mm A, DD/MM/YYYY',
+                  'hh:mm A, DD MMM YYYY',
                 )}
               />
             </div>

@@ -35,6 +35,7 @@ query getIncidents($input: GetIncidentsInput!) {
         name
         floor
         thumbnail
+        description
       }
       incidentCategoryId
       incidentCategory {

@@ -4,6 +4,7 @@ import { useReactiveVar } from '@apollo/client';
 import { userVar } from '#/graphql/cache';
 import { DatePicker } from '#/shared/components/commons/DatePicker';
 import { UserRole } from '#/generated/schemas';
+import dayjs from 'dayjs';
 
 function LocationReservationForm() {
   const currentUser = useReactiveVar(userVar);
@@ -24,6 +25,7 @@ function LocationReservationForm() {
             input: {
               locationId: Number(currentUser?.locationId),
               role: UserRole.Admin,
+              isActive: true,
             },
           }}
         />
@@ -36,6 +38,9 @@ function LocationReservationForm() {
         <DatePicker.MonthPicker
           placeholder="Select start date"
           className="w-full"
+          disabledDate={current =>
+            current.valueOf() > dayjs().add(1, 'month').valueOf()
+          }
         />
       </Form.Item>
     </>

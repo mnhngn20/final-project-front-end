@@ -21,6 +21,7 @@ query getUsers($input: GetUsersInput!) {
       }
       room {
         name
+        description
       }
       roomId
       createdAt
