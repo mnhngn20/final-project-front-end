@@ -1,4 +1,4 @@
-import { Button, Table, Switch, Typography, Image } from 'antd';
+import { Button, Table, Switch, Typography, Image, Tooltip } from 'antd';
 import { useState, useMemo } from 'react';
 import AmenityForm from './Form';
 import Filters from './Filters';
@@ -132,6 +132,10 @@ function List() {
         title: 'Amenity Type',
         dataIndex: ['amenityType', 'name'],
         key: 'amenityType',
+        width: 250,
+        render: (name: string, { amenityType }: DeepPartial<Amenity>) => (
+          <Tooltip title={amenityType?.description}>{name}</Tooltip>
+        ),
       },
       {
         title: 'Status',

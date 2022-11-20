@@ -28,7 +28,7 @@ function AuthLayout({ children }: Props) {
             Apartment Manage System
           </Typography>
           <Typography className="text-center text-base text-grey-secondary-300">
-            Fast & Secured & Convenience
+            Admin Web
           </Typography>
         </div>
       </div>

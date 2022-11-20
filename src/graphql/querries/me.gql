@@ -18,6 +18,7 @@ query me {
         stripeAccountId
         numOfFloor
         electricCounterPrice
+        isActive
       }
       roomId
       room {

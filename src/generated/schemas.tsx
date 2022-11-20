@@ -172,6 +172,7 @@ export type GetAmenitiesInput = {
 };
 
 export type GetAmenityTypesInput = {
+  isActive?: InputMaybe<Scalars['Boolean']>;
   limit?: InputMaybe<Scalars['Float']>;
   name?: InputMaybe<Scalars['String']>;
   orderBy?: InputMaybe<OrderBy>;
@@ -3950,6 +3951,7 @@ export const MeDocument = gql`
           stripeAccountId
           numOfFloor
           electricCounterPrice
+          isActive
         }
         roomId
         room {
@@ -4811,6 +4813,7 @@ export type MeQuery = {
         stripeAccountId?: string | null;
         numOfFloor?: number | null;
         electricCounterPrice?: number | null;
+        isActive: boolean;
       } | null;
       room?: { name?: string | null } | null;
     } | null;

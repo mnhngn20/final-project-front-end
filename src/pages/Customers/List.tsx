@@ -188,26 +188,6 @@ function List({ roomId }: ListProps) {
         render: (role?: UserRole) => <RoleTag role={role} />,
       },
       {
-        title: 'Current Room',
-        dataIndex: ['room', 'name'],
-        key: 'roomName',
-        render: (roomName?: string) => roomName ?? 'N/A',
-      },
-      {
-        title: 'Created Date',
-        dataIndex: 'createdAt',
-        key: 'createdAt',
-        render: (createdAt?: string) =>
-          dayjs(createdAt).format('hh:mm A, DD MMM YYYY'),
-      },
-      {
-        title: 'Updated Date',
-        dataIndex: 'updatedAt',
-        key: 'updatedAt',
-        render: (updatedAt?: string) =>
-          dayjs(updatedAt).format('hh:mm A, DD MMM YYYY'),
-      },
-      {
         title: 'Status',
         dataIndex: 'isActive',
         key: 'isActive',
@@ -226,6 +206,26 @@ function List({ roomId }: ListProps) {
             }
           />
         ),
+      },
+      {
+        title: 'Current Room',
+        dataIndex: ['room', 'name'],
+        key: 'roomName',
+        render: (roomName?: string) => roomName ?? 'N/A',
+      },
+      {
+        title: 'Created Date',
+        dataIndex: 'createdAt',
+        key: 'createdAt',
+        render: (createdAt?: string) =>
+          dayjs(createdAt).format('hh:mm A, DD MMM YYYY'),
+      },
+      {
+        title: 'Updated Date',
+        dataIndex: 'updatedAt',
+        key: 'updatedAt',
+        render: (updatedAt?: string) =>
+          dayjs(updatedAt).format('hh:mm A, DD MMM YYYY'),
       },
       {
         title: '',
@@ -298,7 +298,7 @@ function List({ roomId }: ListProps) {
       <FormModal<UpdateUserInput>
         loading={createLoading || updateLoading}
         onSubmit={onSubmit}
-        name="User"
+        name="Customer"
         onClose={clearSelectedItem}
         selectedItem={selectedItem}
         initialValues={selectedItem}

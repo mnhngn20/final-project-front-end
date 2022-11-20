@@ -97,6 +97,11 @@ function LocationForm({ initialValues }: Props) {
                 ? [...initialValues?.locationServices]
                 : []
             }
+            variables={{
+              input: {
+                isActive: true,
+              },
+            }}
           />
         </Form.Item>
       </Col>

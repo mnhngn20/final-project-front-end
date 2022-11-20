@@ -107,7 +107,7 @@ function SideContent({ location }: SideContentProps) {
                 />
                 <DetailItem
                   icon={SmsSVG}
-                  toolTip="Created at"
+                  toolTip="Email"
                   value={contact?.email}
                 />
                 <DetailItem

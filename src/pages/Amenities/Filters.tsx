@@ -18,7 +18,14 @@ function Filter({ onFilter }: Props) {
       </Col>
       <Col xl={6} xs={12}>
         <Form.Item name="amenityTypeId">
-          <AmenityTypeSelector placeholder="Filter by Amenity Type" />
+          <AmenityTypeSelector
+            placeholder="Filter by Amenity Type"
+            variables={{
+              input: {
+                isActive: true,
+              },
+            }}
+          />
         </Form.Item>
       </Col>
       <Col xl={6} xs={12}>

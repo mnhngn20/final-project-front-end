@@ -26,6 +26,11 @@ function AmenityForm({ initialValues }: AmenityFormProps) {
           initValues={
             initialValues?.amenityType ? [initialValues?.amenityType] : []
           }
+          variables={{
+            input: {
+              isActive: true,
+            },
+          }}
         />
       </Form.Item>
       <Form.Item name="description" label="Description">
