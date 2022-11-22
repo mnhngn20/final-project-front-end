@@ -108,6 +108,8 @@ function PrivateLayout({
         )}
         collapsed={isCollapsed}
         onCollapse={setIsCollapsed}
+        headerTheme="light"
+        navTheme="light"
         {...settings}
       >
         <Alert.ErrorBoundary>{children}</Alert.ErrorBoundary>
