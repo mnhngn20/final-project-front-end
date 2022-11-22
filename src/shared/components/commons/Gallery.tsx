@@ -1,6 +1,7 @@
 import { Row, Col, Typography, Space, Empty, Button, Image } from 'antd';
 import { CaretDownOutlined } from '@ant-design/icons';
 import { useEffect, useState } from 'react';
+import { GalleryFilledSVG } from '#/assets/svgs';
 
 interface Props {
   gallery?: string[] | null;
@@ -35,7 +36,8 @@ function Gallery({ gallery, title, className, emptyRender }: Props) {
 
   return (
     <Row className="w-full">
-      <Col span={24}>
+      <Col span={24} className="flex items-center gap-2 text-primary-color">
+        <GalleryFilledSVG width={24} height={24} />
         <Typography.Text className={className}>{title}</Typography.Text>
       </Col>
       <Row gutter={16} className="mt-4 w-full">

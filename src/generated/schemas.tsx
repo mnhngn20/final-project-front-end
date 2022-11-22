@@ -970,7 +970,7 @@ export type UpdateIncidentForEmployeeInput = {
   priority?: InputMaybe<Scalars['String']>;
   reportImages?: InputMaybe<Scalars['String']>;
   reportMessage?: InputMaybe<Scalars['String']>;
-  status: IncidentStatus;
+  status?: InputMaybe<IncidentStatus>;
 };
 
 export type UpdateLocationStatusInput = {

@@ -1,4 +1,5 @@
 import {
+  refetchGetIncidentQuery,
   UpsertIncidentInput,
   useGetIncidentQuery,
   useUpsertIncidentMutation,
@@ -37,6 +38,7 @@ function Detail() {
         refetch();
       },
       onError: showError,
+      refetchQueries: [refetchGetIncidentQuery({ id: Number(id) })],
     });
 
   const onSubmit = ({
@@ -78,6 +80,7 @@ function Detail() {
           />
           <IncidentEmployee
             incident={incident ?? {}}
+            key={`${incident?.id}-${incident?.reportMessage}-${incident?.reportImages}`}
             setEditModalVisible={setEditModalVisible}
           />
         </div>

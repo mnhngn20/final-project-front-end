@@ -55,3 +55,5 @@ export { ReactComponent as CardOutlineSVG } from './card-outline.svg';
 export { ReactComponent as TrashOutlineSVG } from './trash-outline.svg';
 export { ReactComponent as MoneyTimeFilledSVG } from './money-time-filled.svg';
 export { ReactComponent as ExtraCoinFilledSVG } from './extra-coin-filled.svg';
+export { ReactComponent as GalleryFilledSVG } from './gallery-filled.svg';
+export { ReactComponent as GalleryAddOutlineSVG } from './gallery-add-outline.svg';

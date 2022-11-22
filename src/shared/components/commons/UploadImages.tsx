@@ -10,11 +10,16 @@ import { AddSVG } from '#/assets/svgs';
 interface Props {
   srcList?: string | null;
   onChange?: (url: string) => void;
+  onCompleted?: (url: string, fileList: string[]) => void;
+  render?: (loading?: boolean) => JSX.Element;
 }
 
 function UploadImages({
   srcList = '',
   onChange,
+  onCompleted,
+  render,
+  showUploadList = true,
   ...restProps
 }: Props & UploadProps) {
   const [loading, setLoading] = useState(false);
@@ -42,10 +47,12 @@ function UploadImages({
         file: file as Blob,
       });
       const url = response.data.url;
+      const newFileList = [...fileList, url];
       onSuccess?.(response.statusText, file as unknown as XMLHttpRequest);
-      onChange?.([...fileList, url].join(','));
+      onChange?.(newFileList.join(','));
 
-      setFileList([...fileList, url]);
+      setFileList(newFileList);
+      onCompleted?.(url, newFileList);
       setLoading(false);
     } catch (error) {
       setLoading(false);
@@ -61,33 +68,34 @@ function UploadImages({
 
   return (
     <div className="flex flex-wrap items-center gap-3">
-      {fileList?.map((item, index) => (
-        <div
-          key={String(index)}
-          className="relative flex h-28 w-28 items-center justify-center rounded-lg border-2 border-[#b1b7cc] p-2 hover:border-primary-color"
-        >
-          <Image
-            width="100%"
-            height="100%"
-            src={item}
-            className="rounded-lg object-cover"
-            alt="file"
-            preview={{
-              mask: (
-                <div className="flex w-full items-center justify-evenly text-lg">
-                  <EyeOutlined className="hover:text-primary-color" />
-                  <div>
-                    <DeleteOutlined
-                      className="z-[100] hover:text-primary-color"
-                      onClick={() => onRemove({ name: item })}
-                    />
+      {showUploadList &&
+        fileList?.map((item, index) => (
+          <div
+            key={String(index)}
+            className="relative flex h-28 w-28 items-center justify-center rounded-lg border-2 border-[#b1b7cc] p-2 hover:border-primary-color"
+          >
+            <Image
+              width="100%"
+              height="100%"
+              src={item}
+              className="rounded-lg object-cover"
+              alt="file"
+              preview={{
+                mask: (
+                  <div className="flex w-full items-center justify-evenly text-lg">
+                    <EyeOutlined className="hover:text-primary-color" />
+                    <div>
+                      <DeleteOutlined
+                        className="z-[100] hover:text-primary-color"
+                        onClick={() => onRemove({ name: item })}
+                      />
+                    </div>
                   </div>
-                </div>
-              ),
-            }}
-          />
-        </div>
-      ))}
+                ),
+              }}
+            />
+          </div>
+        ))}
       <Upload
         customRequest={handleUpload}
         onRemove={onRemove}
@@ -97,16 +105,20 @@ function UploadImages({
         className="flex items-center"
         {...restProps}
       >
-        <div className="text-color-gray flex h-28 w-28 items-center justify-center rounded-lg border-2 border-dashed border-[#b1b7cc] text-[#b1b7cc] hover:border-primary-color hover:text-primary-color">
-          {loading ? (
-            <Spin />
-          ) : (
-            <div className="flex flex-col items-center justify-center">
-              <AddSVG width={24} height={24} />
-              <span>Upload</span>
-            </div>
-          )}
-        </div>
+        {render ? (
+          render(loading)
+        ) : (
+          <div className="text-color-gray flex h-28 w-28 items-center justify-center rounded-lg border-2 border-dashed border-[#b1b7cc] text-[#b1b7cc] hover:border-primary-color hover:text-primary-color">
+            {loading ? (
+              <Spin />
+            ) : (
+              <div className="flex flex-col items-center justify-center">
+                <AddSVG width={24} height={24} />
+                <span>Upload</span>
+              </div>
+            )}
+          </div>
+        )}
       </Upload>
     </div>
   );

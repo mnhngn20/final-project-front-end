@@ -42,6 +42,7 @@ export default function IncidentDetail({
   setEditModalVisible,
 }: IncidentDetailProps) {
   const { id } = useParams();
+
   const [updateIncident] = useUpdateIncidentForEmployeeMutation({
     onError: showError,
     refetchQueries: [refetchGetIncidentQuery({ id: Number(id) })],
