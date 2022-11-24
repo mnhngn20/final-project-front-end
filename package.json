@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "vite",
     "build": "yarn check-types && vite build",
-    "start": "vite preview --port 3000",
+    "start": "vite preview --port 3001",
     "check-types": "tsc --noEmit --pretty",
     "check-types:watch": "tsc --noEmit --watch",
     "lint": "eslint \"src/**/*.{tsx,ts}\" --fix",

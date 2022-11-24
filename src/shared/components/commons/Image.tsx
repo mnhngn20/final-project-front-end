@@ -1,18 +1,15 @@
 import { Image as AntdImage, ImageProps } from 'antd';
 import Loading from './Loading';
-import ImageDefault from '#/assets/images/imageDefault.png';
-import ImageUpload from '#/assets/images/upload-image.png';
+import ImageDefault from '#/assets/images/default.png';
 
 interface Props {
   url: string | undefined;
   isUpload?: boolean;
 }
 
-function Image({ url, isUpload = false, ...rest }: Props & ImageProps) {
-  const defaultImage = isUpload ? ImageUpload : ImageDefault;
-
+function Image({ url, ...rest }: Props & ImageProps) {
   return (
-    <AntdImage src={url ?? defaultImage} placeholder={<Loading />} {...rest} />
+    <AntdImage src={url ?? ImageDefault} placeholder={<Loading />} {...rest} />
   );
 }
 
