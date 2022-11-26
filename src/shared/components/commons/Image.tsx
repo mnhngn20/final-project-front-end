@@ -1,5 +1,5 @@
-import Loading from './Loading';
 import { Image as AntdImage, ImageProps } from 'antd';
+import Loading from './Loading';
 import ImageDefault from '#/assets/images/default.png';
 
 interface Props {
