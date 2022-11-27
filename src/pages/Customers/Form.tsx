@@ -71,6 +71,7 @@ function UserForm({ initialValues }: Props) {
             input: { locationId: Number(initialValues?.locationId) },
           }}
           placeholder="Select customer room"
+          allowClear
         />
       </Form.Item>
       <Form.Item name="identityNumber" label="Government ID">

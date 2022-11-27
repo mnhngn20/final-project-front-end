@@ -1,4 +1,4 @@
-import { Button, Table, Switch, Typography, Image, Tooltip } from 'antd';
+import { Button, Table, Switch, Typography, Image, Tooltip, Modal } from 'antd';
 import { useState, useMemo } from 'react';
 import AmenityForm from './Form';
 import Filters from './Filters';
@@ -203,14 +203,23 @@ function List() {
                 <EditSVG width={24} height={24} />
               </span>
               <span
-                className="text-error"
-                onClick={() =>
-                  deleteAmenity({
-                    variables: {
-                      id: Number(record?.id),
+                className="cursor-pointer text-error"
+                onClick={() => {
+                  Modal.warning({
+                    centered: true,
+                    closable: true,
+                    maskClosable: true,
+                    title: 'Are you sure to delete this Amenity?',
+                    okText: 'Delete',
+                    onOk: () => {
+                      deleteAmenity({
+                        variables: {
+                          id: Number(record?.id),
+                        },
+                      });
                     },
-                  })
-                }
+                  });
+                }}
               >
                 <TrashOutlineSVG width={24} height={24} />
               </span>

@@ -1,4 +1,4 @@
-import { Button, Switch, Table, Tooltip, Typography } from 'antd';
+import { Button, Modal, Switch, Table, Tooltip, Typography } from 'antd';
 import { useState, useMemo } from 'react';
 import { useReactiveVar } from '@apollo/client';
 import EquipmentForm from './Form';
@@ -222,14 +222,23 @@ function List({ roomId }: ListProps) {
                 <EditSVG width={24} height={24} />
               </span>
               <span
-                className="text-error"
-                onClick={() =>
-                  deleteEquipment({
-                    variables: {
-                      id: Number(record?.id),
+                className="cursor-pointer text-error"
+                onClick={() => {
+                  Modal.warning({
+                    centered: true,
+                    closable: true,
+                    maskClosable: true,
+                    title: 'Are you sure to delete this Equipment?',
+                    okText: 'Delete',
+                    onOk: () => {
+                      deleteEquipment({
+                        variables: {
+                          id: Number(record?.id),
+                        },
+                      });
                     },
-                  })
-                }
+                  });
+                }}
               >
                 <TrashOutlineSVG width={24} height={24} />
               </span>

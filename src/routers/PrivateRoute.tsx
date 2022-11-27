@@ -5,9 +5,10 @@ import { useMeQuery } from '#/generated/schemas';
 import { clearToken } from '#/shared/utils/token';
 import { userVar } from '#/graphql/cache';
 import { showError } from '#/shared/utils/notification';
-import { Button, Modal, Typography } from 'antd';
+import { Button, Image, Modal, Typography } from 'antd';
 import { StripeFilledSVG, StripeLogoSVG } from '#/assets/svgs';
 import { useRef } from 'react';
+import Logo from '#/assets/images/logo.png';
 
 const Customers = loadable(import('#/pages/Customers'));
 const CustomerDetail = loadable(import('#/pages/Customers/Detail'));
@@ -45,7 +46,11 @@ function PrivateRoute() {
           maskClosable: true,
           icon: <></>,
           width: 600,
-          okText: 'Close',
+          okButtonProps: {
+            style: {
+              display: 'none',
+            },
+          },
           onCancel() {
             clearToken();
             navigate('/login');
@@ -55,15 +60,32 @@ function PrivateRoute() {
             navigate('/login');
           },
           content: (
-            <div className="flex flex-col gap-8">
+            <div className="flex flex-col gap-4">
               <Typography className="text-center text-xl font-bold uppercase text-primary-color">
                 Setup your account with Stripe
               </Typography>
-              <StripeLogoSVG width={144} height={144} />
-              <Typography.Paragraph>
-                We have partnered with Stripe to automatically generate your
-                invoice to provide instant payments to your account after a
-                tutoring session is completed. No manual invoices. No hassle.
+              <div className="flex items-center justify-center gap-4">
+                <StripeLogoSVG width={144} height={144} />
+                <div className="flex items-center gap-2">
+                  <div className="h-4 w-4 rounded-full bg-warning" />
+                  <div className="h-4 w-4 rounded-full bg-warning" />
+                  <div className="h-4 w-4 rounded-full bg-warning" />
+                  <div className="h-4 w-4 rounded-full bg-warning" />
+                  <div className="h-4 w-4 rounded-full bg-warning" />
+                  <div className="h-4 w-4 rounded-full bg-warning" />
+                </div>
+                <Image
+                  src={Logo}
+                  height={120}
+                  width={120}
+                  className="object-cover"
+                  preview={false}
+                />
+              </div>
+              <Typography.Paragraph className="text-base font-medium">
+                We have partnered with Stripe to handle payment. Please create
+                Stripe account before using our Admin Manage System. Thank you
+                and have a good time!
               </Typography.Paragraph>
               <div className="flex h-full w-full items-center justify-center">
                 <a

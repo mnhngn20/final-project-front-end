@@ -127,7 +127,7 @@ function List({ roomId }: ListProps) {
             address,
             id: Number(selectedItem?.id),
             dateOfBirth: dayjs.utc(dateOfBirth).startOf('date').toISOString(),
-            ...(roomId && { roomId: Number(roomId) }),
+            ...(roomId ? { roomId: Number(roomId) } : { roomId: null }),
           },
         },
       });

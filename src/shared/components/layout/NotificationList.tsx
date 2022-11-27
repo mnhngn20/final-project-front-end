@@ -53,7 +53,7 @@ export default function NotificationList() {
 
   return (
     <div
-      className="flex max-h-[30rem] flex-col overflow-y-auto"
+      className="flex max-h-[30rem] flex-col overflow-hidden overflow-y-auto"
       onScroll={loadMore}
     >
       <div>
@@ -61,7 +61,7 @@ export default function NotificationList() {
           notifications?.map(notification => (
             <div
               key={notification?.id}
-              className={`relative grid w-min cursor-pointer grid-cols-12 items-center gap-8 border-b border-grey-light p-4 hover:bg-grey-light ${
+              className={`relative grid w-min cursor-pointer grid-cols-12 items-center gap-8 overflow-hidden border-b border-grey-light p-4 hover:bg-grey-light ${
                 notification?.isRead === false
                   ? 'bg-grey-light-200 font-bold after:absolute after:right-0 after:mr-1 after:h-1 after:w-1 after:rounded-full after:bg-[black] hover:bg-grey-light-200'
                   : ''
@@ -94,7 +94,7 @@ export default function NotificationList() {
             </div>
           ))
         ) : (
-          <Empty className="w-full" />
+          <Empty description="You have no notification" />
         )}
       </div>
       {loading && (

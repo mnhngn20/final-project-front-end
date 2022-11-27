@@ -1,4 +1,4 @@
-import { Button, Table, Typography } from 'antd';
+import { Button, Modal, Table, Typography } from 'antd';
 import { useState, useMemo } from 'react';
 import { useReactiveVar } from '@apollo/client';
 import RoomForm from './Form';
@@ -28,6 +28,7 @@ import DefaultImage from '#/assets/images/default.png';
 import PaginationPanel from '#/shared/components/commons/PaginationPanel';
 import CustomTag from '#/shared/components/commons/CustomTag';
 import { getRoomStatusColor } from './ultils';
+import EllipsisText from '#/shared/components/commons/EllipsisText';
 
 export type GetRoomsFilter = {
   name?: string;
@@ -176,7 +177,9 @@ function List() {
         title: 'Description',
         dataIndex: 'description',
         key: 'description',
-        render: (description?: string) => description ?? 'N/A',
+        render: (description?: string) => (
+          <EllipsisText text={description ?? 'N/A'} />
+        ),
       },
       {
         title: 'Base Price',
@@ -222,18 +225,31 @@ function List() {
               <span onClick={onEdit}>
                 <EditSVG width={24} height={24} />
               </span>
-              <span
-                className="text-error"
-                onClick={() =>
-                  deleteRoom({
-                    variables: {
-                      id: Number(record?.id),
-                    },
-                  })
-                }
+              <div
+                className="cursor-pointer text-error"
+                onClick={() => {
+                  if (record.status === RoomStatus.Owned) {
+                    showError('Can not delete room with owners');
+                  } else {
+                    Modal.warning({
+                      centered: true,
+                      closable: true,
+                      maskClosable: true,
+                      title: 'Are you sure to delete this Room?',
+                      okText: 'Delete',
+                      onOk: () => {
+                        deleteRoom({
+                          variables: {
+                            id: Number(record?.id),
+                          },
+                        });
+                      },
+                    });
+                  }
+                }}
               >
                 <TrashOutlineSVG width={24} height={24} />
-              </span>
+              </div>
             </div>
           );
         },

@@ -4,7 +4,7 @@ import { ComponentType, SVGProps } from 'react';
 
 interface ProfileItemProps {
   icon?: ComponentType<SVGProps<SVGSVGElement>>;
-  value?: string | number | null;
+  value?: string | number | null | JSX.Element;
   className?: string;
   toolTip?: string;
 }

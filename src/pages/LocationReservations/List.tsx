@@ -1,4 +1,4 @@
-import { Button, Table, Typography, Popconfirm } from 'antd';
+import { Button, Table, Typography, Modal } from 'antd';
 import { useState, useMemo } from 'react';
 import LocationReservationForm from './Form';
 import Filters from './Filters';
@@ -194,22 +194,28 @@ function List() {
               <Link to={`/location-reservations/${record?.id}`}>
                 <EyeSVG width={24} height={24} />
               </Link>
-              <Popconfirm
+              <span
+                className="cursor-pointer text-error"
                 title="Are you sure to delete this record?"
-                onConfirm={() =>
-                  deleteLocationReservation({
-                    variables: {
-                      id: Number(record?.id),
+                onClick={() => {
+                  Modal.warning({
+                    centered: true,
+                    closable: true,
+                    maskClosable: true,
+                    title: 'Are you sure to delete this Equipment?',
+                    okText: 'Delete',
+                    onOk: () => {
+                      deleteLocationReservation({
+                        variables: {
+                          id: Number(record?.id),
+                        },
+                      });
                     },
-                  })
-                }
+                  });
+                }}
               >
-                <TrashOutlineSVG
-                  className="text-error"
-                  width={24}
-                  height={24}
-                />
-              </Popconfirm>
+                <TrashOutlineSVG width={24} height={24} />
+              </span>
             </div>
           );
         },

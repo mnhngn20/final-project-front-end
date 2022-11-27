@@ -13,11 +13,12 @@ import {
   NoteSVG,
   RoomSVG,
   SmsSVG,
+  SquareDollarOutlineSVG,
   StarSVG,
   UserOutlineSVG,
-  SquareDollarOutlineSVG,
 } from '#/assets/svgs';
 import { formatDate } from '#/shared/utils/date';
+import EllipsisText from '#/shared/components/commons/EllipsisText';
 
 interface SideContentProps {
   location?: DeepPartial<Location>;
@@ -60,9 +61,13 @@ function SideContent({ location }: SideContentProps) {
           <DetailItem
             icon={StarSVG}
             toolTip="Services"
-            value={location?.locationServices
-              ?.map(service => service?.name)
-              ?.join(', ')}
+            value={
+              location?.locationServices?.[0]
+                ? location?.locationServices
+                    ?.map(service => service?.name)
+                    ?.join(', ')
+                : 'N/A'
+            }
           />
           <DetailItem
             icon={CalendarSVG}
@@ -77,7 +82,7 @@ function SideContent({ location }: SideContentProps) {
           <DetailItem
             icon={NoteSVG}
             toolTip="Description"
-            value={location?.description}
+            value={<EllipsisText text={location?.description ?? 'N/A'} />}
           />
           <DetailItem
             icon={SquareDollarOutlineSVG}
