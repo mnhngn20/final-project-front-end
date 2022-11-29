@@ -86,7 +86,23 @@ function LocationForm({ initialValues }: Props) {
           />
         </Form.Item>
       </Col>
-      <Col span={24}>
+      <Col span={12}>
+        <Form.Item
+          name="electricCounterPrice"
+          label="Electric Price"
+          rules={[{ required: true }]}
+        >
+          <InputNumber
+            placeholder="Enter Electric Price"
+            className="w-full"
+            addonAfter="VND"
+            formatter={value =>
+              `${Number(value)?.toLocaleString()?.toString()}`
+            }
+          />
+        </Form.Item>
+      </Col>
+      <Col span={12}>
         <Form.Item name="locationServiceIds" label="Services">
           <LocationServiceSelector
             mode="multiple"

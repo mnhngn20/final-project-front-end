@@ -20,6 +20,9 @@ import {
   getPaymentStatusColor,
   getPaymentStatusTitle,
 } from '../LocationReservations/utils';
+import { Link } from 'react-router-dom';
+import { EyeSVG } from '#/assets/svgs';
+import PaymentDetailModal from './PaymentDetailModal';
 
 export type GetPaymentsFilter = {
   locationReservationId?: number;
@@ -137,6 +140,21 @@ function List({ userId }: ListProps) {
         key: 'updatedAt',
         render: (date: Date) => formatDate(date, 'hh:mm A, DD MMMM YYYY'),
       },
+      {
+        title: '',
+        dataIndex: 'id',
+        key: 'action',
+        fixed: 'right' as const,
+        render: (id: string) => {
+          return (
+            <div className="flex items-center justify-center gap-4 text-base text-primary-color">
+              <Link to={`/payments?paymentId=${id}`}>
+                <EyeSVG width={24} height={24} />
+              </Link>
+            </div>
+          );
+        },
+      },
     ],
     [],
   );
@@ -168,6 +186,7 @@ function List({ userId }: ListProps) {
           showQuickJumper
         />
       </div>
+      <PaymentDetailModal />
     </>
   );
 }

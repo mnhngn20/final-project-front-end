@@ -36,7 +36,7 @@ export function getNotificationUrl(
     case NotificationType.Other:
       return '/others';
     case NotificationType.Payment:
-      return `/payments/${dataId}`;
+      return `/payments?paymentId=${dataId}`;
     default:
       return '/announcements';
   }

@@ -3615,12 +3615,15 @@ export const GetPaymentDocument = gql`
         locationReservation {
           totalCalculatedPrice
           totalReceivedPrice
+          startDate
         }
         locationId
         location {
           name
           electricCounterPrice
         }
+        updatedAt
+        createdAt
       }
     }
   }
@@ -4792,6 +4795,8 @@ export type GetPaymentQuery = {
       roomId: number;
       locationReservationId: number;
       locationId: number;
+      updatedAt: any;
+      createdAt: any;
       users?: Array<{
         name: string;
         id: string;
@@ -4807,6 +4812,7 @@ export type GetPaymentQuery = {
       locationReservation: {
         totalCalculatedPrice: number;
         totalReceivedPrice: number;
+        startDate: any;
       };
       location: { name: string; electricCounterPrice?: number | null };
     } | null;

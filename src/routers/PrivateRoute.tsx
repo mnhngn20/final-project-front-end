@@ -26,6 +26,7 @@ const LocationReservationDetail = loadable(
 const LocationReservations = loadable(import('#/pages/LocationReservations'));
 const StripeConnectSuccess = loadable(import('#/pages/Stripe/Success'));
 const ConnectingStripe = loadable(import('#/pages/Stripe/ConnectingStripe'));
+const Payments = loadable(import('#/pages/Payments'));
 
 function PrivateRoute() {
   const { pathname } = useLocation();
@@ -191,6 +192,15 @@ function PrivateRoute() {
         {
           index: true,
           element: <Equipments />,
+        },
+      ],
+    },
+    {
+      path: '/payments',
+      children: [
+        {
+          index: true,
+          element: <Payments />,
         },
       ],
     },

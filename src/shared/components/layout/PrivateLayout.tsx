@@ -87,6 +87,11 @@ function PrivateLayout({
         path: '/location-reservations',
       },
       {
+        icon: <Icon component={ReceiptFilledSVG} />,
+        name: 'Payments',
+        path: '/payments',
+      },
+      {
         icon: <Icon component={WarningFilledSVG} />,
         name: 'Incidents',
         path: '/incidents',
