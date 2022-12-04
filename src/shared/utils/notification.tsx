@@ -37,6 +37,8 @@ export function getNotificationUrl(
       return '/others';
     case NotificationType.Payment:
       return `/payments?paymentId=${dataId}`;
+    case NotificationType.Reservation:
+      return `/location-reservations/${dataId}`;
     default:
       return '/announcements';
   }

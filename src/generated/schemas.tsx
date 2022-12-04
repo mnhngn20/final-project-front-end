@@ -135,6 +135,7 @@ export type Equipment = {
   description?: Maybe<Scalars['String']>;
   id: Scalars['ID'];
   image?: Maybe<Scalars['String']>;
+  incidents?: Maybe<Array<Incident>>;
   isActive: Scalars['Boolean'];
   location: Location;
   locationId: Scalars['Float'];
@@ -190,6 +191,7 @@ export type GetEquipmentsInput = {
 };
 
 export type GetIncidentCategoriesInput = {
+  isActive?: InputMaybe<Scalars['Boolean']>;
   limit?: InputMaybe<Scalars['Float']>;
   name?: InputMaybe<Scalars['String']>;
   orderBy?: InputMaybe<OrderBy>;
@@ -324,11 +326,13 @@ export type Incident = {
   dueDate?: Maybe<Scalars['DateTime']>;
   employee?: Maybe<User>;
   employeeId?: Maybe<Scalars['Float']>;
+  equipment?: Maybe<Equipment>;
   fromCustomer?: Maybe<Scalars['Boolean']>;
   id: Scalars['ID'];
   images?: Maybe<Scalars['String']>;
   incidentCategory: IncidentCategory;
   incidentCategoryId: Scalars['Float'];
+  isEquipmentReport?: Maybe<Scalars['Boolean']>;
   location: Location;
   locationId: Scalars['Float'];
   priority?: Maybe<IncidentPriority>;
@@ -349,6 +353,7 @@ export type IncidentCategory = {
   icon?: Maybe<Scalars['String']>;
   id: Scalars['ID'];
   incidents?: Maybe<Array<Incident>>;
+  isActive?: Maybe<Scalars['Boolean']>;
   name: Scalars['String'];
   updatedAt: Scalars['DateTime'];
 };
@@ -692,6 +697,7 @@ export enum NotificationType {
   Incident = 'Incident',
   Other = 'Other',
   Payment = 'Payment',
+  Reservation = 'Reservation',
 }
 
 export type Notification = {
@@ -1042,10 +1048,12 @@ export type UpsertIncidentInput = {
   description?: InputMaybe<Scalars['String']>;
   dueDate?: InputMaybe<Scalars['DateTime']>;
   employeeId?: InputMaybe<Scalars['Float']>;
+  equipmentId?: InputMaybe<Scalars['Float']>;
   fromCustomer?: InputMaybe<Scalars['Boolean']>;
   id?: InputMaybe<Scalars['Float']>;
   images?: InputMaybe<Scalars['String']>;
-  incidentCategoryId: Scalars['Float'];
+  incidentCategoryId?: InputMaybe<Scalars['Float']>;
+  isEquipmentReport?: InputMaybe<Scalars['Boolean']>;
   locationId: Scalars['Float'];
   priority?: InputMaybe<IncidentPriority>;
   reportImages?: InputMaybe<Scalars['String']>;
@@ -2862,6 +2870,11 @@ export const GetIncidentDocument = gql`
           name
           description
         }
+        equipment {
+          id
+          name
+          image
+        }
         locationId
         location {
           name
@@ -3142,6 +3155,9 @@ export const GetLocationDocument = gql`
           id
           phoneNumber
           email
+        }
+        users {
+          id
         }
       }
     }
@@ -4543,6 +4559,7 @@ export type GetIncidentQuery = {
         name: string;
         description?: string | null;
       };
+      equipment?: { id: string; name: string; image?: string | null } | null;
       location: { name: string; address: string; thumbnail?: string | null };
     } | null;
   };
@@ -4659,6 +4676,7 @@ export type GetLocationQuery = {
         phoneNumber?: string | null;
         email?: string | null;
       }> | null;
+      users?: Array<{ id: string }> | null;
     } | null;
   };
 };

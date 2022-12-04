@@ -27,6 +27,7 @@ import PaymentDetailModal from './PaymentDetailModal';
 export type GetPaymentsFilter = {
   locationReservationId?: number;
   status?: PaymentStatus;
+  roomId?: number;
 };
 
 interface ListProps {
@@ -53,10 +54,17 @@ function List({ userId }: ListProps) {
   });
   const equipments = data?.getPayments?.items ?? [];
 
-  const onFilter = ({ locationReservationId, status }: GetPaymentsFilter) => {
+  const onFilter = ({
+    locationReservationId,
+    status,
+    roomId,
+  }: GetPaymentsFilter) => {
     const newFilter = {
       ...(locationReservationId && {
         locationReservationId: Number(locationReservationId),
+      }),
+      ...(roomId && {
+        roomId: Number(roomId),
       }),
       ...(status && { status }),
     };

@@ -39,6 +39,11 @@ query getIncident($id: Float!) {
         name
         description
       }
+      equipment {
+        id
+        name
+        image
+      }
       locationId
       location {
         name

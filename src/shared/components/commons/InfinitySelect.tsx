@@ -13,6 +13,10 @@ export interface InfinitySelectProps<Type, QueryVariables>
   variables?: QueryVariables;
   fetchPolicy?: FetchPolicy;
   hasNullValue?: boolean;
+  convertDataToOptions?: (data: Type[]) => {
+    value: string | React.ReactNode;
+    label: unknown;
+  }[];
 }
 
 export interface Props<Query, QueryVariables, Type>

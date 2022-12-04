@@ -114,7 +114,7 @@ export default function PaymentDetailModal({ ...rest }: ModalProps) {
                     <DropFilledSVG
                       width={24}
                       height={24}
-                      className="text-info-color"
+                      className="text-info"
                     />
                   }
                   className="col-span-1"
@@ -126,7 +126,7 @@ export default function PaymentDetailModal({ ...rest }: ModalProps) {
                     <FlashFilledSVG
                       width={24}
                       height={24}
-                      className="text-warning-color"
+                      className="text-warning"
                     />
                   }
                   className="col-span-1"
@@ -149,7 +149,7 @@ export default function PaymentDetailModal({ ...rest }: ModalProps) {
                     <CoinFilledSVG
                       width={24}
                       height={24}
-                      className="text-error-color"
+                      className="text-error"
                     />
                   }
                   className="col-span-1"
@@ -161,7 +161,7 @@ export default function PaymentDetailModal({ ...rest }: ModalProps) {
                     <MoneyTimeFilledSVG
                       width={24}
                       height={24}
-                      className="text-success-color"
+                      className="text-success"
                     />
                   }
                   className="col-span-1"
@@ -173,7 +173,7 @@ export default function PaymentDetailModal({ ...rest }: ModalProps) {
                     <ClockFilledSVG
                       width={24}
                       height={24}
-                      className="text-color-gray"
+                      className="text-grey-secondary-300"
                     />
                   }
                   className="col-span-2"
@@ -185,7 +185,7 @@ export default function PaymentDetailModal({ ...rest }: ModalProps) {
                     <UsersFilledSVG
                       width={24}
                       height={24}
-                      className="text-color-gray"
+                      className="text-grey-secondary-300"
                     />
                   }
                   className="col-span-2"

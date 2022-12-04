@@ -1,6 +1,6 @@
 import { Location } from '#/generated/schemas';
 import { DeepPartial } from '#/shared/utils/type';
-import { Image, Typography } from 'antd';
+import { Divider, Image, Tooltip, Typography } from 'antd';
 import DefaultImage from '#/assets/images/default.png';
 import CustomTag from '#/shared/components/commons/CustomTag';
 import DetailItem from '#/shared/components/commons/DetailItem';
@@ -46,8 +46,33 @@ function SideContent({ location }: SideContentProps) {
             content={location?.isActive ? 'Is Active' : 'Not Active'}
           />
         </div>
+        <div className="flex flex-wrap gap-2">
+          <Tooltip
+            title="Total Revenue"
+            className="flex w-fit cursor-pointer gap-2 rounded-xl bg-primary-color p-4 text-[white]"
+          >
+            <SquareDollarOutlineSVG width={24} height={24} />
+            {(location?.totalRevenue ?? 0)?.toLocaleString()} VND
+          </Tooltip>
+          <Tooltip
+            title="Total Rooms"
+            className="flex w-fit cursor-pointer gap-2 rounded-xl bg-warning p-4 text-[white]"
+          >
+            <RoomSVG width={24} height={24} />
+            {location?.rooms?.length ?? 0}
+          </Tooltip>
+          <Tooltip
+            title="Total Users"
+            className="flex w-fit cursor-pointer gap-2 rounded-xl bg-info p-4 text-[white]"
+          >
+            <UserOutlineSVG width={24} height={24} />
+            {location?.users?.length ?? 0}
+          </Tooltip>
+        </div>
         <div>
           <Typography className="text-lg font-bold">Details</Typography>
+          <Divider />
+
           <DetailItem
             icon={LocationSVG}
             toolTip="Address"
@@ -56,7 +81,9 @@ function SideContent({ location }: SideContentProps) {
           <DetailItem
             icon={BuildingOutlineSVG}
             toolTip="Number of floor"
-            value={location?.numOfFloor}
+            value={`${location?.numOfFloor} ${
+              (location?.numOfFloor ?? 0) > 1 ? 'Floors' : 'Floor'
+            }`}
           />
           <DetailItem
             icon={StarSVG}
@@ -75,19 +102,13 @@ function SideContent({ location }: SideContentProps) {
             value={formatDate(location?.createdAt)}
           />
           <DetailItem
-            icon={RoomSVG}
-            toolTip="Number of room"
-            value={location?.rooms?.length ?? 0}
-          />
-          <DetailItem
             icon={NoteSVG}
-            toolTip="Description"
+            toolTip={
+              (location?.description?.length ?? 0) < 60
+                ? 'Description'
+                : undefined
+            }
             value={<EllipsisText text={location?.description ?? 'N/A'} />}
-          />
-          <DetailItem
-            icon={SquareDollarOutlineSVG}
-            toolTip="Total Revenue"
-            value={(location?.totalRevenue ?? 0).toLocaleString()}
           />
         </div>
         <div className="flex flex-col gap-4">
@@ -96,10 +117,8 @@ function SideContent({ location }: SideContentProps) {
           </Typography>
           {location?.contactInformations?.[0] ? (
             location?.contactInformations?.map(contact => (
-              <div
-                key={contact?.id}
-                className="flex flex-col rounded-xl p-4 shadow-card"
-              >
+              <div key={contact?.id} className="flex flex-col">
+                <Divider className="m-0" />
                 <DetailItem
                   icon={UserOutlineSVG}
                   toolTip="Name"

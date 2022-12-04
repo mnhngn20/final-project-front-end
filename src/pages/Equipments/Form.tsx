@@ -2,6 +2,8 @@ import { Form, Input, Switch } from 'antd';
 import UploadImage from '#/shared/components/commons/UploadImage';
 import RoomSelector from '#/shared/components/selectors/RoomSelector';
 import { Equipment } from '#/generated/schemas';
+import { useReactiveVar } from '@apollo/client';
+import { userVar } from '#/graphql/cache';
 
 interface EquipmentFormProps {
   roomId?: number;
@@ -9,6 +11,8 @@ interface EquipmentFormProps {
 }
 
 function EquipmentForm({ roomId, initialValues }: EquipmentFormProps) {
+  const { locationId } = useReactiveVar(userVar);
+
   return (
     <>
       <Form.Item
@@ -35,6 +39,11 @@ function EquipmentForm({ roomId, initialValues }: EquipmentFormProps) {
         <RoomSelector
           placeholder="Select Room"
           initValues={initialValues?.room ? [initialValues?.room] : []}
+          variables={{
+            input: {
+              locationId: Number(locationId),
+            },
+          }}
         />
       </Form.Item>
       <Form.Item name="description" label="Description">

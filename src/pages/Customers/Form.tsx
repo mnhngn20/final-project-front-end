@@ -21,7 +21,7 @@ function UserForm({ initialValues }: Props) {
       <Form.Item
         name="email"
         label="Email"
-        rules={[{ required: true }]}
+        rules={[{ required: true, type: 'email' }]}
         initialValue={initialValues?.email}
       >
         <Input
@@ -72,6 +72,14 @@ function UserForm({ initialValues }: Props) {
           }}
           placeholder="Select customer room"
           allowClear
+          convertDataToOptions={rooms =>
+            rooms.map(room => ({
+              label: `Room ${room?.name} (${room.users?.length ?? 0}/${
+                room.capacity ?? 0
+              })`,
+              value: room?.id,
+            }))
+          }
         />
       </Form.Item>
       <Form.Item name="identityNumber" label="Government ID">

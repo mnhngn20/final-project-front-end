@@ -41,24 +41,26 @@ export default function IncidentStatusSelector({
             <CloseOutlined />
           </div>
           <Divider className="m-0" />
-          {Object.keys(IncidentStatus)?.map(status => (
-            <CustomTag
-              content={getIncidentStatus(status)}
-              className={`${getIncidentStatusColor(
-                status,
-              )} w-full cursor-pointer hover:opacity-90`}
-              key={status}
-              icon={
-                status === selectedStatus && (
-                  <TickCircleFilledSVG width={12} height={12} />
-                )
-              }
-              onClick={() => {
-                onChange?.(status as IncidentStatus);
-                setVisible(false);
-              }}
-            />
-          ))}
+          {Object.keys(IncidentStatus)
+            ?.filter(key => key !== 'Overdue')
+            ?.map(status => (
+              <CustomTag
+                content={getIncidentStatus(status)}
+                className={`${getIncidentStatusColor(
+                  status,
+                )} w-full cursor-pointer hover:opacity-90`}
+                key={status}
+                icon={
+                  status === selectedStatus && (
+                    <TickCircleFilledSVG width={12} height={12} />
+                  )
+                }
+                onClick={() => {
+                  onChange?.(status as IncidentStatus);
+                  setVisible(false);
+                }}
+              />
+            ))}
         </div>
       }
     >

@@ -9,9 +9,10 @@ import Gallery from '#/shared/components/commons/Gallery';
 import { formatDate } from '#/shared/utils/date';
 import { showError } from '#/shared/utils/notification';
 import { DeepPartial } from '#/shared/utils/type';
-import { Divider, Tooltip, Typography } from 'antd';
+import { Divider, Tooltip, Typography, Image } from 'antd';
 import { useParams } from 'react-router-dom';
 import IncidentPrioritySelector from './IncidentPrioritySelector';
+import DefaultImage from '#/assets/images/default.png';
 
 interface IncidentDetailProps {
   incident?: DeepPartial<Incident>;
@@ -111,6 +112,26 @@ export default function IncidentDetail({
           value={incident?.incidentCategory?.name}
         />
         <DisplayItem name="Incident Title" value={incident?.title} />
+        {incident?.equipment?.id && (
+          <DisplayItem
+            name="Equipment"
+            value={
+              <Typography className="flex items-center gap-4 text-base">
+                <Image
+                  src={incident?.equipment?.image ?? DefaultImage}
+                  className="rounded-lg object-cover"
+                  alt="equipment"
+                  width={80}
+                  height={80}
+                />
+                <div className="flex flex-col">
+                  <Typography>{incident?.equipment?.name}</Typography>
+                  <Typography>Room {incident?.room?.name}</Typography>
+                </div>
+              </Typography>
+            }
+          />
+        )}
         <DisplayItem name="Description" value={incident?.description} />
         <Divider className="m-0" />
         <Gallery
