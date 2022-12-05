@@ -1,4 +1,4 @@
-import { AddSVG } from '#/assets/svgs';
+import { AddSVG, WalletMoneyOutlineSVG } from '#/assets/svgs';
 import {
   LocationReservation,
   LocationReservationStatus,
@@ -6,12 +6,15 @@ import {
   PaymentStatus,
   refetchGetLocationReservationQuery,
   refetchMeQuery,
+  UpdatePaymentsInput,
   UpsertPaymentInput,
   useGetPaymentsQuery,
   useManuallyPayMutation,
+  useUpdatePaymentsMutation,
   useUpsertPaymentMutation,
 } from '#/generated/schemas';
 import { userVar } from '#/graphql/cache';
+import AllPaymentForm from '#/pages/Payments/AllPaymentForm';
 import PaymentForm from '#/pages/Payments/Form';
 import { FormModal } from '#/shared/components/commons/FormModal';
 import PaginationPanel from '#/shared/components/commons/PaginationPanel';
@@ -19,7 +22,7 @@ import PaymentStatusSelector from '#/shared/components/selectors/PaymentStatusSe
 import { showError, showSuccess } from '#/shared/utils/notification';
 import { DeepPartial } from '#/shared/utils/type';
 import { useReactiveVar } from '@apollo/client';
-import { Col, Divider, Empty, Row, Typography } from 'antd';
+import { Col, Divider, Empty, Row, Tooltip, Typography } from 'antd';
 import { useState, forwardRef, useImperativeHandle } from 'react';
 import { useParams } from 'react-router-dom';
 import FloorSelector from './FloorSelector';
@@ -47,6 +50,7 @@ const PaymentRecords = forwardRef<PaymentRecordsRef, PaymentRecordsProps>(
     const [selectedItem, setSelectedItem] = useState<
       SelectedPayment | undefined
     >(undefined);
+    const [editAllPaymentVisible, setEditAllPaymentVisible] = useState(false);
     const clearSelectedItem = () => setSelectedItem(undefined);
 
     const { data, refetch } = useGetPaymentsQuery({
@@ -94,6 +98,31 @@ const PaymentRecords = forwardRef<PaymentRecordsRef, PaymentRecordsProps>(
       });
     };
 
+    const [updatePayments, { loading: updatePaymentsLoading }] =
+      useUpdatePaymentsMutation({
+        onCompleted() {
+          showSuccess('Update payments successfully!');
+          setEditAllPaymentVisible(false);
+          refetch();
+        },
+        onError: showError,
+
+        refetchQueries: [
+          refetchGetLocationReservationQuery({ id: Number(id) }),
+        ],
+      });
+
+    const onEditAllPayment = ({ ...values }: UpdatePaymentsInput) => {
+      updatePayments({
+        variables: {
+          input: {
+            locationReservationId: Number(id),
+            ...values,
+          },
+        },
+      });
+    };
+
     const [manuallyPay] = useManuallyPayMutation({
       onCompleted() {
         showSuccess('Paid sucessfully!');
@@ -113,12 +142,22 @@ const PaymentRecords = forwardRef<PaymentRecordsRef, PaymentRecordsProps>(
             <Typography className="text-lg font-bold">
               Payment Records
             </Typography>
-            <AddSVG
-              width={24}
-              height={24}
-              onClick={() => setSelectedItem({})}
-              className="cursor-pointer hover:text-primary-color"
-            />
+            <div className="flex items-center gap-2">
+              <Tooltip title="Calculate for all record">
+                <WalletMoneyOutlineSVG
+                  onClick={() => setEditAllPaymentVisible(true)}
+                  className="cursor-pointer hover:text-primary-color"
+                />
+              </Tooltip>
+              <Tooltip title="New Payment Record">
+                <AddSVG
+                  width={24}
+                  height={24}
+                  onClick={() => setSelectedItem({})}
+                  className="cursor-pointer hover:text-primary-color"
+                />
+              </Tooltip>
+            </div>
           </div>
           <div className="flex flex-wrap gap-8">
             <div className="flex items-center gap-4">
@@ -190,9 +229,19 @@ const PaymentRecords = forwardRef<PaymentRecordsRef, PaymentRecordsProps>(
           </div>
         </div>
         <FormModal<UpsertPaymentInput>
+          loading={updatePaymentsLoading}
+          onSubmit={onEditAllPayment}
+          name="Edit All payment Record"
+          onClose={() => setEditAllPaymentVisible(false)}
+          selectedItem={editAllPaymentVisible ? {} : undefined}
+          initialValues={editAllPaymentVisible ? {} : undefined}
+        >
+          <AllPaymentForm />
+        </FormModal>
+        <FormModal<UpsertPaymentInput>
           loading={upsertPaymentLoading}
           onSubmit={onSubmit}
-          name="Location"
+          name="Payment"
           onClose={clearSelectedItem}
           selectedItem={selectedItem}
           initialValues={selectedItem}
