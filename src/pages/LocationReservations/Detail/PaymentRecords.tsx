@@ -22,7 +22,7 @@ import PaymentStatusSelector from '#/shared/components/selectors/PaymentStatusSe
 import { showError, showSuccess } from '#/shared/utils/notification';
 import { DeepPartial } from '#/shared/utils/type';
 import { useReactiveVar } from '@apollo/client';
-import { Col, Divider, Empty, Row, Tooltip, Typography } from 'antd';
+import { Col, Divider, Empty, Row, Spin, Tooltip, Typography } from 'antd';
 import { useState, forwardRef, useImperativeHandle } from 'react';
 import { useParams } from 'react-router-dom';
 import FloorSelector from './FloorSelector';
@@ -53,7 +53,7 @@ const PaymentRecords = forwardRef<PaymentRecordsRef, PaymentRecordsProps>(
     const [editAllPaymentVisible, setEditAllPaymentVisible] = useState(false);
     const clearSelectedItem = () => setSelectedItem(undefined);
 
-    const { data, refetch } = useGetPaymentsQuery({
+    const { data, refetch, loading } = useGetPaymentsQuery({
       variables: {
         input: {
           locationReservationId: Number(locationReservation?.id),
@@ -182,7 +182,11 @@ const PaymentRecords = forwardRef<PaymentRecordsRef, PaymentRecordsProps>(
           <Divider className="m-0" />
           <div className="">
             <div className="flex flex-col gap-4">
-              {payments?.[0] ? (
+              {loading ? (
+                <div className="flex h-full w-full items-center justify-center p-4">
+                  <Spin />
+                </div>
+              ) : payments?.[0] ? (
                 <Row gutter={[16, 16]}>
                   {payments?.map(payment => (
                     <Col
@@ -219,6 +223,7 @@ const PaymentRecords = forwardRef<PaymentRecordsRef, PaymentRecordsProps>(
               ) : (
                 <Empty description="No Payment Data" />
               )}
+
               <PaginationPanel
                 current={paymentCurrentPage}
                 pageSize={5}

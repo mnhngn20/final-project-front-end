@@ -12,7 +12,7 @@ import CustomTag from '#/shared/components/commons/CustomTag';
 import { FormModal } from '#/shared/components/commons/FormModal';
 import { showError, showSuccess } from '#/shared/utils/notification';
 import { PageContainer } from '@ant-design/pro-layout';
-import { Button, Typography } from 'antd';
+import { Button, Skeleton, Typography } from 'antd';
 import dayjs from 'dayjs';
 import { useState, useRef } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -48,7 +48,11 @@ function Detail() {
   const paymentRecordsRef = useRef<PaymentRecordsRef>(null);
   const navigate = useNavigate();
 
-  const { data, refetch } = useGetLocationReservationQuery({
+  const {
+    data,
+    refetch,
+    loading: getLocationReservationLoading,
+  } = useGetLocationReservationQuery({
     variables: {
       id: Number(id),
     },
@@ -117,7 +121,11 @@ function Detail() {
   };
 
   return (
-    <>
+    <Skeleton
+      loading={
+        getLocationReservationLoading || upsertLocationReservationLoading
+      }
+    >
       <PageContainer title="Location Reservation Detail">
         <div className="flex flex-col gap-4">
           <div className="flex flex-col gap-4 rounded-xl bg-[white] p-4">
@@ -261,7 +269,7 @@ function Detail() {
       >
         <LocationReservationForm />
       </FormModal>
-    </>
+    </Skeleton>
   );
 }
 

@@ -95,10 +95,23 @@ export type ContactInformation = {
   email?: Maybe<Scalars['String']>;
   id: Scalars['ID'];
   location: Location;
-  locationId: Scalars['Float'];
+  locationId?: Maybe<Scalars['Float']>;
   name?: Maybe<Scalars['String']>;
   phoneNumber?: Maybe<Scalars['String']>;
   updatedAt: Scalars['DateTime'];
+};
+
+export type ContactListResponse = ListResponse & {
+  items: Array<ContactInformation>;
+  message?: Maybe<Scalars['String']>;
+  page?: Maybe<Scalars['Float']>;
+  total?: Maybe<Scalars['Float']>;
+  totalPages?: Maybe<Scalars['Float']>;
+};
+
+export type ContactResponse = IResponse & {
+  contact?: Maybe<ContactInformation>;
+  message?: Maybe<Scalars['String']>;
 };
 
 export type CreateInstallationInput = {
@@ -178,6 +191,17 @@ export type GetAmenityTypesInput = {
   name?: InputMaybe<Scalars['String']>;
   orderBy?: InputMaybe<OrderBy>;
   page?: InputMaybe<Scalars['Float']>;
+};
+
+export type GetContactsInput = {
+  address?: InputMaybe<Scalars['String']>;
+  email?: InputMaybe<Scalars['String']>;
+  limit?: InputMaybe<Scalars['Float']>;
+  locationId?: InputMaybe<Scalars['Float']>;
+  name?: InputMaybe<Scalars['String']>;
+  orderBy?: InputMaybe<OrderBy>;
+  page?: InputMaybe<Scalars['Float']>;
+  phoneNumber?: InputMaybe<Scalars['String']>;
 };
 
 export type GetEquipmentsInput = {
@@ -523,6 +547,7 @@ export type Mutation = {
   createStripeCheckoutSession: StripeResponse;
   createUser: UserResponse;
   deleteAmenity: Scalars['String'];
+  deleteContact: Scalars['String'];
   deleteEquipment: Scalars['String'];
   deleteLocationReservation: Scalars['String'];
   deleteRoom: Scalars['String'];
@@ -543,6 +568,7 @@ export type Mutation = {
   updateUser: UserResponse;
   upsertAmenity: AmenityResponse;
   upsertAmenityType: AmenityTypeResponse;
+  upsertContact: ContactResponse;
   upsertEquipment: EquipmentResponse;
   upsertIncident: IncidentResponse;
   upsertIncidentCategory: IncidentCategoryResponse;
@@ -582,6 +608,10 @@ export type MutationCreateUserArgs = {
 };
 
 export type MutationDeleteAmenityArgs = {
+  id: Scalars['Float'];
+};
+
+export type MutationDeleteContactArgs = {
   id: Scalars['Float'];
 };
 
@@ -663,6 +693,10 @@ export type MutationUpsertAmenityArgs = {
 
 export type MutationUpsertAmenityTypeArgs = {
   input: UpsertAmenityTypeInput;
+};
+
+export type MutationUpsertContactArgs = {
+  input: UpsertContactInput;
 };
 
 export type MutationUpsertEquipmentArgs = {
@@ -788,6 +822,7 @@ export type Query = {
   getIncidentCategory: IncidentCategoryResponse;
   getIncidents: IncidentListResponse;
   getLocation: LocationResponse;
+  getLocationContacts: ContactListResponse;
   getLocationReservation: LocationReservationResponse;
   getLocationReservations: LocationReservationListResponse;
   getLocationService: LocationServiceResponse;
@@ -846,6 +881,10 @@ export type QueryGetIncidentsArgs = {
 
 export type QueryGetLocationArgs = {
   id: Scalars['Float'];
+};
+
+export type QueryGetLocationContactsArgs = {
+  input: GetContactsInput;
 };
 
 export type QueryGetLocationReservationArgs = {
@@ -1041,6 +1080,15 @@ export type UpsertAmenityTypeInput = {
   id?: InputMaybe<Scalars['Float']>;
   isActive?: InputMaybe<Scalars['Boolean']>;
   name?: InputMaybe<Scalars['String']>;
+};
+
+export type UpsertContactInput = {
+  address?: InputMaybe<Scalars['String']>;
+  email?: InputMaybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['Float']>;
+  locationId?: InputMaybe<Scalars['Float']>;
+  name?: InputMaybe<Scalars['String']>;
+  phoneNumber?: InputMaybe<Scalars['String']>;
 };
 
 export type UpsertEquipmentInput = {
@@ -1421,6 +1469,54 @@ export type DeleteAmenityMutationResult =
 export type DeleteAmenityMutationOptions = Apollo.BaseMutationOptions<
   DeleteAmenityMutation,
   DeleteAmenityMutationVariables
+>;
+export const DeleteContactDocument = gql`
+  mutation deleteContact($id: Float!) {
+    deleteContact(id: $id)
+  }
+`;
+export type DeleteContactMutationFn = Apollo.MutationFunction<
+  DeleteContactMutation,
+  DeleteContactMutationVariables
+>;
+
+/**
+ * __useDeleteContactMutation__
+ *
+ * To run a mutation, you first call `useDeleteContactMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteContactMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteContactMutation, { data, loading, error }] = useDeleteContactMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useDeleteContactMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    DeleteContactMutation,
+    DeleteContactMutationVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<
+    DeleteContactMutation,
+    DeleteContactMutationVariables
+  >(DeleteContactDocument, options);
+}
+export type DeleteContactMutationHookResult = ReturnType<
+  typeof useDeleteContactMutation
+>;
+export type DeleteContactMutationResult =
+  Apollo.MutationResult<DeleteContactMutation>;
+export type DeleteContactMutationOptions = Apollo.BaseMutationOptions<
+  DeleteContactMutation,
+  DeleteContactMutationVariables
 >;
 export const DeleteEquipmentDocument = gql`
   mutation deleteEquipment($id: Float!) {
@@ -2144,6 +2240,59 @@ export type UpsertAmenityMutationResult =
 export type UpsertAmenityMutationOptions = Apollo.BaseMutationOptions<
   UpsertAmenityMutation,
   UpsertAmenityMutationVariables
+>;
+export const UpsertContactDocument = gql`
+  mutation upsertContact($input: UpsertContactInput!) {
+    upsertContact(input: $input) {
+      message
+      contact {
+        id
+      }
+    }
+  }
+`;
+export type UpsertContactMutationFn = Apollo.MutationFunction<
+  UpsertContactMutation,
+  UpsertContactMutationVariables
+>;
+
+/**
+ * __useUpsertContactMutation__
+ *
+ * To run a mutation, you first call `useUpsertContactMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpsertContactMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [upsertContactMutation, { data, loading, error }] = useUpsertContactMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useUpsertContactMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    UpsertContactMutation,
+    UpsertContactMutationVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<
+    UpsertContactMutation,
+    UpsertContactMutationVariables
+  >(UpsertContactDocument, options);
+}
+export type UpsertContactMutationHookResult = ReturnType<
+  typeof useUpsertContactMutation
+>;
+export type UpsertContactMutationResult =
+  Apollo.MutationResult<UpsertContactMutation>;
+export type UpsertContactMutationOptions = Apollo.BaseMutationOptions<
+  UpsertContactMutation,
+  UpsertContactMutationVariables
 >;
 export const UpsertEquipmentDocument = gql`
   mutation upsertEquipment($input: UpsertEquipmentInput!) {
@@ -3207,6 +3356,7 @@ export const GetLocationDocument = gql`
         isActive
         createdAt
         minPrice
+        electricCounterPrice
         locationServices {
           id
           name
@@ -3278,6 +3428,82 @@ export type GetLocationQueryResult = Apollo.QueryResult<
 >;
 export function refetchGetLocationQuery(variables: GetLocationQueryVariables) {
   return { query: GetLocationDocument, variables: variables };
+}
+export const GetLocationContactsDocument = gql`
+  query getLocationContacts($input: GetContactsInput!) {
+    getLocationContacts(input: $input) {
+      page
+      total
+      totalPages
+      message
+      items {
+        id
+        phoneNumber
+        address
+        name
+        email
+        locationId
+        createdAt
+        updatedAt
+      }
+    }
+  }
+`;
+
+/**
+ * __useGetLocationContactsQuery__
+ *
+ * To run a query within a React component, call `useGetLocationContactsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetLocationContactsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetLocationContactsQuery({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useGetLocationContactsQuery(
+  baseOptions: Apollo.QueryHookOptions<
+    GetLocationContactsQuery,
+    GetLocationContactsQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<
+    GetLocationContactsQuery,
+    GetLocationContactsQueryVariables
+  >(GetLocationContactsDocument, options);
+}
+export function useGetLocationContactsLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    GetLocationContactsQuery,
+    GetLocationContactsQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<
+    GetLocationContactsQuery,
+    GetLocationContactsQueryVariables
+  >(GetLocationContactsDocument, options);
+}
+export type GetLocationContactsQueryHookResult = ReturnType<
+  typeof useGetLocationContactsQuery
+>;
+export type GetLocationContactsLazyQueryHookResult = ReturnType<
+  typeof useGetLocationContactsLazyQuery
+>;
+export type GetLocationContactsQueryResult = Apollo.QueryResult<
+  GetLocationContactsQuery,
+  GetLocationContactsQueryVariables
+>;
+export function refetchGetLocationContactsQuery(
+  variables: GetLocationContactsQueryVariables,
+) {
+  return { query: GetLocationContactsDocument, variables: variables };
 }
 export const GetLocationReservationDocument = gql`
   query getLocationReservation($id: Float!) {
@@ -4283,6 +4509,12 @@ export type DeleteAmenityMutationVariables = Exact<{
 
 export type DeleteAmenityMutation = { deleteAmenity: string };
 
+export type DeleteContactMutationVariables = Exact<{
+  id: Scalars['Float'];
+}>;
+
+export type DeleteContactMutation = { deleteContact: string };
+
 export type DeleteEquipmentMutationVariables = Exact<{
   id: Scalars['Float'];
 }>;
@@ -4412,6 +4644,14 @@ export type UpsertAmenityMutationVariables = Exact<{
 
 export type UpsertAmenityMutation = {
   upsertAmenity: { message?: string | null; amenity?: { id: string } | null };
+};
+
+export type UpsertContactMutationVariables = Exact<{
+  input: UpsertContactInput;
+}>;
+
+export type UpsertContactMutation = {
+  upsertContact: { message?: string | null; contact?: { id: string } | null };
 };
 
 export type UpsertEquipmentMutationVariables = Exact<{
@@ -4733,6 +4973,7 @@ export type GetLocationQuery = {
       isActive: boolean;
       createdAt: any;
       minPrice?: number | null;
+      electricCounterPrice?: number | null;
       totalRevenue?: number | null;
       locationServices: Array<{
         id: string;
@@ -4748,6 +4989,29 @@ export type GetLocationQuery = {
       }> | null;
       users?: Array<{ id: string }> | null;
     } | null;
+  };
+};
+
+export type GetLocationContactsQueryVariables = Exact<{
+  input: GetContactsInput;
+}>;
+
+export type GetLocationContactsQuery = {
+  getLocationContacts: {
+    page?: number | null;
+    total?: number | null;
+    totalPages?: number | null;
+    message?: string | null;
+    items: Array<{
+      id: string;
+      phoneNumber?: string | null;
+      address?: string | null;
+      name?: string | null;
+      email?: string | null;
+      locationId?: number | null;
+      createdAt: any;
+      updatedAt: any;
+    }>;
   };
 };
 

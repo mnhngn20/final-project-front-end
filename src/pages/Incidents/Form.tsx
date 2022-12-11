@@ -107,7 +107,13 @@ function IncidentForm({ initialValues }: Props) {
             label="Priority"
             rules={[{ required: true }]}
           >
-            <IncidentPrioritySelector placeholder="Select incident priority" />
+            <IncidentPrioritySelector
+              placeholder="Select incident priority"
+              disabled={
+                !initialValues.employeeId ||
+                Number(currentUser?.id) !== Number(initialValues.employeeId)
+              }
+            />
           </Form.Item>
           <Form.Item name="employeeId" label="Employee In Charge">
             <UserSelector
@@ -125,6 +131,10 @@ function IncidentForm({ initialValues }: Props) {
             <Input.TextArea
               placeholder="Enter report message"
               className="w-full"
+              disabled={
+                !initialValues.employeeId ||
+                Number(currentUser?.id) !== Number(initialValues.employeeId)
+              }
             />
           </Form.Item>
           <Form.Item
@@ -132,7 +142,12 @@ function IncidentForm({ initialValues }: Props) {
             label="Report Images"
             valuePropName="srcList"
           >
-            <UploadImages />
+            <UploadImages
+              disabled={
+                !initialValues.employeeId ||
+                Number(currentUser?.id) !== Number(initialValues.employeeId)
+              }
+            />
           </Form.Item>
         </>
       )}

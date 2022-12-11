@@ -7,8 +7,8 @@ export default function Success() {
   const navigate = useNavigate();
 
   return (
-    <div className="flex h-full w-full items-center justify-center">
-      <div className="flex flex-col items-center gap-2 rounded-xl bg-[white] py-8 px-4 shadow-header">
+    <div className="flex h-full w-full items-center justify-center rounded-xl bg-[white]">
+      <div className="flex flex-col items-center gap-2 rounded-xl py-8 px-4">
         <div className="flex flex-col gap-2">
           <Typography className="text-center text-3xl font-bold text-success">
             Congratulation!

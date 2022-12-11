@@ -1,0 +1,8 @@
+mutation upsertContact($input: UpsertContactInput!) {
+  upsertContact(input: $input) {
+    message
+    contact {
+      id
+    }
+  }
+}

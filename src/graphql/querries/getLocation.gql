@@ -15,6 +15,7 @@ query getLocation($id: Float!) {
       isActive
       createdAt
       minPrice
+      electricCounterPrice
       locationServices {
         id
         name

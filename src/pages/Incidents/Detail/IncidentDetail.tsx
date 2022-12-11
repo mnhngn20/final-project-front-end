@@ -13,6 +13,8 @@ import { Divider, Tooltip, Typography, Image } from 'antd';
 import { useParams } from 'react-router-dom';
 import IncidentPrioritySelector from './IncidentPrioritySelector';
 import DefaultImage from '#/assets/images/default.png';
+import { useReactiveVar } from '@apollo/client';
+import { userVar } from '#/graphql/cache';
 
 interface IncidentDetailProps {
   incident?: DeepPartial<Incident>;
@@ -48,6 +50,11 @@ export default function IncidentDetail({
     onError: showError,
     refetchQueries: [refetchGetIncidentQuery({ id: Number(id) })],
   });
+  const currentUser = useReactiveVar(userVar);
+
+  const onlyAssignedEmployee =
+    !incident?.employeeId ||
+    Number(incident?.employeeId) !== Number(currentUser?.id);
 
   return (
     <div className="col-span-1 items-center rounded-xl bg-[white] p-4">
@@ -63,6 +70,7 @@ export default function IncidentDetail({
                 },
               })
             }
+            disabled={onlyAssignedEmployee}
           />
         </div>
         <div className="flex items-center gap-4">

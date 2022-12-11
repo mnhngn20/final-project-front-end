@@ -9,6 +9,7 @@ import DetailLayout from '#/shared/components/layout/DetailLayout';
 import { showError, showSuccess } from '#/shared/utils/notification';
 import { Coordinates } from '#/shared/utils/type';
 import { useReactiveVar } from '@apollo/client';
+import { Skeleton } from 'antd';
 import { useState } from 'react';
 import LocationForm from './Form';
 import MainContent from './MainContent';
@@ -63,7 +64,7 @@ function Detail() {
   };
 
   return (
-    <>
+    <Skeleton loading={loading}>
       <DetailLayout
         loading={loading}
         title="Manage Location"
@@ -96,11 +97,10 @@ function Detail() {
             service => service?.id,
           ),
         }}
-        width="1000"
       >
         <LocationForm />
       </FormModal>
-    </>
+    </Skeleton>
   );
 }
 

@@ -21,12 +21,12 @@ export default function ConnectingStripe() {
   }, [code, authorizeCode]);
 
   return (
-    <div className="flex h-full w-full items-center justify-center">
-      <div className="flex flex-col items-center justify-center gap-4 rounded-xl bg-[white] p-8 shadow-header">
-        <Typography className="text-center text-base font-semibold text-warning">
+    <div className="flex h-full w-full items-center justify-center rounded-xl bg-[white]">
+      <div className="flex flex-col items-center justify-center gap-4 rounded-xl p-8">
+        <Typography className="text-center text-2xl font-semibold text-warning">
           Connecting to Stripe and verify your account...
         </Typography>
-        <LoadingOutlined className="text-xl text-primary-color" />
+        <LoadingOutlined className="text-2xl text-primary-color" />
         <StripeLogoSVG />
       </div>
     </div>

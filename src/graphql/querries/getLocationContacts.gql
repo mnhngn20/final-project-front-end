@@ -1,0 +1,18 @@
+query getLocationContacts($input: GetContactsInput!) {
+  getLocationContacts(input: $input) {
+    page
+    total
+    totalPages
+    message
+    items {
+      id
+      phoneNumber
+      address
+      name
+      email
+      locationId
+      createdAt
+      updatedAt
+    }
+  }
+}

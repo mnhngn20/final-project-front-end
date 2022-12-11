@@ -13,7 +13,7 @@ import {
 } from '#/generated/schemas';
 import { FormModal } from '#/shared/components/commons/FormModal';
 import { useTable } from '#/shared/hooks/useTable';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { DeepPartial } from '#/shared/utils/type';
 import { showError, showSuccess } from '#/shared/utils/notification';
 import { AddSVG, EyeSVG, TrashOutlineSVG } from '#/assets/svgs';
@@ -42,7 +42,6 @@ function List() {
   const [selectedItem, setSelectedItem] = useState<
     DeepPartial<LocationReservation> | undefined
   >(undefined);
-  const navigate = useNavigate();
 
   const clearSelectedItem = () => {
     setSelectedItem(undefined);
@@ -68,12 +67,9 @@ function List() {
     upsertLocationReservation,
     { loading: upsertLocationReservationLoading },
   ] = useUpsertLocationReservationMutation({
-    onCompleted(data) {
+    onCompleted() {
       showSuccess('Created location reservation successfully!');
       clearSelectedItem();
-      navigate(
-        `/location-reservations/${data?.upsertLocationReservation?.locationReservation?.id}`,
-      );
       refetch();
     },
     onError: showError,

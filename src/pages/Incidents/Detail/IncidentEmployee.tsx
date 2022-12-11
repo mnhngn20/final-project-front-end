@@ -16,6 +16,8 @@ import { useParams } from 'react-router-dom';
 import IncidentStatusSelector from './IncidentStatusSelector';
 import { Skeleton } from 'antd';
 import UploadImages from '#/shared/components/commons/UploadImages';
+import { useReactiveVar } from '@apollo/client';
+import { userVar } from '#/graphql/cache';
 
 interface IncidentEmployeeProps {
   incident?: DeepPartial<Incident>;
@@ -31,6 +33,7 @@ export default function IncidentEmployee({
     onError: showError,
     refetchQueries: [refetchGetIncidentQuery({ id: Number(id) })],
   });
+  const currentUser = useReactiveVar(userVar);
 
   const onChangeHandler = debounce((value: string) => {
     if (id) {
@@ -44,6 +47,10 @@ export default function IncidentEmployee({
       });
     }
   }, 300);
+
+  const onlyAssignedEmployee =
+    !incident?.employeeId ||
+    Number(incident?.employeeId) !== Number(currentUser?.id);
 
   return (
     <div className="col-span-1 rounded-xl bg-[white] p-4">
@@ -85,7 +92,10 @@ export default function IncidentEmployee({
             Incident Status
             <IncidentStatusSelector
               value={incident?.status}
-              disabled={incident?.status === IncidentStatus.Overdue}
+              disabled={
+                incident?.status === IncidentStatus.Overdue ||
+                onlyAssignedEmployee
+              }
               onChange={status =>
                 updateIncident({
                   variables: {
@@ -109,6 +119,7 @@ export default function IncidentEmployee({
               onChangeHandler(e.target.value);
             }}
             rows={6}
+            disabled={onlyAssignedEmployee}
           />
         </div>
         <Divider />
@@ -138,10 +149,12 @@ export default function IncidentEmployee({
               className="mb-4"
               loading={loading}
               type="primary"
+              disabled={onlyAssignedEmployee}
             >
               Upload Report Images
             </Button>
           )}
+          disabled={onlyAssignedEmployee}
         />
         <Gallery
           className="text-base font-semibold uppercase text-primary-color"

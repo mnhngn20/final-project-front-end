@@ -14,6 +14,7 @@ import {
   HouseSVG,
   LampFilledSVG,
   ReceiptFilledSVG,
+  SettingFilledSVG,
   WarningFilledSVG,
 } from '#/assets/svgs';
 import { User } from '#/generated/schemas';
@@ -66,21 +67,7 @@ function PrivateLayout({
         name: 'Customers',
         path: '/customers',
       },
-      {
-        icon: <Icon component={HouseSVG} />,
-        name: 'Rooms',
-        path: '/rooms',
-      },
-      {
-        icon: <Icon component={DevicesFilledSVG} />,
-        name: 'Equipments',
-        path: '/equipments',
-      },
-      {
-        icon: <Icon component={LampFilledSVG} />,
-        name: 'Amenities',
-        path: '/amenities',
-      },
+
       {
         icon: <Icon component={ReceiptFilledSVG} />,
         name: 'Reservations',
@@ -95,6 +82,28 @@ function PrivateLayout({
         icon: <Icon component={WarningFilledSVG} />,
         name: 'Incidents',
         path: '/incidents',
+      },
+      {
+        icon: <Icon component={SettingFilledSVG} />,
+        name: 'Settings',
+        path: '/settings',
+        children: [
+          {
+            icon: <Icon component={HouseSVG} />,
+            name: 'Rooms',
+            path: '/rooms',
+          },
+          {
+            icon: <Icon component={DevicesFilledSVG} />,
+            name: 'Equipments',
+            path: '/equipments',
+          },
+          {
+            icon: <Icon component={LampFilledSVG} />,
+            name: 'Amenities',
+            path: '/amenities',
+          },
+        ],
       },
     ],
   };

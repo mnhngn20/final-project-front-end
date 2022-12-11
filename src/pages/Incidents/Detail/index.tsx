@@ -9,6 +9,7 @@ import { FormModal } from '#/shared/components/commons/FormModal';
 import { showError, showSuccess } from '#/shared/utils/notification';
 import { PageContainer } from '@ant-design/pro-layout';
 import { useReactiveVar } from '@apollo/client';
+import { Skeleton } from 'antd';
 import dayjs from 'dayjs';
 import { useState } from 'react';
 import { useParams } from 'react-router-dom';
@@ -21,7 +22,7 @@ function Detail() {
   const { id } = useParams();
   const [editModalVisible, setEditModalVisible] = useState(false);
 
-  const { data, refetch } = useGetIncidentQuery({
+  const { data, refetch, loading } = useGetIncidentQuery({
     variables: {
       id: Number(id),
     },
@@ -71,7 +72,7 @@ function Detail() {
   };
 
   return (
-    <>
+    <Skeleton loading={loading}>
       <PageContainer title="Incident Detail">
         <div className="grid grid-cols-2 gap-4 md:grid-cols-1">
           <IncidentDetail
@@ -109,7 +110,7 @@ function Detail() {
       >
         <IncidentForm />
       </FormModal>
-    </>
+    </Skeleton>
   );
 }
 

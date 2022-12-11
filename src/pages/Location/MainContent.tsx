@@ -2,6 +2,7 @@ import { Location } from '#/generated/schemas';
 import ImageCarousel from '#/shared/components/commons/ImageCarousel';
 import { DeepPartial } from '#/shared/utils/type';
 import LocationReservationList from '#/pages/LocationReservations/List';
+import ContactInformationList from '#/pages/ContactInformation/List';
 import { Tabs } from 'antd';
 import { useState } from 'react';
 
@@ -9,6 +10,7 @@ const { TabPane } = Tabs;
 
 enum TabKey {
   LocationReservations = 'LocationReservations',
+  ContactInformation = 'ContactInformation',
 }
 
 interface MainContentProps {
@@ -30,6 +32,13 @@ export default function MainContent({ location }: MainContentProps) {
           key={TabKey.LocationReservations}
         >
           <LocationReservationList />
+        </TabPane>
+        <TabPane
+          tab="Contact Information"
+          tabKey={TabKey.ContactInformation}
+          key={TabKey.ContactInformation}
+        >
+          <ContactInformationList />
         </TabPane>
       </Tabs>
     </div>

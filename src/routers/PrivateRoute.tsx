@@ -45,6 +45,7 @@ function PrivateRoute() {
           centered: true,
           closable: true,
           maskClosable: true,
+          className: 'rounded-xl',
           icon: <></>,
           width: 600,
           okButtonProps: {
@@ -83,11 +84,15 @@ function PrivateRoute() {
                   preview={false}
                 />
               </div>
-              <Typography.Paragraph className="text-base font-medium">
-                We have partnered with Stripe to handle payment. Please create
-                Stripe account before using our Admin Manage System. Thank you
-                and have a good time!
-              </Typography.Paragraph>
+              <Typography className="text-center text-base">
+                We have partnered with Stripe to handle your payments. Please
+                register your Stripe account before using our Admin Manage
+                System.
+                <br />
+                To create an account, please click on the button below.
+                <br />
+                Thank you and have a good time!
+              </Typography>
               <div className="flex h-full w-full items-center justify-center">
                 <a
                   href={`https://connect.stripe.com/express/oauth/v2/authorize?response_type=code&client_id=${

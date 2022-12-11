@@ -8,11 +8,13 @@ import { getIncidentPriorityColor } from '../utils';
 interface IncidentPrioritySelectorProps {
   value?: IncidentPriority | null;
   onChange?: (status: IncidentPriority) => void;
+  disabled?: boolean;
 }
 
 export default function IncidentPrioritySelector({
   value,
   onChange,
+  disabled,
 }: IncidentPrioritySelectorProps) {
   const [selectedPriority, setSelectedPriority] = useState<string | undefined>(
     undefined,
@@ -61,11 +63,11 @@ export default function IncidentPrioritySelector({
         </div>
       }
     >
-      <div onClick={() => setVisible(true)}>
+      <div onClick={() => !disabled && setVisible(true)}>
         <div
           className={`${getIncidentPriorityColor(
             selectedPriority,
-          )} flex items-center gap-2`}
+          )} flex items-center gap-2 ${disabled ? 'cursor-not-allowed' : ''}`}
         >
           <FlagOutlineSVG width={16} height={16} />
           {selectedPriority}
