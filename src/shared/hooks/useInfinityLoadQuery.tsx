@@ -23,6 +23,7 @@ interface Props<TData, TVariables, Type> {
   variables?: TVariables;
   fetchPolicy?: FetchPolicy;
   skip?: boolean;
+  pollInterval?: number;
 }
 
 const OFFSET = 10;
@@ -33,6 +34,7 @@ export const useInfiniteLoadQuery = <TData, TVariables, Type>({
   formatData,
   skip,
   fetchPolicy = 'cache-first',
+  pollInterval,
 }: Props<TData, TVariables, Type>) => {
   const [data, setData] = useState<Maybe<Type>[]>([]);
   const [pagination, setPagination] = useState({
@@ -68,6 +70,7 @@ export const useInfiniteLoadQuery = <TData, TVariables, Type>({
         });
       }
     },
+    pollInterval,
     onError: error => {
       showError(error);
       setLoading(false);

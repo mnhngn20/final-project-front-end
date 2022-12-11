@@ -11,6 +11,7 @@ import { useParams } from 'react-router-dom';
 import RoomForm from '../Form';
 import SideContent from './SideContent';
 import MainContent from './MainContent';
+import { Skeleton } from 'antd';
 
 function Detail() {
   const { id } = useParams();
@@ -46,7 +47,7 @@ function Detail() {
   };
 
   return (
-    <>
+    <Skeleton loading={loading}>
       <DetailLayout
         loading={loading}
         title="Room Detail"
@@ -61,11 +62,10 @@ function Detail() {
         onClose={() => setEditModalVisible(false)}
         selectedItem={editModalVisible ? { ...room } : undefined}
         initialValues={{ ...room }}
-        width="1000"
       >
         <RoomForm />
       </FormModal>
-    </>
+    </Skeleton>
   );
 }
 

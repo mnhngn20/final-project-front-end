@@ -124,7 +124,7 @@ export default function IncidentEmployee({
         </div>
         <Divider />
         <UploadImages
-          srcList={incident?.images}
+          srcList={incident?.reportImages}
           onCompleted={(_: string, newFileList: string[]) => {
             id &&
               updateIncident({

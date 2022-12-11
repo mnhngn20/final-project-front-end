@@ -48,6 +48,7 @@ function UploadImages({
       });
       const url = response.data.url;
       const newFileList = [...fileList, url];
+
       onSuccess?.(response.statusText, file as unknown as XMLHttpRequest);
       onChange?.(newFileList.join(','));
 

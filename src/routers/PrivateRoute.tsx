@@ -34,6 +34,7 @@ function PrivateRoute() {
   const stripeChecked = useRef(false);
 
   const { data } = useMeQuery({
+    pollInterval: 10 * 1000,
     onCompleted(data) {
       if (
         !data?.me?.user?.location?.stripeAccountId &&
