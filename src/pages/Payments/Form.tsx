@@ -32,6 +32,7 @@ function PaymentForm({ initialValues }: PaymentFormProps) {
               status: RoomStatus.Owned,
             },
           }}
+          initValues={initialValues?.room ? [initialValues?.room] : []}
           placeholder="Select Room"
         />
       </Form.Item>

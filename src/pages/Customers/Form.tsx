@@ -70,6 +70,7 @@ function UserForm({ initialValues }: Props) {
           variables={{
             input: { locationId: Number(initialValues?.locationId) },
           }}
+          initValues={initialValues?.room ? [initialValues?.room] : []}
           placeholder="Select customer room"
           allowClear
           convertDataToOptions={rooms =>

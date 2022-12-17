@@ -44,6 +44,7 @@ function IncidentForm({ initialValues }: Props) {
               isActive: true,
             },
           }}
+          initValues={initialValues?.reporter ? [initialValues?.reporter] : []}
           disabled={!!initialValues?.fromCustomer}
         />
       </Form.Item>
@@ -118,6 +119,9 @@ function IncidentForm({ initialValues }: Props) {
           <Form.Item name="employeeId" label="Employee In Charge">
             <UserSelector
               placeholder="Select employee to in charge"
+              initValues={
+                initialValues?.employee ? [initialValues?.employee] : []
+              }
               variables={{
                 input: {
                   role: UserRole.Admin,
