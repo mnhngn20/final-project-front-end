@@ -3370,9 +3370,6 @@ export const GetLocationDocument = gql`
           phoneNumber
           email
         }
-        users {
-          id
-        }
       }
     }
   }
@@ -4987,7 +4984,6 @@ export type GetLocationQuery = {
         phoneNumber?: string | null;
         email?: string | null;
       }> | null;
-      users?: Array<{ id: string }> | null;
     } | null;
   };
 };
