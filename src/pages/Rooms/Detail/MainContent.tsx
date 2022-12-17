@@ -28,10 +28,10 @@ export default function MainContent({ room }: MainContentProps) {
           key={TabKey.Equipment}
           tabKey={TabKey.Equipment}
         >
-          <EquipmentList roomId={Number(room?.id)} />
+          <EquipmentList roomId={Number(room?.id)} pageSize={5} />
         </TabPane>
         <TabPane tab="Owners" key={TabKey.Owner} tabKey={TabKey.Owner}>
-          <CustomerList roomId={Number(room?.id)} />
+          <CustomerList pageSize={5} roomId={Number(room?.id)} />
         </TabPane>
       </Tabs>
     </div>

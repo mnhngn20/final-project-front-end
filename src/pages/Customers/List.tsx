@@ -37,14 +37,15 @@ export type GetUsersFilter<T = string> = {
 
 interface ListProps {
   roomId?: number;
+  pageSize?: number;
 }
 
-function List({ roomId }: ListProps) {
+function List({ roomId, pageSize = 10 }: ListProps) {
   const currentUser = useReactiveVar(userVar);
   const [filters, setFilters] = useState<GetUsersFilter<boolean> | undefined>(
     undefined,
   );
-  const { pageSize, onChange, currentPage, setCurrentPage } = useTable();
+  const { onChange, currentPage, setCurrentPage } = useTable();
   const [selectedItem, setSelectedItem] = useState<
     DeepPartial<User> | undefined
   >(undefined);
@@ -293,7 +294,7 @@ function List({ roomId }: ListProps) {
 
         <PaginationPanel
           current={currentPage ?? 1}
-          pageSize={10}
+          pageSize={pageSize}
           total={data?.getUsers?.total ?? 0}
           setCurrentPage={setCurrentPage}
           className="flex justify-end py-6 pr-6"

@@ -34,14 +34,15 @@ export type GetEquipmentsFilter<T = string> = {
 
 interface ListProps {
   roomId?: number;
+  pageSize?: number;
 }
 
-function List({ roomId }: ListProps) {
+function List({ roomId, pageSize = 10 }: ListProps) {
   const [filters, setFilters] = useState<
     GetEquipmentsFilter<boolean> | undefined
   >(undefined);
   const currentUser = useReactiveVar(userVar) as User;
-  const { pageSize, onChange, currentPage, setCurrentPage } = useTable();
+  const { onChange, currentPage, setCurrentPage } = useTable();
   const [selectedItem, setSelectedItem] = useState<
     DeepPartial<Equipment> | undefined
   >(undefined);
@@ -282,7 +283,7 @@ function List({ roomId }: ListProps) {
         />
         <PaginationPanel
           current={currentPage ?? 1}
-          pageSize={10}
+          pageSize={pageSize}
           total={data?.getEquipments?.total ?? 0}
           setCurrentPage={setCurrentPage}
           className="flex justify-end py-6 pr-6"
