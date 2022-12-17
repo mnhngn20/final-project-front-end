@@ -46,7 +46,7 @@ function LocationForm({ initialValues }: Props) {
       </Col>
       <Col span={24}>
         <Form.Item name="description" label="Location Description">
-          <Input.TextArea rows={3} placeholder="Enter location email" />
+          <Input.TextArea rows={3} placeholder="Enter location description" />
         </Form.Item>
       </Col>
       <Col span={12}>
