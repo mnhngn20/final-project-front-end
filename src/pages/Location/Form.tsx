@@ -74,7 +74,7 @@ function LocationForm({ initialValues }: Props) {
           />
         </Form.Item>
       </Col>
-      <Col span={12}>
+      <Col span={24}>
         <Form.Item
           name="electricCounterPrice"
           label="Electric Price"
@@ -90,7 +90,7 @@ function LocationForm({ initialValues }: Props) {
           />
         </Form.Item>
       </Col>
-      <Col span={12}>
+      <Col span={24}>
         <Form.Item name="locationServiceIds" label="Services">
           <LocationServiceSelector
             mode="multiple"
