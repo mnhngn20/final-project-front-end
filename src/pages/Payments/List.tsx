@@ -7,10 +7,11 @@ import {
   Payment,
   PaymentStatus,
   DiscountType,
+  User,
 } from '#/generated/schemas';
 import { useTable } from '#/shared/hooks/useTable';
 import { DeepPartial } from '#/shared/utils/type';
-import { formatId } from '#/shared/utils/format';
+import { formatDisplayUser, formatId } from '#/shared/utils/format';
 import { formatDate } from '#/shared/utils/date';
 import { ColumnsType } from 'antd/lib/table';
 import PaginationPanel from '#/shared/components/commons/PaginationPanel';
@@ -94,6 +95,16 @@ function List({ userId }: ListProps) {
             content={getPaymentStatusTitle(status)}
             className={`h-min ${getPaymentStatusColor(status)}`}
           />
+        ),
+      },
+      {
+        title: 'Payers',
+        dataIndex: 'users',
+        key: 'users',
+        render: (users: User[]) => (
+          <div className="flex flex-col gap-2">
+            {users?.slice(0, 3).map(user => formatDisplayUser(user))}
+          </div>
         ),
       },
       {

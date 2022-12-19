@@ -10,6 +10,8 @@ export default function Notification() {
     onCompleted(data) {
       totalUnreadNotification(data?.getMyNotificationStatus?.total ?? 0);
     },
+    fetchPolicy: 'network-only',
+    pollInterval: 10 * 1000,
   });
 
   const unreadNotifications = useReactiveVar(totalUnreadNotification);
