@@ -2,6 +2,7 @@ import { Form, Input, Col } from 'antd';
 import { GetIncidentsFilter } from './List';
 import StatusSelector from '#/shared/components/selectors/StatusSelector';
 import FilterWrapper from '#/shared/components/commons/FilterWrapper';
+import IncidentCategorySelector from '#/shared/components/selectors/IncidentCategorySelector';
 
 interface Props {
   onFilter: (values: GetIncidentsFilter) => void;
@@ -23,6 +24,11 @@ function Filter({ onFilter }: Props) {
       <Col xl={6} xs={12}>
         <Form.Item name="isActive">
           <StatusSelector placeholder="Filter by status" />
+        </Form.Item>
+      </Col>
+      <Col xl={6} xs={12}>
+        <Form.Item name="incidentCategoryId">
+          <IncidentCategorySelector placeholder="Filter by category" />
         </Form.Item>
       </Col>
     </FilterWrapper>

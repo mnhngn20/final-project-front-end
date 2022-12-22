@@ -104,6 +104,7 @@ const PaymentRecords = forwardRef<PaymentRecordsRef, PaymentRecordsProps>(
           showSuccess('Update payments successfully!');
           setEditAllPaymentVisible(false);
           refetch();
+          window.location.reload();
         },
         onError: showError,
 
@@ -112,7 +113,10 @@ const PaymentRecords = forwardRef<PaymentRecordsRef, PaymentRecordsProps>(
         ],
       });
 
-    const onEditAllPayment = ({ ...values }: UpdatePaymentsInput) => {
+    const onEditAllPayment = ({
+      id: paymentId,
+      ...values
+    }: UpdatePaymentsInput & { id: number }) => {
       updatePayments({
         variables: {
           input: {
@@ -143,12 +147,15 @@ const PaymentRecords = forwardRef<PaymentRecordsRef, PaymentRecordsProps>(
               Payment Records
             </Typography>
             <div className="flex items-center gap-2">
-              <Tooltip title="Calculate for all record">
-                <WalletMoneyOutlineSVG
-                  onClick={() => setEditAllPaymentVisible(true)}
-                  className="cursor-pointer hover:text-primary-color"
-                />
-              </Tooltip>
+              {locationReservation?.status ===
+                LocationReservationStatus.Draft && (
+                <Tooltip title="Calculate for all record">
+                  <WalletMoneyOutlineSVG
+                    onClick={() => setEditAllPaymentVisible(true)}
+                    className="cursor-pointer hover:text-primary-color"
+                  />
+                </Tooltip>
+              )}
               <Tooltip title="New Payment Record">
                 <AddSVG
                   width={24}
@@ -164,7 +171,10 @@ const PaymentRecords = forwardRef<PaymentRecordsRef, PaymentRecordsProps>(
               <Typography>Select Floor</Typography>
               <FloorSelector
                 value={floor}
-                onChange={setFloor}
+                onChange={floor => {
+                  setFloor(floor);
+                  setPaymentCurrentPage(1);
+                }}
                 numOfFloor={currentUser?.location?.numOfFloor ?? 1}
               />
             </div>
@@ -233,13 +243,13 @@ const PaymentRecords = forwardRef<PaymentRecordsRef, PaymentRecordsProps>(
             </div>
           </div>
         </div>
-        <FormModal<UpsertPaymentInput>
+        <FormModal<UpsertPaymentInput & { id: number }>
           loading={updatePaymentsLoading}
           onSubmit={onEditAllPayment}
           name="Edit All payment Record"
           onClose={() => setEditAllPaymentVisible(false)}
-          selectedItem={editAllPaymentVisible ? {} : undefined}
-          initialValues={editAllPaymentVisible ? {} : undefined}
+          selectedItem={editAllPaymentVisible ? { id: 1 } : undefined}
+          initialValues={editAllPaymentVisible ? { id: 1 } : undefined}
         >
           <AllPaymentForm />
         </FormModal>

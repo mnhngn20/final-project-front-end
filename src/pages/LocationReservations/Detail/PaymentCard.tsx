@@ -1,6 +1,6 @@
 import { DiscountType, Payment, PaymentStatus } from '#/generated/schemas';
 import { DeepPartial } from '#/shared/utils/type';
-import { Image, Tooltip, Typography, Popconfirm } from 'antd';
+import { Image, Tooltip, Typography, Modal } from 'antd';
 import DefaultImage from '#/assets/images/default.png';
 import CustomTag from '#/shared/components/commons/CustomTag';
 import { getPaymentStatusColor, getPaymentStatusTitle } from '../utils';
@@ -178,14 +178,22 @@ export default function PaymentCard({
       <div className="absolute bottom-0 right-0 m-4 flex items-center gap-4">
         {payment?.status === PaymentStatus?.Unpaid && (
           <Tooltip title="Manually Pay" placement="bottom">
-            <Popconfirm
-              title="Are you sure to pay this manually?"
-              onConfirm={() => onManuallyPay?.(Number(payment?.id))}
+            <span
+              className="cursor-pointer rounded-full p-4 text-grey-secondary-300 hover:text-primary-color"
+              title="Are you sure to delete this record?"
+              onClick={() => {
+                Modal.warning({
+                  centered: true,
+                  closable: true,
+                  maskClosable: true,
+                  title: 'Are you sure to pay this manually?',
+                  okText: 'Agree',
+                  onOk: () => onManuallyPay?.(Number(payment?.id)),
+                });
+              }}
             >
-              <div className="cursor-pointer rounded-full text-grey-secondary-300 hover:text-primary-color">
-                <CardOutlineSVG width={24} height={24} />
-              </div>
-            </Popconfirm>
+              <CardOutlineSVG width={24} height={24} />
+            </span>
           </Tooltip>
         )}
         {editable && (

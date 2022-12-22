@@ -1,4 +1,4 @@
-import { Col, Form, Input, InputNumber, Row, Switch } from 'antd';
+import { Col, Form, Input, InputNumber, Row } from 'antd';
 import { Location } from '#/generated/schemas';
 import UploadImages from '#/shared/components/commons/UploadImages';
 import UploadImage from '#/shared/components/commons/UploadImage';
@@ -106,11 +106,6 @@ function LocationForm({ initialValues }: Props) {
               },
             }}
           />
-        </Form.Item>
-      </Col>
-      <Col span={12}>
-        <Form.Item valuePropName="checked" label="Status" name="isActive">
-          <Switch defaultChecked />
         </Form.Item>
       </Col>
       <Col span={24}>

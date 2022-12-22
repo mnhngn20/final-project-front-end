@@ -46,7 +46,7 @@ export default function IncidentEmployee({
         },
       });
     }
-  }, 300);
+  }, 1000);
 
   const onlyAssignedEmployee =
     !incident?.employeeId ||
