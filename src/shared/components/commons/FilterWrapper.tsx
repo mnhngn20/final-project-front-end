@@ -29,12 +29,12 @@ function FilterWrapper<Type>({
       {...props}
     >
       <Row className="w-full">
-        <Col xs={24} md={24} lg={16} xl={17} xxl={20}>
+        <Col xs={24} md={24} lg={16} xl={17} xxl={17}>
           <Row align="middle" gutter={10}>
             {children}
           </Row>
         </Col>
-        <Col xs={24} md={24} lg={8} xl={7} xxl={4}>
+        <Col xs={24} md={24} lg={8} xl={7} xxl={7}>
           <Space size={4} className="flex justify-end gap-2">
             <Form.Item>
               <ButtonBrown
