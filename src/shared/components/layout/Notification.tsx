@@ -10,7 +10,7 @@ export default function Notification() {
     onCompleted(data) {
       totalUnreadNotification(data?.getMyNotificationStatus?.total ?? 0);
     },
-    fetchPolicy: 'network-only',
+    fetchPolicy: 'cache-and-network',
     pollInterval: 10 * 1000,
   });
 

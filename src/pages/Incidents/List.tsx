@@ -20,7 +20,6 @@ import { DeepPartial } from '#/shared/utils/type';
 import { showError, showSuccess } from '#/shared/utils/notification';
 import { formatDisplayUser, formatId } from '#/shared/utils/format';
 import { formatDate } from '#/shared/utils/date';
-import { ColumnsType } from 'antd/lib/table';
 import { AddSVG, EyeSVG, FlagOutlineSVG } from '#/assets/svgs';
 import PaginationPanel from '#/shared/components/commons/PaginationPanel';
 import { useReactiveVar } from '@apollo/client';
