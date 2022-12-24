@@ -37,17 +37,8 @@ function Filter({ onFilter }: Props) {
         </Form.Item>
       </Col>
       <Col xl={6} xs={12}>
-        <Form.Item name="fromDate">
-          <DatePicker
-            placeholder="From Date"
-            picker="month"
-            className="w-full"
-          />
-        </Form.Item>
-      </Col>
-      <Col xl={6} xs={12}>
-        <Form.Item name="toDate">
-          <DatePicker placeholder="To Date" picker="month" className="w-full" />
+        <Form.Item name="dates">
+          <DatePicker.RangePicker picker="month" className="w-full" />
         </Form.Item>
       </Col>
     </FilterWrapper>

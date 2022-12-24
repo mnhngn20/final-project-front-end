@@ -20,7 +20,7 @@ import { AddSVG, EyeSVG, TrashOutlineSVG } from '#/assets/svgs';
 import PaginationPanel from '#/shared/components/commons/PaginationPanel';
 import { useReactiveVar } from '@apollo/client';
 import { userVar } from '#/graphql/cache';
-import dayjs from 'dayjs';
+import dayjs, { Dayjs } from 'dayjs';
 import { formatDisplayUser } from '#/shared/utils/format';
 import CustomTag from '#/shared/components/commons/CustomTag';
 import { getLocationReservationStatusColor } from './utils';
@@ -28,8 +28,7 @@ import { formatDate } from '#/shared/utils/date';
 
 export type GetLocationReservationsFilter = {
   status?: LocationReservationStatus;
-  fromDate?: string;
-  toDate?: string;
+  dates?: [Dayjs, Dayjs];
   createdById?: number;
 };
 
@@ -85,16 +84,13 @@ function List() {
 
   const onFilter = ({
     createdById,
-    fromDate,
     status,
-    toDate,
+    dates,
   }: GetLocationReservationsFilter) => {
     const newFilter = {
-      ...(toDate && {
-        toDate: dayjs.utc(toDate).startOf('month').toISOString(),
-      }),
-      ...(fromDate && {
-        fromDate: dayjs.utc(fromDate).startOf('month').toISOString(),
+      ...(dates?.[0] && {
+        fromDate: dayjs.utc(dates?.[0]).startOf('month').toISOString(),
+        toDate: dayjs.utc(dates?.[1]).endOf('month').toISOString(),
       }),
       ...(status && { status }),
       ...(createdById && { createdById: Number(createdById) }),
@@ -110,7 +106,7 @@ function List() {
     upsertLocationReservation({
       variables: {
         input: {
-          startDate: dayjs.utc(startDate).startOf('date').toISOString(),
+          startDate: dayjs.utc(startDate).startOf('month').toISOString(),
           locationId: Number(currentUser?.locationId),
           createdById: Number(createdById),
         },
