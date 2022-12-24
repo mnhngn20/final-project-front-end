@@ -81,7 +81,6 @@ function Detail() {
           />
           <IncidentEmployee
             incident={incident ?? {}}
-            key={`${incident?.id}-${incident?.reportMessage}-${incident?.reportImages}`}
             setEditModalVisible={setEditModalVisible}
           />
         </div>

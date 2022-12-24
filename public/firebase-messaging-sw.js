@@ -18,12 +18,29 @@ firebase.initializeApp({
 const messaging = firebase.messaging();
 
 messaging.onBackgroundMessage(payload => {
-  const data = payload?.data;
+  const promiseChain = clients
+    .matchAll({
+      type: 'window',
+      includeUncontrolled: true,
+    })
+    .then(windowClients => {
+      for (let i = 0; i < windowClients.length; i++) {
+        const windowClient = windowClients[i];
+        windowClient.postMessage(payload);
+      }
+    })
+    .then(() => {
+      const data = payload?.data;
 
-  const notificationTitle = data?.title;
-  const notificationOptions = {
-    body: data?.content,
-  };
+      const notificationTitle = `[GP. Admin Web] ${data?.title}`;
+      const notificationOptions = {
+        body: data?.content,
+      };
 
-  self.registration.showNotification(notificationTitle, notificationOptions);
+      self.registration.showNotification(
+        notificationTitle,
+        notificationOptions,
+      );
+    });
+  return promiseChain;
 });

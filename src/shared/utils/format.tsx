@@ -11,11 +11,14 @@ export const formatId = (id: number) => (
   </Tooltip>
 );
 
-export const formatDisplayUser = (user: DeepPartial<User>) => (
-  <Link to={`/customers/${user?.id}`}>
+export const formatDisplayUser = (user: DeepPartial<User>, redirect = true) =>
+  redirect ? (
+    <Link to={`/customers/${user?.id}`}>
+      <Info avatar={user?.avatar} fullName={user?.name} email={user?.email} />
+    </Link>
+  ) : (
     <Info avatar={user?.avatar} fullName={user?.name} email={user?.email} />
-  </Link>
-);
+  );
 
 export const formatDisplayName = (
   name: string,

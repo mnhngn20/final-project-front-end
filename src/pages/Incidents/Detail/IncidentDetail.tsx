@@ -59,7 +59,7 @@ export default function IncidentDetail({
   return (
     <div className="col-span-1 items-center rounded-xl bg-[white] p-4">
       <div className="flex flex-wrap items-center justify-between gap-4 p-[5px]">
-        <div className="flex items-center gap-4">
+        <div className="flex items-center justify-between gap-4">
           <IncidentPrioritySelector
             value={incident?.priority}
             onChange={priority =>

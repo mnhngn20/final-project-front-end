@@ -60,3 +60,4 @@ export { ReactComponent as GalleryAddOutlineSVG } from './gallery-add-outline.sv
 export { ReactComponent as UsersFilledSVG } from './users-filled.svg';
 export { ReactComponent as WalletMoneyOutlineSVG } from './wallet-money-outline.svg';
 export { ReactComponent as SettingFilledSVG } from './setting-filled.svg';
+export { ReactComponent as GalleryAddFilledSVG } from './gallery-add-filled.svg';

@@ -19,7 +19,7 @@ export default function Notification() {
   return (
     <Popover
       className="relative cursor-pointer"
-      placement="bottom"
+      placement="bottomRight"
       content={<NotificationList />}
     >
       <div>

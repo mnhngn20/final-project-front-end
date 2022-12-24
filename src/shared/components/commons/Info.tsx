@@ -6,7 +6,7 @@ interface Props {
 }
 function Info({ avatar, fullName, email }: Props) {
   return (
-    <div className="flex w-full items-center">
+    <div className="flex w-full items-center text-primary-color">
       <div>
         <Avatar src={avatar} name={fullName ?? email} />
       </div>

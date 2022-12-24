@@ -28,13 +28,14 @@ export default function NotificationList() {
     data: notifications,
     loading,
     loadMore,
+    refetch,
   } = useInfiniteLoadQuery<
     GetNotificationsQuery,
     GetNotificationsQueryVariables,
     DeepPartial<Notification>
   >({
     query: GetNotificationsDocument,
-    fetchPolicy: 'network-only',
+    fetchPolicy: 'cache-and-network',
     pollInterval: 10 * 1000,
     formatData: data => data?.getNotifications,
     variables: {
@@ -48,6 +49,7 @@ export default function NotificationList() {
   const [readNotification] = useReadNotificationMutation({
     onCompleted() {
       unreadNotification > 0 && totalUnreadNotification(unreadNotification - 1);
+      refetch();
     },
     refetchQueries: [refetchGetMyNotificationStatusQuery()],
   });
@@ -62,7 +64,7 @@ export default function NotificationList() {
           notifications?.map(notification => (
             <div
               key={notification?.id}
-              className={`relative grid w-min cursor-pointer grid-cols-12 items-center gap-8 overflow-hidden border-b border-grey-light p-4 hover:bg-grey-light ${
+              className={`relative grid min-h-[5rem] w-[30rem] cursor-pointer grid-cols-12 items-center overflow-hidden border-b border-grey-light hover:bg-grey-light ${
                 notification?.isRead === false
                   ? 'bg-grey-light-200 font-bold after:absolute after:right-0 after:mr-1 after:h-1 after:w-1 after:rounded-full after:bg-[black] hover:bg-grey-light-200'
                   : ''
@@ -84,18 +86,18 @@ export default function NotificationList() {
               <div className="col-span-2 flex justify-center">
                 {getNotificationIcon(notification?.type)}
               </div>
-              <div className="col-span-7 flex flex-col">
+              <div className="col-span-8 flex flex-col py-2">
                 <div className="font-semibold">{notification?.title}</div>
                 <div className="text-xs">{notification?.content}</div>
               </div>
-              <div className="col-span-3 flex flex-col items-end justify-center text-xs">
+              <div className="col-span-2 flex flex-col items-end justify-center p-2 text-xs">
                 <span>{formatDate(notification.createdAt, 'hh:mm')}</span>
-                <span>{formatDate(notification.createdAt, 'DD-M')}</span>
+                <span>{formatDate(notification.createdAt, 'DD MMM')}</span>
               </div>
             </div>
           ))
         ) : (
-          <div className="p-4">
+          <div className="w-[30rem] p-4">
             <Empty description="You have no notification" />
           </div>
         )}

@@ -14,8 +14,8 @@ const { Title, Text } = Typography;
 function DetailItem({ icon, toolTip, value, className }: ProfileItemProps) {
   return (
     <Tooltip title={toolTip} placement="top">
-      <Typography className={`flex items-center gap-2 ${className}`}>
-        <Title level={5} className="my-3">
+      <Typography className={`my-1 flex gap-2 ${className}`}>
+        <Title level={5} className="">
           <Icon component={icon} />
         </Title>
         <Text className="ml-2 text-base">{value ?? 'N/A'}</Text>

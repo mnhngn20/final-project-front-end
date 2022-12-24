@@ -2,7 +2,7 @@ import {
   DocumentNode,
   TypedDocumentNode,
   useQuery,
-  FetchPolicy,
+  WatchQueryFetchPolicy,
 } from '@apollo/client';
 import { useState } from 'react';
 import { debounce, merge } from 'lodash';
@@ -21,7 +21,7 @@ interface Props<TData, TVariables, Type> {
   query: DocumentNode | TypedDocumentNode<TData, TVariables>;
   formatData: (e: TData) => FormatDataResponse<Type> | null | undefined;
   variables?: TVariables;
-  fetchPolicy?: FetchPolicy;
+  fetchPolicy?: WatchQueryFetchPolicy;
   skip?: boolean;
   pollInterval?: number;
 }

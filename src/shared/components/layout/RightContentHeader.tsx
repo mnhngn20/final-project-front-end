@@ -31,7 +31,7 @@ function RightContentHeader({ logout, user }: Props) {
       <Notification />
       <div className="flex">
         <Dropdown overlay={menu}>
-          <div className="flex items-center">
+          <div className="flex cursor-pointer items-center">
             <div className="mr-2 flex flex-col items-end leading-tight">
               {user?.name ?? ''}
             </div>

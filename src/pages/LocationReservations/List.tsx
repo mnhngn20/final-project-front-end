@@ -239,7 +239,7 @@ function List() {
         <Table
           rowKey="id"
           dataSource={locations}
-          columns={COLUMNS}
+          columns={COLUMNS as any}
           scroll={{ x: 'max-content' }}
           loading={loading || upsertLocationReservationLoading}
           onChange={onChange}

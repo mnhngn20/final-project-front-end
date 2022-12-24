@@ -150,7 +150,7 @@ function List({ roomId }: ListProps) {
     });
   };
 
-  const COLUMNS: ColumnsType<DeepPartial<Incident>> = useMemo(
+  const COLUMNS = useMemo(
     () => [
       {
         title: 'ID',
@@ -276,7 +276,7 @@ function List({ roomId }: ListProps) {
         <Table
           rowKey="id"
           dataSource={incidents as unknown as DeepPartial<Incident>[]}
-          columns={COLUMNS}
+          columns={COLUMNS as any}
           scroll={{ x: 'max-content' }}
           loading={loading || upsertIncidentLoading}
           onChange={onChange}
