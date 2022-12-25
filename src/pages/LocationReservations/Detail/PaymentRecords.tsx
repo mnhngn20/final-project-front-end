@@ -66,6 +66,7 @@ const PaymentRecords = forwardRef<PaymentRecordsRef, PaymentRecordsProps>(
         },
       },
       skip: !locationReservation?.id,
+      fetchPolicy: 'network-only',
     });
     const payments = data?.getPayments?.items ?? [];
 
@@ -218,7 +219,8 @@ const PaymentRecords = forwardRef<PaymentRecordsRef, PaymentRecordsProps>(
                         onManuallyPay={id =>
                           manuallyPay({
                             variables: {
-                              id,
+                              paymentId: Number(id),
+                              payerId: Number(currentUser.id),
                             },
                           })
                         }

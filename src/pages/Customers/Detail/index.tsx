@@ -11,7 +11,7 @@ import { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import UserForm from '../Form';
 import SideContent from './SideContent';
-import PaymentList from '#/pages/Payments/List';
+import MainContent from './MainContent';
 
 function Detail() {
   const { id } = useParams();
@@ -69,11 +69,7 @@ function Detail() {
         loading={loading}
         title="User Detail"
         mainContent={<SideContent user={user ?? {}} />}
-        sideContent={
-          <div className="rounded-xl bg-[white] p-4">
-            <PaymentList userId={Number(id)} />
-          </div>
-        }
+        sideContent={<MainContent user={user ?? {}} />}
         onEdit={() => setEditModalVisible(true)}
       />
       <FormModal<UpdateUserInput>

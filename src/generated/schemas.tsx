@@ -121,6 +121,7 @@ export type CreateInstallationInput = {
 
 export type CreateStripeCheckoutInput = {
   cancelUrl: Scalars['String'];
+  payerId: Scalars['Float'];
   paymentId: Scalars['Float'];
   successUrl: Scalars['String'];
 };
@@ -310,6 +311,15 @@ export type GetRoomsInput = {
   orderBy?: InputMaybe<OrderBy>;
   page?: InputMaybe<Scalars['Float']>;
   status?: InputMaybe<RoomStatus>;
+};
+
+export type GetTransactionInput = {
+  fromDate?: InputMaybe<Scalars['DateTime']>;
+  limit?: InputMaybe<Scalars['Float']>;
+  orderBy?: InputMaybe<OrderBy>;
+  page?: InputMaybe<Scalars['Float']>;
+  toDate?: InputMaybe<Scalars['DateTime']>;
+  userId?: InputMaybe<Scalars['Float']>;
 };
 
 export type GetUsersInput = {
@@ -636,7 +646,8 @@ export type MutationLoginArgs = {
 };
 
 export type MutationManuallyPayArgs = {
-  id: Scalars['Float'];
+  payerId: Scalars['Float'];
+  paymentId: Scalars['Float'];
 };
 
 export type MutationReadNotificationArgs = {
@@ -834,6 +845,7 @@ export type Query = {
   getPayments: PaymentListResponse;
   getRoom: RoomResponse;
   getRooms: RoomListResponse;
+  getTransactions: TransactionListResponse;
   getUser: UserResponse;
   getUsers: ListUserResponse;
   me: UserResponse;
@@ -927,6 +939,10 @@ export type QueryGetRoomsArgs = {
   input: GetRoomsInput;
 };
 
+export type QueryGetTransactionsArgs = {
+  input: GetTransactionInput;
+};
+
 export type QueryGetUserArgs = {
   id: Scalars['Float'];
 };
@@ -996,6 +1012,24 @@ export type RoomResponse = IResponse & {
 export type StripeResponse = IResponse & {
   message?: Maybe<Scalars['String']>;
   url: Scalars['String'];
+};
+
+export type Transaction = {
+  amount: Scalars['Float'];
+  createdAt: Scalars['DateTime'];
+  description?: Maybe<Scalars['String']>;
+  id: Scalars['ID'];
+  updatedAt: Scalars['DateTime'];
+  user: User;
+  userId: Scalars['Float'];
+};
+
+export type TransactionListResponse = ListResponse & {
+  items: Array<Transaction>;
+  message?: Maybe<Scalars['String']>;
+  page?: Maybe<Scalars['Float']>;
+  total?: Maybe<Scalars['Float']>;
+  totalPages?: Maybe<Scalars['Float']>;
 };
 
 export enum UserRole {
@@ -1208,6 +1242,7 @@ export type User = {
   role: UserRole;
   room?: Maybe<Room>;
   roomId?: Maybe<Scalars['Float']>;
+  transactions?: Maybe<Array<Transaction>>;
   updatedAt: Scalars['DateTime'];
 };
 
@@ -1729,8 +1764,8 @@ export type LoginMutationOptions = Apollo.BaseMutationOptions<
   LoginMutationVariables
 >;
 export const ManuallyPayDocument = gql`
-  mutation manuallyPay($id: Float!) {
-    manuallyPay(id: $id) {
+  mutation manuallyPay($paymentId: Float!, $payerId: Float!) {
+    manuallyPay(paymentId: $paymentId, payerId: $payerId) {
       message
       payment {
         id
@@ -1757,7 +1792,8 @@ export type ManuallyPayMutationFn = Apollo.MutationFunction<
  * @example
  * const [manuallyPayMutation, { data, loading, error }] = useManuallyPayMutation({
  *   variables: {
- *      id: // value for 'id'
+ *      paymentId: // value for 'paymentId'
+ *      payerId: // value for 'payerId'
  *   },
  * });
  */
@@ -4247,6 +4283,78 @@ export type GetRoomsQueryResult = Apollo.QueryResult<
 export function refetchGetRoomsQuery(variables: GetRoomsQueryVariables) {
   return { query: GetRoomsDocument, variables: variables };
 }
+export const GetTransactionsDocument = gql`
+  query getTransactions($input: GetTransactionInput!) {
+    getTransactions(input: $input) {
+      page
+      total
+      totalPages
+      message
+      items {
+        id
+        amount
+        description
+        createdAt
+      }
+    }
+  }
+`;
+
+/**
+ * __useGetTransactionsQuery__
+ *
+ * To run a query within a React component, call `useGetTransactionsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetTransactionsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetTransactionsQuery({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useGetTransactionsQuery(
+  baseOptions: Apollo.QueryHookOptions<
+    GetTransactionsQuery,
+    GetTransactionsQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<GetTransactionsQuery, GetTransactionsQueryVariables>(
+    GetTransactionsDocument,
+    options,
+  );
+}
+export function useGetTransactionsLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    GetTransactionsQuery,
+    GetTransactionsQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<
+    GetTransactionsQuery,
+    GetTransactionsQueryVariables
+  >(GetTransactionsDocument, options);
+}
+export type GetTransactionsQueryHookResult = ReturnType<
+  typeof useGetTransactionsQuery
+>;
+export type GetTransactionsLazyQueryHookResult = ReturnType<
+  typeof useGetTransactionsLazyQuery
+>;
+export type GetTransactionsQueryResult = Apollo.QueryResult<
+  GetTransactionsQuery,
+  GetTransactionsQueryVariables
+>;
+export function refetchGetTransactionsQuery(
+  variables: GetTransactionsQueryVariables,
+) {
+  return { query: GetTransactionsDocument, variables: variables };
+}
 export const GetUserDocument = gql`
   query getUser($id: Float!) {
     getUser(id: $id) {
@@ -4558,7 +4666,8 @@ export type LoginMutation = {
 };
 
 export type ManuallyPayMutationVariables = Exact<{
-  id: Scalars['Float'];
+  paymentId: Scalars['Float'];
+  payerId: Scalars['Float'];
 }>;
 
 export type ManuallyPayMutation = {
@@ -5281,6 +5390,25 @@ export type GetRoomsQuery = {
         email: string;
         avatar?: string | null;
       }> | null;
+    }>;
+  };
+};
+
+export type GetTransactionsQueryVariables = Exact<{
+  input: GetTransactionInput;
+}>;
+
+export type GetTransactionsQuery = {
+  getTransactions: {
+    page?: number | null;
+    total?: number | null;
+    totalPages?: number | null;
+    message?: string | null;
+    items: Array<{
+      id: string;
+      amount: number;
+      description?: string | null;
+      createdAt: any;
     }>;
   };
 };

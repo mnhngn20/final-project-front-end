@@ -1,0 +1,14 @@
+query getTransactions($input: GetTransactionInput!) {
+  getTransactions(input: $input) {
+    page
+    total
+    totalPages
+    message
+    items {
+      id
+      amount
+      description
+      createdAt
+    }
+  }
+}
