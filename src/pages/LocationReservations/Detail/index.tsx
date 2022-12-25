@@ -12,7 +12,7 @@ import CustomTag from '#/shared/components/commons/CustomTag';
 import { FormModal } from '#/shared/components/commons/FormModal';
 import { showError, showSuccess } from '#/shared/utils/notification';
 import { PageContainer } from '@ant-design/pro-layout';
-import { Button, Skeleton, Typography } from 'antd';
+import { Button, Modal, Skeleton, Typography } from 'antd';
 import dayjs from 'dayjs';
 import { useState, useRef } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -218,11 +218,20 @@ function Detail() {
             <div className="flex items-center justify-end gap-2">
               <Button
                 loading={loading}
-                onClick={() =>
-                  onChangeLocationReservationStatus(
-                    LocationReservationStatus.Draft,
-                  )
-                }
+                onClick={() => {
+                  Modal.warning({
+                    centered: true,
+                    closable: true,
+                    maskClosable: true,
+                    title: 'Are you sure to change this Reservation to Draft?',
+                    okText: 'Agree',
+                    onOk: () => {
+                      onChangeLocationReservationStatus(
+                        LocationReservationStatus.Draft,
+                      );
+                    },
+                  });
+                }}
                 disabled={
                   locationReservation?.status ===
                   LocationReservationStatus.Draft
@@ -233,11 +242,20 @@ function Detail() {
               <Button
                 type="primary"
                 loading={loading}
-                onClick={() =>
-                  onChangeLocationReservationStatus(
-                    LocationReservationStatus.Published,
-                  )
-                }
+                onClick={() => {
+                  Modal.warning({
+                    centered: true,
+                    closable: true,
+                    maskClosable: true,
+                    title: 'Are you sure to publish this Reservation?',
+                    okText: 'Agree',
+                    onOk: () => {
+                      onChangeLocationReservationStatus(
+                        LocationReservationStatus.Published,
+                      );
+                    },
+                  });
+                }}
                 disabled={
                   locationReservation?.status ===
                   LocationReservationStatus.Published

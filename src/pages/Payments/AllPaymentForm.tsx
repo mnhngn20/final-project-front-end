@@ -1,22 +1,22 @@
-import { Form, InputNumber, Typography } from 'antd';
-import { useReactiveVar } from '@apollo/client';
-import { userVar } from '#/graphql/cache';
+import { Form, InputNumber } from 'antd';
+// import { useReactiveVar } from '@apollo/client';
+// import { userVar } from '#/graphql/cache';
 import { DiscountType } from '#/generated/schemas';
 import DiscountTypeSelector from '#/shared/components/selectors/DiscountTypeSelector';
 import {
   DiscountFilledSVG,
-  DropFilledSVG,
-  FlashFilledSVG,
+  // DropFilledSVG,
+  // FlashFilledSVG,
   MoneyTimeFilledSVG,
   ExtraCoinFilledSVG,
 } from '#/assets/svgs';
 
 function AllPaymentForm() {
-  const currentUser = useReactiveVar(userVar);
+  // const currentUser = useReactiveVar(userVar);
 
   return (
     <>
-      <Form.Item name="electricCounter" label="Electric Counter">
+      {/* <Form.Item name="electricCounter" label="Electric Counter">
         <InputNumber
           prefix={
             <FlashFilledSVG width={24} height={24} className="text-warning" />
@@ -42,7 +42,7 @@ function AllPaymentForm() {
           placeholder="Enter water price"
           className="w-full"
         />
-      </Form.Item>
+      </Form.Item> */}
       <Form.Item name="extraFee" label="Extra Fee">
         <InputNumber
           prefix={

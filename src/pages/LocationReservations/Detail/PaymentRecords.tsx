@@ -129,7 +129,7 @@ const PaymentRecords = forwardRef<PaymentRecordsRef, PaymentRecordsProps>(
 
     const [manuallyPay] = useManuallyPayMutation({
       onCompleted() {
-        showSuccess('Paid sucessfully!');
+        showSuccess('Paid successfully!');
         refetch();
       },
       onError: showError,
@@ -221,6 +221,10 @@ const PaymentRecords = forwardRef<PaymentRecordsRef, PaymentRecordsProps>(
                               id,
                             },
                           })
+                        }
+                        isPublished={
+                          locationReservation?.status ===
+                          LocationReservationStatus.Published
                         }
                         editable={
                           locationReservation?.status ===

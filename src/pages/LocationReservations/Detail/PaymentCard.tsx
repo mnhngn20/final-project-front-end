@@ -1,4 +1,4 @@
-import { DiscountType, Payment, PaymentStatus } from '#/generated/schemas';
+import { DiscountType, Payment } from '#/generated/schemas';
 import { DeepPartial } from '#/shared/utils/type';
 import { Image, Tooltip, Typography, Modal } from 'antd';
 import DefaultImage from '#/assets/images/default.png';
@@ -23,6 +23,7 @@ interface PaymentCardProps {
   onEdit?: () => void;
   editable?: boolean;
   onManuallyPay?: (id: number) => void;
+  isPublished?: boolean;
 }
 
 function DisplayItem({
@@ -51,6 +52,7 @@ export default function PaymentCard({
   onEdit,
   editable,
   onManuallyPay,
+  isPublished,
 }: PaymentCardProps) {
   return (
     <div className="relative flex items-center gap-4 rounded-2xl p-4 shadow-header">
@@ -176,7 +178,7 @@ export default function PaymentCard({
         </div>
       </div>
       <div className="absolute bottom-0 right-0 m-4 flex items-center gap-4">
-        {payment?.status === PaymentStatus?.Unpaid && (
+        {isPublished && (
           <Tooltip title="Manually Pay" placement="bottom">
             <span
               className="cursor-pointer rounded-full p-4 text-grey-secondary-300 hover:text-primary-color"
